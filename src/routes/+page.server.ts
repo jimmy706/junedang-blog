@@ -1,6 +1,7 @@
-import { API_PATH } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { apiInstance } from "../api";
 import type { Post } from "../types/posts";
+const { API_PATH } = env;
 const apiUrl = `${API_PATH}/pages`;
 const postsCacheKey = "posts";
 

@@ -4,9 +4,10 @@
   import "../app.css";
   
   import Maintance from "$lib/Maintance.svelte";
+  import { env } from '$env/dynamic/public';
+  const { PUBLIC_MAINTENANCE_MODE } = env;
 </script>
-
-{#if Boolean(import.meta.env.VITE_MAINTENANCE_MODE)}
+{#if PUBLIC_MAINTENANCE_MODE == "true"}
   <Maintance />
 {:else}
   <Header />

@@ -21,7 +21,7 @@
       {#if post.url}
         <a
           href={post.url}
-          class="block text-2xl font-semibold text-black hover:underline cursor-pointer"
+          class="block text-2xl font-semibold text-black hover:underline cursor-pointer font-normal"
         >
           {post.title}
         </a>

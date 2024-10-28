@@ -1,11 +1,19 @@
 # Stage 1: Build the application
 FROM node:lts-alpine AS build
 
+ENV PORT=3000
+ENV HOST=0.0.0.0
+ENV API_URL=https://jimmy706.github.io/junedang-blog-pages
+ENV API_PATH=/api
+ENV API_CACHE_TTL=3600
+ENV PUBLIC_MAINTENANCE_MODE=true
+
+
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+COPY package*.json .
 
 # Install dependencies
 RUN npm install
@@ -13,14 +21,18 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Write environment variables to .env file
+RUN echo "HOST=$HOST" >> .env && \
+    echo "PORT=$PORT" >> .env && \
+    echo "API_URL=$API_URL" >> .env && \
+    echo "API_PATH=$API_PATH" >> .env && \
+    echo "API_CACHE_TTL=$API_CACHE_TTL" >> .env && \
+    echo "PUBLIC_MAINTENANCE_MODE=$PUBLIC_MAINTENANCE_MODE" >> .env
+
 # Build the Svelte project
 RUN npm run build
 
-# (Optional) Copy custom Nginx configuration
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
+EXPOSE $PORT
 
 # Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "--env-file=.env", "build"]
