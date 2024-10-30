@@ -2,13 +2,25 @@
   import type { Post } from "../types/posts";
 
   export let post: Post;
+
+  function constructArticleSlug(url?: string): string {
+    if (!url) {
+      return ''
+    }
+    const splits = url.split('/');
+    const postHtml = splits[splits.length - 1];
+    const postSlug = postHtml.split('.')[0];
+    return `/posts/${postSlug}`;
+  }
 </script>
 
-<div
-  class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-md overflow-hidden flex mb-5"
+<a
+  class="bg-gray-50 rounded  block hover:shadow-sm overflow-hidden mb-5 min-h-96"
+  href={constructArticleSlug(post.url)}
+  title={post.description}
 >
   {#if post.image}
-    <div class="mr-4 inline-block w-[160px] h-[106px] lg:w-[260px] lg:h-[160px]">
+    <div class="mr-4 block w-full max-h-52 overflow-hidden">
       <img
         src={post.image}
         alt={post.title}
@@ -18,28 +30,23 @@
   {/if}
   <div class="p-4 flex-1">
     <h3>
-      {#if post.url}
-        <a
-          href={post.url}
-          class="block text-2xl font-semibold text-black hover:underline cursor-pointer font-normal"
-        >
-          {post.title}
-        </a>
-      {:else}
-        <p class="block text-2xl font-semibold text-black">
-          {post.title}
-        </p>
-      {/if}
-    </h3>
-    {#if post.date}
-      <p class="text-gray-600 text-sm mt-2">
-        {new Date(post.date).toLocaleDateString()}
+      <p class="block text-2xl font-semibold text-black">
+        {post.title}
       </p>
-    {/if}
+    </h3>
+
     {#if post.description}
-      <p class="text-gray-700 mt-4 text-ellipsis overflow-hidden line-clamp-2">
+      <p class="text-gray-600 mt-4 text-ellipsis overflow-hidden line-clamp-2">
         {post.description}
       </p>
     {/if}
+
+    <small class="text-gray-800 mt-2 text-sm">
+      {#if post.date}
+        {new Date(post.date).toLocaleDateString()}
+      {:else}
+        {new Date().toLocaleDateString()}
+      {/if}
+    </small>
   </div>
-</div>
+</a>

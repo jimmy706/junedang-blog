@@ -3,7 +3,7 @@
     <div class="flex justify-center mb-4">
       <img
         class="max-w-xs"
-        src="/image/maintenance.jpg"
+        src="/image/maintenance.webp"
         alt="Maintenance Image"
       />
     </div>

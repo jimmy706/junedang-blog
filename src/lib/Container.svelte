@@ -3,7 +3,7 @@
   export let margin = "mx-auto"; // Default margin
 </script>
 
-<div class="w-full h-full">
+<div class="w-full min-h-svh">
   <div class={`container mx-auto ${padding} ${margin}`}>
     <slot></slot>
   </div>
