@@ -7,7 +7,7 @@
   <div class="flex-1 w-full">
     <div
       role="status"
-      class="flex items-center justify-center h-56 max-w-sm bg-gray-200 rounded-lg animate-pulse dark:bg-gray-700 mb-5"
+      class="flex items-center justify-center h-56 max-w-lg bg-slate-200 rounded-lg animate-pulse dark:bg-slate-600 mb-5"
     >
       <svg
         class="w-10 h-10 text-gray-100 dark:text-gray-300"
@@ -27,67 +27,67 @@
 
     <div role="status" class="space-y-2.5 animate-pulse max-w-lg w-full flex-1">
       <div class="flex items-center w-full">
-        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+        <div class="h-2.5 bg-slate-200 rounded-full dark:bg-slate-600 w-32"></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-24"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
       </div>
       <div class="flex items-center w-full max-w-[480px]">
         <div
-          class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
+          class="h-2.5 bg-slate-200 rounded-full dark:bg-slate-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-24"
         ></div>
       </div>
       <div class="flex items-center w-full max-w-[400px]">
         <div
-          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"
+          class="h-2.5 ms-2 bg-slate-200 rounded-full dark:bg-slate-600 w-80"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
       </div>
       <div class="flex items-center w-full max-w-[480px]">
         <div
-          class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
+          class="h-2.5 ms-2 bg-slate-200 rounded-full dark:bg-slate-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-24"
         ></div>
       </div>
       <div class="flex items-center w-full max-w-[440px]">
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-32"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-24"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"
+          class="h-2.5 ms-2 bg-slate-200 rounded-full dark:bg-slate-600 w-full"
         ></div>
       </div>
       <div class="flex items-center w-full max-w-[360px]">
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"
+          class="h-2.5 ms-2 bg-slate-200 rounded-full dark:bg-slate-600 w-80"
         ></div>
         <div
-          class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"
+          class="h-2.5 ms-2 bg-slate-300 rounded-full dark:bg-gray-600 w-full"
         ></div>
       </div>
       <span class="sr-only">{message}</span>

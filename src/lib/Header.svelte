@@ -1,5 +1,26 @@
 <script lang="ts">
-  let mdMenuOpen = false;
+  import { page } from "$app/stores";
+
+  let smMenuOpen = false;
+  const mdMenuClass =
+    "text-sm font-semibold leading-6 text-gray-900 hover:bg-slate-50 rounded-3xl py-2 px-5 mdMenuItem";
+  const smMenuClass =
+    "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-slate-50 smMenuItem";
+
+  const menuItems = [
+    {
+      name: "Home",
+      href: "/",
+    },
+    {
+      name: "About",
+      href: "/about",
+    },
+    {
+      name: "Articles",
+      href: "/posts",
+    },
+  ];
 </script>
 
 <header class="bg-white">
@@ -10,23 +31,24 @@
     <div class="flex lg:flex-1">
       <a href="/" class="-m-1.5 p-1.5">
         <span class="sr-only">Junedang</span>
-        <img class="h-10 w-auto" src="favicon.jpeg" alt="Home" />
+        <img class="h-10 w-auto" src="/favicon.jpeg" alt="Home" />
       </a>
     </div>
     <div class="flex lg:hidden">
       <button
         type="button"
         class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+        title="Open main menu"
+        on:click={() => (smMenuOpen = true)}
       >
         <span class="sr-only">Open main menu</span>
         <svg
-          class="h-6 w-6"
+          xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          aria-hidden="true"
-          data-slot="icon"
+          class="size-6"
         >
           <path
             stroke-linecap="round"
@@ -36,7 +58,7 @@
         </svg>
       </button>
     </div>
-    <div class="hidden lg:flex lg:gap-x-12">
+    <div class="hidden lg:flex lg:gap-x-8">
       <div class="relative hidden">
         <button
           type="button"
@@ -280,13 +302,15 @@
         </div>
       </div>
 
-      <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
-      <a href="/about" class="text-sm font-semibold leading-6 text-gray-900"
-        >About</a
-      >
-      <a href="/posts" class="text-sm font-semibold leading-6 text-gray-900"
-        >Posts</a
-      >
+      {#each menuItems as item}
+        <a
+          href={item.href}
+          class={mdMenuClass}
+          class:active={item.href === "/"
+            ? $page.url.pathname === item.href
+            : $page.url.pathname.startsWith(item.href)}>{item.name}</a
+        >
+      {/each}
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
       <!-- <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a> -->
@@ -294,26 +318,28 @@
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->
   <div class="lg:hidden" role="dialog" aria-modal="true">
-    <!-- Background backdrop, show/hide based on slide-over state. -->
-    <div class="fixed inset-0 z-10"></div>
     <div
-      class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+      class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
         <a href="#" class="-m-1.5 p-1.5">
           <span class="sr-only">Your Company</span>
-          <img class="h-8 w-auto" src="favicon.jpeg" alt="" />
+          <img class="h-10 w-auto md:h-8" src="/favicon.jpeg" alt="" />
         </a>
-        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+        <button
+          on:click={() => (smMenuOpen = false)}
+          title="Close menu"
+          type="button"
+          class="-m-2.5 rounded-md p-2.5 text-gray-700"
+        >
           <span class="sr-only">Close menu</span>
           <svg
-            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            aria-hidden="true"
-            data-slot="icon"
+            class="size-6"
           >
             <path
               stroke-linecap="round"
@@ -358,38 +384,47 @@
                 <a
                   href="/"
                   class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >Home</a
+                  >Product item 1</a
                 >
                 <a
                   href="/about"
                   class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >About</a
+                  >Product item 2</a
                 >
                 <a
                   href="/posts"
                   class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >Posts</a
+                  >Product item 3</a
                 >
               </div>
             </div>
-            <a
-              href="/"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >Home</a
-            >
-            <a
-              href="/about"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >About</a
-            >
-            <a
-              href="/posts"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >Posts</a
-            >
+            
+            {#each menuItems as item}
+              <a
+                href={item.href}
+                class={smMenuClass}
+                class:active={item.href === "/"
+                  ? $page.url.pathname === item.href
+                  : $page.url.pathname.startsWith(item.href)}>{item.name}</a
+              >
+            {/each}
           </div>
         </div>
       </div>
     </div>
   </div>
 </header>
+
+<style>
+  .mdMenuItem.active {
+    @apply bg-slate-950;
+    @apply text-white;
+    @apply hover:bg-slate-950;
+  }
+
+  .smMenuItem.active {
+    @apply bg-slate-950;
+    @apply text-white;
+    @apply hover:bg-slate-950;
+  }
+</style>
