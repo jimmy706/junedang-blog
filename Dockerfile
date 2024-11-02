@@ -6,7 +6,7 @@ ENV HOST=0.0.0.0
 ENV API_URL=https://jimmy706.github.io/junedang-blog-pages
 ENV API_PATH=/api
 ENV API_CACHE_TTL=3600
-ENV PUBLIC_MAINTENANCE_MODE=true
+ENV PUBLIC_MAINTENANCE_MODE=false
 
 
 # Set working directory
