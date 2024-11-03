@@ -1,0 +1,50 @@
+name: Dependencies Patch
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Runs weekly at 00:00 on Sunday
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18" # Specify your Node version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update dependencies
+        run: npx npm-check-updates -u
+
+      - name: Install updated dependencies
+        run: npm install
+
+      - name: Commit changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: update dependencies"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          branch: update-dependencies-$(date +'%Y-%m-%d')
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update dependencies 🔨"
+          branch: update-dependencies-$(date +'%Y-%m-%d')
+          title: "chore: Weekly Dependency Update"
+          body: "This PR updates the dependencies in the package.json file."
+          base: master
