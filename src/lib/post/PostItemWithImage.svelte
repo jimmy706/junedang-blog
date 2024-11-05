@@ -1,33 +1,17 @@
 <script lang="ts">
-  import type { Post } from "../types/posts";
-
+  import type { Post } from "../../types/posts";
+  import { constructArticleSlug } from "../../utils/string-helper";
   export let post: Post;
-
-  function constructArticleSlug(url?: string): string {
-    if (!url) {
-      return ''
-    }
-    const splits = url.split('/');
-    const postHtml = splits[splits.length - 1];
-    const postSlug = postHtml.split('.')[0];
-    return `/posts/${postSlug}`;
-  }
 </script>
 
 <a
-  class="bg-gray-50 rounded  block hover:shadow-sm overflow-hidden mb-5 min-h-96"
+  class="bg-gray-50 rounded block hover:shadow-sm overflow-hidden mb-5 min-h-96"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >
-  {#if post.image}
-    <div class="mr-4 block w-full max-h-52 overflow-hidden">
-      <img
-        src={post.image}
-        alt={post.title}
-        class="w-full h-full object-cover"
-      />
-    </div>
-  {/if}
+  <div class="mr-4 block w-full max-h-52 overflow-hidden">
+    <img src={post.image} alt={post.title} class="w-full h-full object-cover" />
+  </div>
   <div class="p-4 flex-1">
     <h3>
       <p class="block text-2xl font-semibold text-black">

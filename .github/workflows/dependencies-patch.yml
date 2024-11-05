@@ -1,5 +1,9 @@
 name: Dependencies Patch
 
+env:
+  CURRENT_DATE: $(date +'%Y-%m-%d')
+
+
 on:
   schedule:
     - cron: "0 0 * * 0" # Runs weekly at 00:00 on Sunday
@@ -39,7 +43,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
         with:
-          branch: update-dependencies-$(date +'%Y-%m-%d')
+          branch: "update-dependencies-${{ env.CURRENT_DATE }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
@@ -47,7 +51,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update dependencies 🔨"
-          branch: update-dependencies-$(date +'%Y-%m-%d')
+          branch: "update-dependencies-${{ env.CURRENT_DATE }}"
           title: "chore: Weekly Dependency Update"
           body: "This PR updates the dependencies in the package.json file."
           base: master

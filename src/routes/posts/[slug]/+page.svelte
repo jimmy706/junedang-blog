@@ -10,6 +10,10 @@
   });
 </script>
 
+<svelte:head>
+	<title>Junedang | {data.slug}</title>
+</svelte:head>
+
 <div class="flex w-full h-full">
   <PageLoading {loading} />
   <iframe
