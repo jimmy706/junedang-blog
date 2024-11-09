@@ -1,9 +1,5 @@
 name: Dependencies Patch
 
-env:
-  CURRENT_DATE: $(date +'%Y-%m-%d')
-
-
 on:
   schedule:
     - cron: "0 0 * * 0" # Runs weekly at 00:00 on Sunday
@@ -12,7 +8,7 @@ on:
 jobs:
   update-dependencies:
     runs-on: ubuntu-latest
-    steps:
+    steps:      
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -20,6 +16,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20" # Specify your Node version
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: npm install
@@ -43,7 +42,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
         with:
-          branch: "update-dependencies-${{ env.CURRENT_DATE }}"
+          branch: "update-dependencies-${{ env.date }}"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
@@ -51,7 +50,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update dependencies 🔨"
-          branch: "update-dependencies-${{ env.CURRENT_DATE }}"
+          branch: "update-dependencies-${{ env.date }}"
           title: "chore: Weekly Dependency Update"
           body: "This PR updates the dependencies in the package.json file."
           base: master

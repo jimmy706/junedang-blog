@@ -142,7 +142,7 @@
   <div class="p-4 bg-gray-50 shadow-sm rounded-sm relative col-span-2">
     <div class="flex justify-between items-end">
       <h2 class="text-3xl font-bold text-black">My latest articles</h2>
-      <a href="/posts" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-600">View all <span aria-hidden="true">&rarr;</span></a>
+      <a href="/posts" class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-600 md:inline hidden">View all <span aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
       {#each latestPosts as post}
@@ -151,5 +151,6 @@
         </div>
       {/each}
     </div>
+    <a href="/posts" class="text-white w-full md:hidden block bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 font-medium rounded-3xl text-sm px-5 py-2.5 text-center dark:bg-gray-950 hover:bg-gray-900 dark:focus:ring-gray-800 mt-5">View all <span aria-hidden="true">&rarr;</span></a>
   </div>
 </div>
