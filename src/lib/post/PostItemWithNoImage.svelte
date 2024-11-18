@@ -39,7 +39,7 @@
       />
     </svg>
   </span>
-  <div class="flex-1 mt-8 text-ellipsis line-clamp-2 h-20 overflow-hidden">
+  <div class="flex-1 mt-8 text-ellipsis md:line-clamp-2 h-auto md:h-20 overflow-hidden">
     <h3>
       <p class="block text-3xl font-semibold text-gray-100">
         {post.title}
