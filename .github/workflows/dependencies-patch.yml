@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:      
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: "20" # Specify your Node version
       - name: Get current date
@@ -36,6 +36,12 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git status
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit"
+            exit 0
+          fi
           git add package.json package-lock.json
           git commit -m "chore: update dependencies"
 
@@ -46,7 +52,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v7.0.6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update dependencies 🔨"
