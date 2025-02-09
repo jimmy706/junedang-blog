@@ -13,10 +13,8 @@
     <img src={post.image} alt={post.title} class="w-full h-full object-cover" />
   </div>
   <div class="p-4 flex-1">
-    <h3>
-      <p class="block text-2xl font-semibold text-black">
-        {post.title}
-      </p>
+    <h3 class="block text-2xl font-semibold text-black">
+      {post.title}
     </h3>
 
     {#if post.description}
