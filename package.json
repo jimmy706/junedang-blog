@@ -12,19 +12,19 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/adapter-node": "^5.2.12",
-		"@sveltejs/kit": "^2.20.5",
+		"@sveltejs/kit": "^2.20.7",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
 		"autoprefixer": "^10.4.21",
 		"postcss": "^8.5.3",
 		"svelte": "^4.2.19",
-		"svelte-check": "^4.1.5",
+		"svelte-check": "^4.1.6",
 		"tailwindcss": "^3.4.17",
 		"typescript": "^5.8.3",
 		"vite": "^5.4.18"
 	},
 	"type": "module",
 	"dependencies": {
-		"@iframe-resizer/parent": "^5.4.4",
+		"@iframe-resizer/parent": "^5.4.5",
 		"axios": "^1.8.4",
 		"dotenv": "^16.5.0",
 		"node-cache": "^5.1.2",
