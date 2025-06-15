@@ -12,10 +12,10 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/adapter-node": "^5.2.12",
-		"@sveltejs/kit": "^2.21.2",
+		"@sveltejs/kit": "^2.21.5",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
 		"autoprefixer": "^10.4.21",
-		"postcss": "^8.5.4",
+		"postcss": "^8.5.5",
 		"svelte": "^4.2.20",
 		"svelte-check": "^4.2.1",
 		"tailwindcss": "^3.4.17",
@@ -25,7 +25,7 @@
 	"type": "module",
 	"dependencies": {
 		"@iframe-resizer/parent": "^5.4.6",
-		"axios": "^1.9.0",
+		"axios": "^1.10.0",
 		"dotenv": "^16.5.0",
 		"node-cache": "^5.1.2",
 		"npm-check-updates": "^17.1.18"
