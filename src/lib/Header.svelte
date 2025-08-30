@@ -132,7 +132,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900">
+                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
                   Analytics
                   <span class="absolute inset-0"></span>
                 </a>
@@ -164,7 +164,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900">
+                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
                   Engagement
                   <span class="absolute inset-0"></span>
                 </a>
@@ -196,7 +196,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900">
+                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
                   Security
                   <span class="absolute inset-0"></span>
                 </a>
@@ -228,7 +228,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900">
+                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
                   Integrations
                   <span class="absolute inset-0"></span>
                 </a>
@@ -258,7 +258,7 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="#" class="block font-semibold text-gray-900">
+                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
                   Automations
                   <span class="absolute inset-0"></span>
                 </a>
@@ -270,7 +270,7 @@
           </div>
           <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
             <a
-              href="#"
+              href="javascript:void(0)"
               class="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
             >
               <svg
@@ -289,7 +289,7 @@
               Watch demo
             </a>
             <a
-              href="#"
+              href="javascript:void(0)"
               class="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
             >
               <svg
@@ -322,7 +322,7 @@
       {/each}
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <!-- <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a> -->
+      <!-- <a href="javascript:void(0)" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a> -->
     </div>
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->
@@ -331,8 +331,8 @@
       class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
+        <a href="/" class="-m-1.5 p-1.5">
+          <span class="sr-only">Junedang</span>
           <img class="h-10 w-auto md:h-8" src="/favicon.jpeg" alt="" />
         </a>
         <button
