@@ -426,14 +426,20 @@
 
 <style>
   .mdMenuItem.active {
-    @apply bg-slate-950;
-    @apply text-white;
-    @apply hover:bg-slate-950;
+    background-color: #1f2937; /* equivalent to bg-gray-800 */
+    color: white;
+  }
+  
+  .mdMenuItem.active:hover {
+    background-color: #1f2937;
   }
 
   .smMenuItem.active {
-    @apply bg-slate-950;
-    @apply text-white;
-    @apply hover:bg-slate-950;
+    background-color: #1f2937; /* equivalent to bg-gray-800 */
+    color: white;
+  }
+  
+  .smMenuItem.active:hover {
+    background-color: #1f2937;
   }
 </style>
