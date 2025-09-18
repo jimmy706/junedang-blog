@@ -25,6 +25,8 @@
         href="https://github.com/jimmy706"
         target="_blank"
         class="block text-black p-4 rounded-full hover:bg-gray-200"
+        title="GitHub"
+        aria-label="Follow me on GitHub"
       >
         <svg
           width="24px"
@@ -60,6 +62,8 @@
         href="https://www.linkedin.com/in/%C4%91%E1%BA%B7ng-d%C5%A9ng-843588163/"
         target="_blank"
         class="block text-black p-4 rounded-full hover:bg-gray-200"
+        title="LinkedIn"
+        aria-label="Follow me on LinkedIn"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,6 +84,7 @@
         target="_blank"
         class="block text-black p-4 rounded-full hover:bg-gray-200"
         title="Instagram"
+        aria-label="Follow me on Instagram"
       >
         <svg
           aria-hidden="true"
@@ -112,6 +117,7 @@
         target="_blank"
         class="block text-black p-4 rounded-full hover:bg-gray-200"
         title="Thread"
+        aria-label="Follow me on Threads"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

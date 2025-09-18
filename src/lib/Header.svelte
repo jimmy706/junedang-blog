@@ -23,6 +23,13 @@
 </svg>`,
     },
     {
+      name: "Contact",
+      href: "/contact",
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.32 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+</svg>`,
+    },
+    {
       name: "Articles",
       href: "/posts",
       icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -132,7 +139,10 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
+                <a
+                  href="javascript:void(0)"
+                  class="block font-semibold text-gray-900"
+                >
                   Analytics
                   <span class="absolute inset-0"></span>
                 </a>
@@ -164,7 +174,10 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
+                <a
+                  href="javascript:void(0)"
+                  class="block font-semibold text-gray-900"
+                >
                   Engagement
                   <span class="absolute inset-0"></span>
                 </a>
@@ -196,7 +209,10 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
+                <a
+                  href="javascript:void(0)"
+                  class="block font-semibold text-gray-900"
+                >
                   Security
                   <span class="absolute inset-0"></span>
                 </a>
@@ -228,7 +244,10 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
+                <a
+                  href="javascript:void(0)"
+                  class="block font-semibold text-gray-900"
+                >
                   Integrations
                   <span class="absolute inset-0"></span>
                 </a>
@@ -258,7 +277,10 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a href="javascript:void(0)" class="block font-semibold text-gray-900">
+                <a
+                  href="javascript:void(0)"
+                  class="block font-semibold text-gray-900"
+                >
                   Automations
                   <span class="absolute inset-0"></span>
                 </a>
@@ -429,7 +451,7 @@
     background-color: #1f2937; /* equivalent to bg-gray-800 */
     color: white;
   }
-  
+
   .mdMenuItem.active:hover {
     background-color: #1f2937;
   }
@@ -438,7 +460,7 @@
     background-color: #1f2937; /* equivalent to bg-gray-800 */
     color: white;
   }
-  
+
   .smMenuItem.active:hover {
     background-color: #1f2937;
   }
