@@ -3,7 +3,7 @@
 
   let smMenuOpen = false;
   const mdMenuClass =
-    "text-sm font-semibold leading-6 text-gray-900 hover:bg-slate-50 rounded-3xl py-2 px-5 mdMenuItem";
+    "text-sm font-semibold leading-6 text-gray-900 hover:bg-slate-50 rounded-3xl py-2 px-5 mdMenuItem text-black";
   const smMenuClass =
     "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-slate-50 smMenuItem";
 

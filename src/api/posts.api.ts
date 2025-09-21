@@ -2,8 +2,7 @@ import { env } from "$env/dynamic/private";
 import { apiInstance } from "../api";
 import type { Post } from "../types/posts";
 
-const { API_PATH } = env;
-const apiUrl = `${API_PATH}/pages`;
+const apiUrl = `${env.GITHUB_PAGE_URL}/${env.GITHUB_BLOG_APP}/api/pages`;
 const postsCacheKey = "posts";
 
 export async function getPosts(): Promise<Post[]> {
