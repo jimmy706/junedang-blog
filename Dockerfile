@@ -3,8 +3,8 @@ FROM node:lts-alpine AS build
 
 ENV PORT=3000
 ENV HOST=0.0.0.0
-ENV API_URL=https://jimmy706.github.io/junedang-blog-pages
-ENV API_PATH=/api
+ENV GITHUB_PAGE_URL=https://jimmy706.github.io
+ENV GITHUB_BLOG_APP=junedang-blog-pages
 ENV API_CACHE_TTL=3600
 ENV PUBLIC_MAINTENANCE_MODE=false
 
