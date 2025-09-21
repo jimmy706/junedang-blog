@@ -24,8 +24,8 @@ COPY . .
 # Write environment variables to .env file
 RUN echo "HOST=$HOST" >> .env && \
     echo "PORT=$PORT" >> .env && \
-    echo "API_URL=$API_URL" >> .env && \
-    echo "API_PATH=$API_PATH" >> .env && \
+    echo "GITHUB_PAGE_URL=$GITHUB_PAGE_URL" >> .env && \
+    echo "GITHUB_BLOG_APP=$GITHUB_BLOG_APP" >> .env && \
     echo "API_CACHE_TTL=$API_CACHE_TTL" >> .env && \
     echo "PUBLIC_MAINTENANCE_MODE=$PUBLIC_MAINTENANCE_MODE" >> .env
 
