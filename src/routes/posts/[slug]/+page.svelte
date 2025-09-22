@@ -3,7 +3,14 @@
   import { onMount } from "svelte";
   import Container from "$lib/Container.svelte";
 
-  export let data;
+  // Add proper type definition for data prop
+  interface PageData {
+    blogPostUrl: string;
+    slug: string;
+    [key: string]: any; // Allow for additional properties
+  }
+
+  export let data: PageData;
   let loading = true;
   let iframeElement: HTMLIFrameElement;
   let iframeHeight = "800px"; // Default height
@@ -22,14 +29,8 @@
           typeof messageData === "object" &&
           messageData.type === "resize-iframe"
         ) {
-          // Update iframe height with some additional padding
-          const newHeight = messageData.height + 50; // Add padding
-          iframeHeight = `${newHeight}px`;
-
-          // Ensure minimum height
-          if (newHeight < 500) {
-            iframeHeight = "500px";
-          }
+          // Use the adjustment function to consider header height
+          iframeHeight = adjustIframeHeight(messageData.height);
         }
       } catch (error) {
         console.error("Error processing iframe message:", error);
@@ -119,6 +120,38 @@
     }
   };
 
+  // Default header height (used until browser is available)
+  let headerHeight = 72;
+
+  // Function to get the header height (client-side only)
+  const getHeaderHeight = (): number => {
+    // Only run in the browser
+    if (typeof document === "undefined") return headerHeight;
+
+    const headerElement = document.querySelector("header");
+    if (headerElement) {
+      headerHeight = headerElement.offsetHeight;
+      return headerHeight;
+    }
+    return headerHeight;
+  };
+
+  // Function to adjust iframe height considering header
+  const adjustIframeHeight = (height: number): string => {
+    // Get current header height
+    const currentHeaderHeight = getHeaderHeight();
+    const totalHeight = height + 50; // Add padding
+
+    // Minimum height calculation considering header
+    // Only access window in the browser
+    const windowHeight =
+      typeof window !== "undefined" ? window.innerHeight : 800;
+    const minHeight = Math.max(500, windowHeight - currentHeaderHeight);
+
+    // Use the larger of calculated height or minimum height
+    return `${Math.max(totalHeight, minHeight)}px`;
+  };
+
   onMount(() => {
     // Add message event listener
     window.addEventListener("message", handleMessage);
@@ -164,11 +197,21 @@
       margin: 0;
       padding: 0;
     }
+
+    /* Style for the blog content area */
+    .blog-iframe-container {
+      width: 100%;
+      height: calc(
+        100vh - var(--header-height, 72px)
+      ); /* Subtract header height */
+      display: flex;
+      flex-direction: column;
+    }
   </style>
 </svelte:head>
 
-<!-- Remove padding to take full viewport -->
-<div class="flex w-full h-screen flex-col">
+<!-- Container that adjusts for header height -->
+<div class="blog-iframe-container">
   {#if loading}
     <Container>
       <PageLoading {loading} />
@@ -178,7 +221,7 @@
     id="post-iframe"
     bind:this={iframeElement}
     class={`w-full h-full ${loading ? "hidden" : ""}`}
-    style={`height: ${loading ? "100vh" : iframeHeight}; border: none;`}
+    style={`height: ${loading ? "100%" : iframeHeight}; border: none;`}
     src={data.blogPostUrl}
     title={data.slug}
     on:load={() => {
@@ -186,6 +229,19 @@
       // Try to inject resize script (will work for same-origin)
       injectResizeScript();
       // For cross-origin, we rely on the blog having our resize script
+
+      // Set initial height accounting for header (client-side only)
+      if (typeof window !== "undefined") {
+        const viewportHeight = window.innerHeight;
+        headerHeight = getHeaderHeight(); // Update the header height variable
+        iframeHeight = `${viewportHeight - headerHeight}px`;
+
+        // Update CSS variable for the container
+        const container = document.querySelector(".blog-iframe-container");
+        if (container) {
+          container.setAttribute("style", `--header-height:${headerHeight}px`);
+        }
+      }
     }}
     scrolling="auto"
   ></iframe>
