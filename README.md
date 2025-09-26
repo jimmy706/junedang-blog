@@ -1,5 +1,21 @@
 # A Svelte application for simple blog platform
 
+## Testing
+
+This project includes comprehensive unit tests covering core functionality, API layer, utilities, and component logic. See [TESTING.md](./TESTING.md) for detailed testing documentation.
+
+**Quick start:**
+```bash
+# Run all tests
+npm run test:run
+
+# Run tests in watch mode  
+npm run test
+
+# Run tests with UI
+npm run test:ui
+```
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
