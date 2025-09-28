@@ -15,26 +15,26 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.1.0",
 		"@sveltejs/adapter-node": "^5.3.2",
-		"@sveltejs/kit": "^2.39.1",
-		"@sveltejs/vite-plugin-svelte": "^6.2.0",
+		"@sveltejs/kit": "^2.43.5",
+		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/vite": "^4.1.13",
 		"@testing-library/jest-dom": "^6.8.0",
 		"@testing-library/svelte": "^5.2.8",
 		"@vitest/ui": "^3.2.4",
 		"autoprefixer": "^10.4.21",
 		"jsdom": "^27.0.0",
-		"svelte": "^5.38.10",
-		"svelte-check": "^4.3.1",
+		"svelte": "^5.39.6",
+		"svelte-check": "^4.3.2",
 		"tailwindcss": "^4.1.13",
 		"typescript": "^5.9.2",
-		"vite": "^7.1.5",
+		"vite": "^7.1.7",
 		"vitest": "^3.2.4"
 	},
 	"type": "module",
 	"dependencies": {
-		"axios": "^1.12.1",
+		"axios": "^1.12.2",
 		"dotenv": "^17.2.2",
 		"node-cache": "^5.1.2",
-		"npm-check-updates": "^18.1.1"
+		"npm-check-updates": "^18.3.0"
 	}
 }
