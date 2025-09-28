@@ -16,7 +16,8 @@
   <title>Junedang | Home</title>
 </svelte:head>
 <Container>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <div class="max-w-4xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
     <div class="p-4 bg-gray-50 shadow-sm rounded-sm relative">
       <div
         class="bg-stone-950 rounded-full overflow-hidden w-20 h-20 block ring-2 ring-gray-500 absolute m-auto left-0 right-0 transform -translate-y-1/2 -translate-y-1/2"
@@ -172,6 +173,7 @@
         class="text-white w-full md:hidden block bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 font-medium rounded-3xl text-sm px-5 py-2.5 text-center dark:bg-gray-950 hover:bg-gray-900 dark:focus:ring-gray-800 mt-5"
         >View all <span aria-hidden="true">&rarr;</span></a
       >
+    </div>
     </div>
   </div>
 </Container>
