@@ -74,6 +74,11 @@
           // Report height on resize
           window.addEventListener('resize', reportHeight);
           
+          // Report height on orientation change (mobile)
+          window.addEventListener('orientationchange', function() {
+            setTimeout(reportHeight, 100); // Small delay for orientation change
+          });
+          
           // Report height after images load
           document.addEventListener('DOMContentLoaded', function() {
             const images = document.querySelectorAll('img');
@@ -103,8 +108,8 @@
           // Initial report
           reportHeight();
           
-          // Report periodically just to be safe
-          setInterval(reportHeight, 1000);
+          // Report periodically (less frequent for better performance)
+          setInterval(reportHeight, 2000);
         `;
 
         // Append the script to the document
@@ -136,17 +141,47 @@
     return headerHeight;
   };
 
+  // Function to get the actual available viewport height (accounting for mobile browser UI)
+  const getAvailableViewportHeight = (): number => {
+    if (typeof window === "undefined") return 800;
+    
+    // Use visualViewport API if available (best for mobile)
+    if (window.visualViewport) {
+      return window.visualViewport.height;
+    }
+    
+    // Fallback to innerHeight
+    return window.innerHeight;
+  };
+
+  // Function to update CSS custom properties for responsive design
+  const updateViewportVariables = () => {
+    if (typeof document === "undefined") return;
+    
+    const availableHeight = getAvailableViewportHeight();
+    const currentHeaderHeight = getHeaderHeight();
+    
+    // Update CSS custom properties
+    document.documentElement.style.setProperty('--viewport-height', `${availableHeight}px`);
+    document.documentElement.style.setProperty('--header-height', `${currentHeaderHeight}px`);
+    
+    // Update the container directly as well
+    const container = document.querySelector(".blog-iframe-container") as HTMLElement;
+    if (container) {
+      container.style.setProperty('--viewport-height', `${availableHeight}px`);
+      container.style.setProperty('--header-height', `${currentHeaderHeight}px`);
+    }
+  };
+
   // Function to adjust iframe height considering header
   const adjustIframeHeight = (height: number): string => {
     // Get current header height
     const currentHeaderHeight = getHeaderHeight();
     const totalHeight = height + 50; // Add padding
 
-    // Minimum height calculation considering header
-    // Only access window in the browser
-    const windowHeight =
-      typeof window !== "undefined" ? window.innerHeight : 800;
-    const minHeight = Math.max(500, windowHeight - currentHeaderHeight);
+    // Use the actual available viewport height
+    const availableHeight = getAvailableViewportHeight();
+    const minHeight = Math.max(400, availableHeight - currentHeaderHeight);
 
     // Use the larger of calculated height or minimum height
     return `${Math.max(totalHeight, minHeight)}px`;
@@ -155,6 +190,30 @@
   onMount(() => {
     // Add message event listener
     window.addEventListener("message", handleMessage);
+
+    // Handle viewport size changes (important for mobile)
+    const handleViewportChange = () => {
+      updateViewportVariables();
+      
+      // Recalculate iframe height if needed
+      if (!loading && iframeElement) {
+        const availableHeight = getAvailableViewportHeight();
+        const currentHeaderHeight = getHeaderHeight();
+        iframeHeight = `${availableHeight - currentHeaderHeight}px`;
+      }
+    };
+
+    // Listen for various resize events
+    window.addEventListener("resize", handleViewportChange);
+    window.addEventListener("orientationchange", handleViewportChange);
+    
+    // Listen for visual viewport changes (mobile browser UI changes)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleViewportChange);
+    }
+
+    // Initial viewport setup
+    updateViewportVariables();
 
     // Create a helper function to add resize script parameter to URL
     const addScriptParam = (url: string) => {
@@ -171,6 +230,12 @@
     // Cleanup function
     return () => {
       window.removeEventListener("message", handleMessage);
+      window.removeEventListener("resize", handleViewportChange);
+      window.removeEventListener("orientationchange", handleViewportChange);
+      
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", handleViewportChange);
+      }
     };
   });
 </script>
@@ -201,11 +266,23 @@
     /* Style for the blog content area */
     .blog-iframe-container {
       width: 100%;
-      height: calc(
-        100vh - var(--header-height, 72px)
-      ); /* Subtract header height */
+      /* Use dvh (dynamic viewport height) which accounts for mobile browser UI */
+      height: calc(100dvh - var(--header-height, 72px));
+      /* Fallback for browsers that don't support dvh */
+      height: calc(100vh - var(--header-height, 72px));
+      min-height: calc(100svh - var(--header-height, 72px)); /* Small viewport height as minimum */
       display: flex;
       flex-direction: column;
+    }
+
+    /* Additional mobile-specific adjustments */
+    @media (max-width: 768px) {
+      .blog-iframe-container {
+        /* On mobile, use the available space more aggressively */
+        height: calc(100dvh - var(--header-height, 72px));
+        height: calc(var(--viewport-height, 100vh) - var(--header-height, 72px));
+        min-height: 400px; /* Ensure minimum usable height */
+      }
     }
   </style>
 </svelte:head>
@@ -230,17 +307,14 @@
       injectResizeScript();
       // For cross-origin, we rely on the blog having our resize script
 
-      // Set initial height accounting for header (client-side only)
+      // Set initial height accounting for header and mobile viewport
       if (typeof window !== "undefined") {
-        const viewportHeight = window.innerHeight;
+        const availableHeight = getAvailableViewportHeight();
         headerHeight = getHeaderHeight(); // Update the header height variable
-        iframeHeight = `${viewportHeight - headerHeight}px`;
+        iframeHeight = `${availableHeight - headerHeight}px`;
 
-        // Update CSS variable for the container
-        const container = document.querySelector(".blog-iframe-container");
-        if (container) {
-          container.setAttribute("style", `--header-height:${headerHeight}px`);
-        }
+        // Update viewport variables
+        updateViewportVariables();
       }
     }}
     scrolling="auto"

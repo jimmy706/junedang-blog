@@ -2,6 +2,11 @@
   import { page } from "$app/stores";
 
   let smMenuOpen = false;
+
+  // Reactive statement to close mobile menu when route changes
+  $: if ($page.url.pathname) {
+    smMenuOpen = false;
+  }
   const mdMenuClass =
     "text-sm font-semibold leading-6 text-gray-900 hover:bg-slate-50 rounded-3xl py-2 px-5 mdMenuItem text-black";
   const smMenuClass =
@@ -353,7 +358,7 @@
       class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
-        <a href="/" class="-m-1.5 p-1.5">
+        <a href="/" class="-m-1.5 p-1.5" on:click={() => (smMenuOpen = false)}>
           <span class="sr-only">Junedang</span>
           <img class="h-10 w-auto md:h-8" src="/favicon.jpeg" alt="" />
         </a>
@@ -436,7 +441,8 @@
                 class={smMenuClass}
                 class:active={item.href === "/"
                   ? $page.url.pathname === item.href
-                  : $page.url.pathname.startsWith(item.href)}>{item.name}</a
+                  : $page.url.pathname.startsWith(item.href)}
+                on:click={() => (smMenuOpen = false)}>{item.name}</a
               >
             {/each}
           </div>
