@@ -5,7 +5,13 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
+      mono: [
+        "Departure Mono",
+        "Courier New",
+        "monospace",
+      ],
       display: [
+        "Departure Mono",
         "Segoe UI",
         "Roboto",
         "Helvetica",
@@ -16,6 +22,7 @@ export default {
         "Segoe UI Symbol",
       ],
       body: [
+        "Departure Mono",
         "Segoe UI",
         "Roboto",
         "Helvetica",
