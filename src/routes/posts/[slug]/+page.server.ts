@@ -1,5 +1,6 @@
 import { env } from "$env/dynamic/private";
 import axios from "axios";
+import { sanitizeAndEnhanceHtml, isValidHtml } from "../../../utils/html-sanitizer.js";
 
 export const load = async ({ params, fetch }) => {
   const { slug } = params;
@@ -8,12 +9,20 @@ export const load = async ({ params, fetch }) => {
   try {
     // Fetch the actual HTML content
     const response = await axios.get(blogPostUrl);
-    const htmlContent = response.data;
+    const rawHtmlContent = response.data;
+    
+    // Validate HTML structure
+    if (!isValidHtml(rawHtmlContent)) {
+      throw new Error("Invalid HTML content received");
+    }
+    
+    // Sanitize and enhance the HTML content for safe rendering
+    const htmlContent = sanitizeAndEnhanceHtml(rawHtmlContent);
     
     return { 
       slug,
       blogPostUrl,
-      htmlContent,
+      sanitizedContent: htmlContent,
       blogUrlPrefix: env.GITHUB_PAGE_URL || "",
       success: true
     };
@@ -22,7 +31,7 @@ export const load = async ({ params, fetch }) => {
     return {
       slug,
       blogPostUrl,
-      htmlContent: null,
+      sanitizedContent: null,
       blogUrlPrefix: env.GITHUB_PAGE_URL || "",
       success: false,
       error: "Failed to load blog content"
