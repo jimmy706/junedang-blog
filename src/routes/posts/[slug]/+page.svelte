@@ -3,20 +3,21 @@
   import { onMount } from "svelte";
   import Container from "$lib/Container.svelte";
   import mermaid from "mermaid";
+  import DOMPurify from "isomorphic-dompurify";
 
   onMount(() => {
     mermaid.initialize({
       startOnLoad: true,
       theme: "default",
     });
-   mermaid.run();
+    mermaid.run();
   });
 
   // Add proper type definition for data prop
   interface PageData {
     blogPostUrl: string;
     slug: string;
-    sanitizedContent: string | null;
+    htmlContent: string | null;
     success: boolean;
     error?: string;
     [key: string]: any; // Allow for additional properties
@@ -58,7 +59,7 @@
   };
 
   // Enhance content when the contentElement is available
-  $: if (contentElement && data?.success && data?.sanitizedContent) {
+  $: if (contentElement && data?.success && data?.htmlContent) {
     enhanceContent();
   }
 </script>
@@ -190,12 +191,12 @@
         ← Back to Posts
       </a>
     </div>
-  {:else if data.sanitizedContent}
+  {:else if data.htmlContent}
     <article
       class="blog-content prose prose-slate max-w-none"
       bind:this={contentElement}
     >
-      {@html data.sanitizedContent}
+      {@html DOMPurify.sanitize(data.htmlContent)}
     </article>
   {:else}
     <div class="text-center py-8">
