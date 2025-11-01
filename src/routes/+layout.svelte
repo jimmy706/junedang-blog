@@ -1,7 +1,7 @@
 <script>
   import Header from "$lib/Header.svelte";
   import "../app.css";
-  
+
   import { env } from '$env/dynamic/public';
   import FloatingButton from "$lib/FloatingButton.svelte";
   import Footer from "$lib/Footer.svelte";
@@ -11,8 +11,12 @@
 {#if PUBLIC_MAINTENANCE_MODE == "true"}
   <Maintance />
 {:else}
-  <Header />
-    <slot />
-  <FloatingButton/>
-  <Footer/>
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </div>
+  <FloatingButton />
 {/if}

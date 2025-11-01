@@ -4,14 +4,7 @@
 </script>
 
 <div class="w-full">
-  <div class={`container mx-auto ${padding} ${margin}`}>
+  <div class={`container ${padding} ${margin}`}>
     <slot></slot>
   </div>
 </div>
-
-
-<style>
-  .container {
-    min-height: calc(100vh - 181px);
-  }
-</style>

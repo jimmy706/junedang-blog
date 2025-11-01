@@ -5,25 +5,25 @@
 </script>
 
 <a
-  class="bg-gray-50 rounded block hover:shadow-sm overflow-hidden mb-5 min-h-96"
+  class="block border-2 border-black bg-white overflow-hidden mb-5 hover:bg-black hover:text-white transition-colors"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >
-  <div class="mr-4 block w-full max-h-52 overflow-hidden">
-    <img src={post.image} alt={post.title} class="w-full h-full object-cover" />
+  <div class="w-full max-h-52 overflow-hidden border-b-2 border-black">
+    <img src={post.image} alt={post.title} class="w-full h-52 object-cover" />
   </div>
   <div class="p-4 flex-1">
-    <h3 class="block text-2xl font-semibold text-black">
+    <h3 class="block text-2xl font-semibold">
       {post.title}
     </h3>
 
     {#if post.description}
-      <p class="text-gray-600 mt-4 text-ellipsis overflow-hidden line-clamp-2">
+      <p class="mt-4 text-ellipsis overflow-hidden line-clamp-2">
         {post.description}
       </p>
     {/if}
 
-    <small class="text-gray-800 mt-2 text-sm">
+    <small class="mt-2 text-sm opacity-70">
       {#if post.date}
         {new Date(post.date).toLocaleDateString()}
       {:else}

@@ -2,15 +2,24 @@
   import PageLoading from "$lib/PageLoading.svelte";
   import { onMount } from "svelte";
   import Container from "$lib/Container.svelte";
-  import mermaid from "mermaid";
   import DOMPurify from "isomorphic-dompurify";
+  import ShareButtons from "$lib/post/ShareButtons.svelte";
+  import Dropdown from "$lib/Dropdown.svelte";
+  import ChervonDown from "../../../components/icons/ChervonDown.svelte";
 
-  onMount(() => {
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: "default",
-    });
-    mermaid.run();
+  // Load mermaid only in the browser to avoid SSR "document is not defined"
+  onMount(async () => {
+    try {
+      const { default: mermaid } = await import("mermaid");
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "default",
+      });
+      mermaid.run();
+    } catch (e) {
+      // Fail silently in case mermaid fails to load on client
+      console.warn("Mermaid failed to initialize", e);
+    }
   });
 
   // Add proper type definition for data prop
@@ -62,6 +71,7 @@
   $: if (contentElement && data?.success && data?.htmlContent) {
     enhanceContent();
   }
+
 </script>
 
 <svelte:head>
@@ -71,7 +81,7 @@
     /* Blog post content styles */
     .blog-content {
       line-height: 1.7;
-      color: #334155;
+      color: #111;
     }
 
     .blog-content h1,
@@ -139,12 +149,8 @@
     }
 
     .blog-content a {
-      color: #0ea5e9;
+      color: #111;
       text-decoration: underline;
-    }
-
-    .blog-content a:hover {
-      color: #0284c7;
     }
 
     .blog-content ul,
@@ -179,36 +185,68 @@
 
 <!-- Blog post content container -->
 <Container>
-  {#if loading}
-    <PageLoading {loading} />
-  {:else if !data.success}
-    <div class="text-center py-8">
-      <h1 class="text-2xl font-bold text-gray-700 mb-4">Content Not Found</h1>
-      <p class="text-gray-600 mb-4">
-        {data.error || "Unable to load blog post content"}
-      </p>
-      <a href="/posts" class="text-sky-600 hover:text-sky-700 underline">
-        ← Back to Posts
-      </a>
+  <div class="max-w-4xl mx-auto font-mono">
+    <div class="border-2 border-black bg-white mb-8">
+      <div class="border-b-2 border-black px-4 py-2 bg-white">
+        <span class="text-black">SYSTEM: POST.EXE</span>
+      </div>
+      <div class="px-4 py-2 text-black">
+        <span>$ cat /posts/{data.slug}.md</span>
+      </div>
     </div>
-  {:else if data.htmlContent}
-    <article
-      class="blog-content prose prose-slate max-w-none"
-      bind:this={contentElement}
-    >
-      {@html DOMPurify.sanitize(data.htmlContent)}
-    </article>
-  {:else}
-    <div class="text-center py-8">
-      <h1 class="text-2xl font-bold text-gray-700 mb-4">
-        No Content Available
-      </h1>
-      <p class="text-gray-600 mb-4">
-        The blog post content is currently unavailable.
-      </p>
-      <a href="/posts" class="text-sky-600 hover:text-sky-700 underline">
-        ← Back to Posts
-      </a>
-    </div>
-  {/if}
+
+    {#if loading}
+      <PageLoading {loading} />
+    {:else if !data.success}
+      <div class="border-2 border-black bg-white">
+        <div class="border-b-2 border-black px-4 py-2 bg-white">
+          <span class="text-black">$ echo \"content not found\"</span>
+        </div>
+        <div class="p-4">
+          <pre class="text-black text-sm leading-relaxed">{data.error ||
+              "Unable to load blog post content"}
+
+> RETURN TO /posts</pre>
+          <div class="mt-4">
+            <a
+              href="/posts"
+              class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+              >> BACK TO POSTS</a
+            >
+          </div>
+        </div>
+      </div>
+    {:else if data.htmlContent}
+      <div class="border-2 border-black bg-white">
+        <div
+          class="border-b-2 border-black px-4 py-2 bg-white flex items-center justify-between gap-2"
+        >
+          <span class="text-black">$ render {data.slug}</span>
+        </div>
+        <div class="p-4">
+          <article class="blog-content max-w-none" bind:this={contentElement}>
+            {@html DOMPurify.sanitize(data.htmlContent)}
+          </article>
+          <ShareButtons title={data.slug} className="mt-6" />
+        </div>
+      </div>
+    {:else}
+      <div class="border-2 border-black bg-white">
+        <div class="border-b-2 border-black px-4 py-2 bg-white">
+          <span class="text-black">$ echo \"no content available\"</span>
+        </div>
+        <div class="p-4">
+          <pre
+            class="text-black text-sm leading-relaxed">The blog post content is currently unavailable.</pre>
+          <div class="mt-4">
+            <a
+              href="/posts"
+              class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+              >> BACK TO POSTS</a
+            >
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
 </Container>
