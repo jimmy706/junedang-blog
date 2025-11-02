@@ -9,13 +9,36 @@
   <title>Junedang | Articles</title>
 </svelte:head>
 <Container>
-  <div class="max-w-4xl mx-auto">
-    <div class="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-    {#each posts as post}
-      <div class="">
-        <PostItem {post} />
+  <div class="max-w-4xl mx-auto font-mono">
+    <!-- Terminal Header -->
+    <div class="border-2 border-black bg-white mb-8">
+      <div class="border-b-2 border-black px-4 py-2 bg-white">
+        <span class="text-black">SYSTEM: POSTS.EXE</span>
       </div>
-    {/each}
+      <div class="p-4">
+        <pre class="text-black text-sm leading-relaxed">$ ls -la /posts
+total {posts?.length || 0}
+drwxr-xr-x	.
+drwxr-xr-x	..
+rw-r--r--	index.txt
+</pre>
+      </div>
+    </div>
+
+    <!-- Posts Listing Terminal -->
+    <div class="border-2 border-black bg-white">
+      <div class="border-b-2 border-black px-4 py-2 bg-white">
+        <span class="text-black">$ cat index.txt</span>
+      </div>
+      <div class="p-4">
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+          {#each posts as post}
+            <div>
+              <PostItem {post} />
+            </div>
+          {/each}
+        </div>
+      </div>
     </div>
   </div>
 </Container>

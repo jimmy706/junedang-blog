@@ -2,28 +2,14 @@
   import type { Post } from "../../types/posts";
   import { constructArticleSlug } from "../../utils/string-helper";
   export let post: Post;
-
-  const bgBlackColors = [
-    "bg-gray-950",
-    "bg-black",
-    "bg-slate-950",
-    "bg-zinc-950",
-  ];
-
-  /**
-   * Generate random background color
-   */
-  function renderBgColor() {
-    return bgBlackColors[Math.floor(Math.random() * bgBlackColors.length)];
-  }
 </script>
 
 <a
-  class={`${renderBgColor()} rounded block hover:shadow-sm overflow-hidden mb-5 min-h-96 text-white relative p-4 hover:bg-opacity-90`}
+  class="block border-2 border-black bg-white overflow-hidden mb-5 relative p-4 hover:bg-black hover:text-white transition-colors"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >
-  <span class="absolute top-4 right-4 text-gray-200">
+  <span class="absolute top-4 right-4">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -41,16 +27,16 @@
   </span>
   <div class="flex-1 mt-8 text-ellipsis md:line-clamp-2 h-auto md:h-20 overflow-hidden">
     <h3>
-      <p class="block text-3xl font-semibold text-gray-100">
+      <p class="block text-3xl font-semibold">
         {post.title}
       </p>
     </h3>
   </div>
   <div class="mt-5">
-    <button
-      class="inline-flex items-center rounded-full bg-transparent px-4 py-2 font-semibold ring-w ring-inset ring-2 ring-gray-300 text-gray-300"
+    <span
+      class="inline-flex items-center border-2 border-black px-3 py-1 font-semibold"
     >
-      More... <svg
+      > READ <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -64,6 +50,6 @@
           d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
         />
       </svg>
-    </button>
+    </span>
   </div>
 </a>

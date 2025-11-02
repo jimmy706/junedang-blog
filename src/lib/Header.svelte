@@ -8,9 +8,9 @@
     smMenuOpen = false;
   }
   const mdMenuClass =
-    "text-sm font-semibold leading-6 text-gray-900 hover:bg-slate-50 rounded-3xl py-2 px-5 mdMenuItem text-black";
+    "text-sm leading-6 text-black border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition-colors mdMenuItem";
   const smMenuClass =
-    "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-slate-50 smMenuItem";
+    "-mx-3 block px-3 py-2 text-base leading-7 text-black border-2 border-black hover:bg-black hover:text-white transition-colors smMenuItem";
 
   const menuItems = [
     {
@@ -44,9 +44,9 @@
   ];
 </script>
 
-<header class="bg-white">
+<header class="bg-white font-mono border-2 border-black">
   <nav
-    class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+    class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
     aria-label="Global"
   >
     <div class="flex lg:flex-1">
@@ -144,13 +144,13 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   class="block font-semibold text-gray-900"
                 >
                   Analytics
                   <span class="absolute inset-0"></span>
-                </a>
+                </button>
                 <p class="mt-1 text-gray-600">
                   Get a better understanding of your traffic
                 </p>
@@ -179,13 +179,13 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   class="block font-semibold text-gray-900"
                 >
                   Engagement
                   <span class="absolute inset-0"></span>
-                </a>
+                </button>
                 <p class="mt-1 text-gray-600">
                   Speak directly to your customers
                 </p>
@@ -214,13 +214,13 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   class="block font-semibold text-gray-900"
                 >
                   Security
                   <span class="absolute inset-0"></span>
-                </a>
+                </button>
                 <p class="mt-1 text-gray-600">
                   Your customers’ data will be safe and secure
                 </p>
@@ -249,13 +249,13 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   class="block font-semibold text-gray-900"
                 >
                   Integrations
                   <span class="absolute inset-0"></span>
-                </a>
+                </button>
                 <p class="mt-1 text-gray-600">Connect with third-party tools</p>
               </div>
             </div>
@@ -282,13 +282,13 @@
                 </svg>
               </div>
               <div class="flex-auto">
-                <a
-                  href="javascript:void(0)"
+                <button
+                  type="button"
                   class="block font-semibold text-gray-900"
                 >
                   Automations
                   <span class="absolute inset-0"></span>
-                </a>
+                </button>
                 <p class="mt-1 text-gray-600">
                   Build strategic funnels that will convert
                 </p>
@@ -296,8 +296,8 @@
             </div>
           </div>
           <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-            <a
-              href="javascript:void(0)"
+            <button
+              type="button"
               class="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
             >
               <svg
@@ -314,9 +314,9 @@
                 />
               </svg>
               Watch demo
-            </a>
-            <a
-              href="javascript:void(0)"
+            </button>
+            <button
+              type="button"
               class="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
             >
               <svg
@@ -333,7 +333,7 @@
                 />
               </svg>
               Contact sales
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -355,7 +355,7 @@
   <!-- Mobile menu, show/hide based on menu open state. -->
   <div class="lg:hidden" role="dialog" aria-modal="true">
     <div
-      class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+      class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm border-l-2 border-black ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
         <a href="/" class="-m-1.5 p-1.5" on:click={() => (smMenuOpen = false)}>
@@ -454,20 +454,20 @@
 
 <style>
   .mdMenuItem.active {
-    background-color: #1f2937; /* equivalent to bg-gray-800 */
-    color: white;
+    background-color: #000;
+    color: #fff;
   }
 
   .mdMenuItem.active:hover {
-    background-color: #1f2937;
+    background-color: #000;
   }
 
   .smMenuItem.active {
-    background-color: #1f2937; /* equivalent to bg-gray-800 */
-    color: white;
+    background-color: #000;
+    color: #fff;
   }
 
   .smMenuItem.active:hover {
-    background-color: #1f2937;
+    background-color: #000;
   }
 </style>
