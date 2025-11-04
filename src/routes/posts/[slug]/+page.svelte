@@ -94,7 +94,7 @@
     try {
       const myHeaders = new Headers();
       myHeaders.append("Accept", "application/vnd.github.raw+json");
-      myHeaders.append("X-GitHub-Api-Version", new Date().toISOString().substring(0, 10));
+      myHeaders.append("X-GitHub-Api-Version", "2022-11-28");
 
       const requestOptions: RequestInit = {
         method: "GET",

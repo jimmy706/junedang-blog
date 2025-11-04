@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { RequestEvent } from '@sveltejs/kit';
 
 // Mock axios
 vi.mock('axios', () => ({
@@ -29,7 +28,7 @@ describe('posts/[slug] page server load', () => {
     vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
 
     const params = { slug: 'test-post' };
-    const result = await load({ params } as unknown as RequestEvent);
+    const result = await load({ params } as any);
 
     expect(axios.get).toHaveBeenCalledWith('https://test.github.io/test-blog/test-post.html');
     expect(result).toEqual({
@@ -48,7 +47,7 @@ describe('posts/[slug] page server load', () => {
     vi.mocked(axios.get).mockRejectedValue(new Error('Network error'));
 
     const params = { slug: 'missing-post' };
-    const result = await load({ params } as unknown as RequestEvent);
+    const result = await load({ params } as any);
 
     expect(result).toEqual({
       slug: 'missing-post',
@@ -68,7 +67,7 @@ describe('posts/[slug] page server load', () => {
     vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
 
     const params = { slug: 'another-post' };
-    const result = await load({ params } as unknown as RequestEvent);
+    const result = await load({ params } as any);
 
     expect(axios.get).toHaveBeenCalledWith('https://test.github.io/test-blog/another-post.html');
     expect(result.slug).toBe('another-post');
