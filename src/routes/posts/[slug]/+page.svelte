@@ -72,6 +72,63 @@
     enhanceContent();
   }
 
+  // Copy functionality state
+  let copyStatus: string = "";
+  let copyTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  // Function to copy HTML content
+  const copyAsHtml = async () => {
+    if (!data.htmlContent) return;
+    
+    try {
+      await navigator.clipboard.writeText(data.htmlContent);
+      showCopyStatus("HTML copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy HTML:", error);
+      showCopyStatus("Failed to copy HTML");
+    }
+  };
+
+  // Function to copy Markdown content from GitHub
+  const copyAsMarkdown = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Accept", "application/vnd.github.raw+json");
+      myHeaders.append("X-GitHub-Api-Version", new Date().toISOString().substring(0, 10));
+
+      const requestOptions: RequestInit = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
+
+      const response = await fetch(
+        `https://api.github.com/repos/jimmy706/junedang-blog-pages/contents/jekyll/${data.slug}.md`,
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error(`GitHub API returned ${response.status}`);
+      }
+
+      const markdownContent = await response.text();
+      await navigator.clipboard.writeText(markdownContent);
+      showCopyStatus("Markdown copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy Markdown:", error);
+      showCopyStatus("Failed to copy Markdown");
+    }
+  };
+
+  // Helper function to show copy status with auto-dismiss
+  const showCopyStatus = (message: string) => {
+    copyStatus = message;
+    if (copyTimeout) clearTimeout(copyTimeout);
+    copyTimeout = setTimeout(() => {
+      copyStatus = "";
+    }, 3000);
+  };
+
 </script>
 
 <svelte:head>
@@ -222,6 +279,40 @@
           class="border-b-2 border-black px-4 py-2 bg-white flex items-center justify-between gap-2"
         >
           <span class="text-black">$ render {data.slug}</span>
+          <div class="flex items-center gap-2">
+            {#if copyStatus}
+              <span class="text-sm text-black">{copyStatus}</span>
+            {/if}
+            <Dropdown align="right" containerClass="relative inline-block">
+              <div
+                slot="trigger"
+                class="flex items-center gap-1 text-black border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                <span class="text-sm">Copy Page</span>
+                <ChervonDown class="size-4 stroke-current" />
+              </div>
+              <div slot="default" let:close>
+                <button
+                  on:click={() => {
+                    copyAsHtml();
+                    close();
+                  }}
+                  class="block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors"
+                >
+                  Copy as HTML
+                </button>
+                <button
+                  on:click={() => {
+                    copyAsMarkdown();
+                    close();
+                  }}
+                  class="block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors border-t-2 border-black"
+                >
+                  Copy as Markdown
+                </button>
+              </div>
+            </Dropdown>
+          </div>
         </div>
         <div class="p-4">
           <article class="blog-content max-w-none" bind:this={contentElement}>
