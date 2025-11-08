@@ -16,16 +16,16 @@
   <title>Junedang | Contact</title>
   <meta
     name="description"
-    content="Get in touch with June Dang - Vietnamese software engineer. Contact information including email, location, and professional details."
+    content="Contact June Dang - Vietnamese software engineer. Email and professional information."
   />
   <meta property="og:title" content="Contact June Dang | Software Engineer" />
-  <meta property="og:description" content="Get in touch with June Dang - Vietnamese software engineer. Contact information including email, location, and professional details." />
+  <meta property="og:description" content="Contact June Dang - Vietnamese software engineer. Email and professional information." />
   <meta property="og:image" content="/favicon.jpeg" />
   <meta property="og:url" content="https://junedang.com/contact" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Contact June Dang | Software Engineer" />
-  <meta name="twitter:description" content="Get in touch with June Dang - Vietnamese software engineer. Contact information including email, location, and professional details." />
+  <meta name="twitter:description" content="Contact June Dang - Vietnamese software engineer. Email and professional information." />
   <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>

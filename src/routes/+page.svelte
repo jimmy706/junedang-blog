@@ -15,15 +15,15 @@
 
 <svelte:head>
   <title>Junedang | Home</title>
-  <meta name="description" content="Explore junedang.com – Your go-to blog for the latest in technology, insightful life stories, and expert programming tips. Dive into a world of knowledge and inspiration today!" />
+  <meta name="description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
   <meta property="og:title" content="Junedang | Home" />
-  <meta property="og:description" content="Explore junedang.com – Your go-to blog for the latest in technology, insightful life stories, and expert programming tips. Dive into a world of knowledge and inspiration today!" />
+  <meta property="og:description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
   <meta property="og:image" content="/favicon.jpeg" />
   <meta property="og:url" content="https://junedang.com" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Junedang | Home" />
-  <meta name="twitter:description" content="Explore junedang.com – Your go-to blog for the latest in technology, insightful life stories, and expert programming tips. Dive into a world of knowledge and inspiration today!" />
+  <meta name="twitter:description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
   <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>

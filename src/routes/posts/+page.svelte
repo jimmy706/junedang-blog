@@ -7,15 +7,15 @@
 
 <svelte:head>
   <title>Junedang | Articles</title>
-  <meta name="description" content="Browse all blog posts from June Dang covering technology, programming, cloud computing, finance, and more." />
+  <meta name="description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
   <meta property="og:title" content="Articles | Junedang Blog" />
-  <meta property="og:description" content="Browse all blog posts from June Dang covering technology, programming, cloud computing, finance, and more." />
+  <meta property="og:description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
   <meta property="og:image" content="/favicon.jpeg" />
   <meta property="og:url" content="https://junedang.com/posts" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Articles | Junedang Blog" />
-  <meta name="twitter:description" content="Browse all blog posts from June Dang covering technology, programming, cloud computing, finance, and more." />
+  <meta name="twitter:description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
   <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>
