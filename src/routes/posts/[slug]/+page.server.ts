@@ -1,7 +1,8 @@
 import { env } from "$env/dynamic/private";
 import axios from "axios";
+import { getMarkdownContent } from "../../../api/posts.api";
 
-export const load = async ({ params, fetch }) => {
+export const load = async ({ params }) => {
   const { slug } = params;
   const blogPostUrl = `${env.GITHUB_PAGE_URL}/${env.GITHUB_BLOG_APP}/${slug}.html`;
 
@@ -9,10 +10,15 @@ export const load = async ({ params, fetch }) => {
     // Fetch the actual HTML content
     const response = await axios.get(blogPostUrl);
     const htmlContent = response.data;
+
+    // Fetch the markdown content using the API function
+    const markdownContent = await getMarkdownContent(slug);
+
     return {
       slug,
       blogPostUrl,
       htmlContent,
+      markdownContent,
       blogUrlPrefix: env.GITHUB_PAGE_URL || "",
       success: true,
     };
@@ -22,6 +28,7 @@ export const load = async ({ params, fetch }) => {
       slug,
       blogPostUrl,
       htmlContent: null,
+      markdownContent: null,
       blogUrlPrefix: env.GITHUB_PAGE_URL || "",
       success: false,
       error: "Failed to load blog content",

@@ -27,6 +27,7 @@
     blogPostUrl: string;
     slug: string;
     htmlContent: string | null;
+    markdownContent: string | null;
     success: boolean;
     error?: string;
     [key: string]: any; // Allow for additional properties
@@ -89,34 +90,31 @@
     }
   };
 
-  // Function to copy Markdown content from GitHub
+  // Function to copy Markdown content (now from server-side data)
   const copyAsMarkdown = async () => {
+    if (!data.markdownContent) {
+      showCopyStatus("Markdown content not available");
+      return;
+    }
+
     try {
-      const myHeaders = new Headers();
-      myHeaders.append("Accept", "application/vnd.github.raw+json");
-      myHeaders.append("X-GitHub-Api-Version", "2022-11-28");
-
-      const requestOptions: RequestInit = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow"
-      };
-
-      const response = await fetch(
-        `https://api.github.com/repos/jimmy706/junedang-blog-pages/contents/jekyll/${data.slug}.md`,
-        requestOptions
-      );
-
-      if (!response.ok) {
-        throw new Error(`GitHub API returned ${response.status}`);
-      }
-
-      const markdownContent = await response.text();
-      await navigator.clipboard.writeText(markdownContent);
+      await navigator.clipboard.writeText(data.markdownContent);
       showCopyStatus("Markdown copied to clipboard!");
     } catch (error) {
       console.error("Failed to copy Markdown:", error);
       showCopyStatus("Failed to copy Markdown");
+    }
+  };
+
+  // Function to copy domain URL
+  const copyDomainUrl = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(currentUrl);
+      showCopyStatus("URL copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy URL:", error);
+      showCopyStatus("Failed to copy URL");
     }
   };
 
@@ -297,7 +295,7 @@
                     copyAsHtml();
                     close();
                   }}
-                  class="block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors"
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors"
                 >
                   Copy as HTML
                 </button>
@@ -306,9 +304,22 @@
                     copyAsMarkdown();
                     close();
                   }}
-                  class="block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors border-t-2 border-black"
+                  disabled={!data.markdownContent}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black transition-colors border-t-2 border-black {data.markdownContent ? 'hover:bg-black hover:text-white' : 'opacity-50 cursor-not-allowed'}"
                 >
                   Copy as Markdown
+                  {#if !data.markdownContent}
+                    <span class="text-xs">(unavailable)</span>
+                  {/if}
+                </button>
+                <button
+                  on:click={() => {
+                    copyDomainUrl();
+                    close();
+                  }}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors border-t-2 border-black"
+                >
+                  Copy URL
                 </button>
               </div>
             </Dropdown>
