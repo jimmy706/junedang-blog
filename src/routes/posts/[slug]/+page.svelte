@@ -27,6 +27,7 @@
     blogPostUrl: string;
     slug: string;
     htmlContent: string | null;
+    markdownContent: string | null;
     success: boolean;
     error?: string;
     [key: string]: any; // Allow for additional properties
@@ -71,6 +72,60 @@
   $: if (contentElement && data?.success && data?.htmlContent) {
     enhanceContent();
   }
+
+  // Copy functionality state
+  let copyStatus: string = "";
+  let copyTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  // Function to copy HTML content
+  const copyAsHtml = async () => {
+    if (!data.htmlContent) return;
+    
+    try {
+      await navigator.clipboard.writeText(data.htmlContent);
+      showCopyStatus("HTML copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy HTML:", error);
+      showCopyStatus("Failed to copy HTML");
+    }
+  };
+
+  // Function to copy Markdown content (now from server-side data)
+  const copyAsMarkdown = async () => {
+    if (!data.markdownContent) {
+      showCopyStatus("Markdown content not available");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(data.markdownContent);
+      showCopyStatus("Markdown copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy Markdown:", error);
+      showCopyStatus("Failed to copy Markdown");
+    }
+  };
+
+  // Function to copy domain URL
+  const copyDomainUrl = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(currentUrl);
+      showCopyStatus("URL copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy URL:", error);
+      showCopyStatus("Failed to copy URL");
+    }
+  };
+
+  // Helper function to show copy status with auto-dismiss
+  const showCopyStatus = (message: string) => {
+    copyStatus = message;
+    if (copyTimeout) clearTimeout(copyTimeout);
+    copyTimeout = setTimeout(() => {
+      copyStatus = "";
+    }, 3000);
+  };
 
 </script>
 
@@ -222,6 +277,53 @@
           class="border-b-2 border-black px-4 py-2 bg-white flex items-center justify-between gap-2"
         >
           <span class="text-black">$ render {data.slug}</span>
+          <div class="flex items-center gap-2">
+            {#if copyStatus}
+              <span class="text-sm text-black">{copyStatus}</span>
+            {/if}
+            <Dropdown align="right" containerClass="relative inline-block">
+              <div
+                slot="trigger"
+                class="flex items-center gap-1 text-black border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition-colors cursor-pointer"
+              >
+                <span class="text-sm">Copy Page</span>
+                <ChervonDown class="size-4 stroke-current" />
+              </div>
+              <div slot="default" let:close>
+                <button
+                  on:click={() => {
+                    copyAsHtml();
+                    close();
+                  }}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors"
+                >
+                  Copy as HTML
+                </button>
+                <button
+                  on:click={() => {
+                    copyAsMarkdown();
+                    close();
+                  }}
+                  disabled={!data.markdownContent}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black transition-colors border-t-2 border-black {data.markdownContent ? 'hover:bg-black hover:text-white' : 'opacity-50 cursor-not-allowed'}"
+                >
+                  Copy as Markdown
+                  {#if !data.markdownContent}
+                    <span class="text-xs">(unavailable)</span>
+                  {/if}
+                </button>
+                <button
+                  on:click={() => {
+                    copyDomainUrl();
+                    close();
+                  }}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors border-t-2 border-black"
+                >
+                  Copy URL
+                </button>
+              </div>
+            </Dropdown>
+          </div>
         </div>
         <div class="p-4">
           <article class="blog-content max-w-none" bind:this={contentElement}>
