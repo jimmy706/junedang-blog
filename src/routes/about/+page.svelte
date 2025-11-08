@@ -12,6 +12,15 @@
     name="description"
     content="Learn more about June Dang, a Vietnamese software engineer passionate about cloud computing, finance technology, video games, movies, travel, and coding."
   />
+  <meta property="og:title" content="About June Dang | Software Engineer" />
+  <meta property="og:description" content="Learn more about June Dang, a Vietnamese software engineer passionate about cloud computing, finance technology, video games, movies, travel, and coding." />
+  <meta property="og:image" content="/favicon.jpeg" />
+  <meta property="og:url" content="https://junedang.com/about" />
+  <meta property="og:type" content="profile" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About June Dang | Software Engineer" />
+  <meta name="twitter:description" content="Learn more about June Dang, a Vietnamese software engineer passionate about cloud computing, finance technology, video games, movies, travel, and coding." />
+  <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>
   <div class="max-w-4xl mx-auto font-mono">

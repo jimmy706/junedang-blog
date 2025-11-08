@@ -30,6 +30,16 @@
     markdownContent: string | null;
     success: boolean;
     error?: string;
+    post?: {
+      title?: string;
+      url?: string;
+      date?: string;
+      categories?: string;
+      tags?: string;
+      layout?: string;
+      description?: string;
+      image?: string;
+    } | null;
     [key: string]: any; // Allow for additional properties
   }
 
@@ -130,8 +140,23 @@
 </script>
 
 <svelte:head>
-  <title>Junedang | {data.slug}</title>
-  <meta name="description" content="Blog post: {data.slug}" />
+  <title>Junedang | {data.post?.title || data.slug}</title>
+  <meta name="description" content={data.post?.description || `Blog post: ${data.slug}`} />
+  <meta property="og:title" content={data.post?.title || data.slug} />
+  <meta property="og:description" content={data.post?.description || `Blog post: ${data.slug}`} />
+  <meta property="og:image" content={data.post?.image || '/favicon.jpeg'} />
+  <meta property="og:url" content={`https://junedang.com/posts/${data.slug}`} />
+  <meta property="og:type" content="article" />
+  {#if data.post?.date}
+    <meta property="article:published_time" content={data.post.date} />
+  {/if}
+  {#if data.post?.tags}
+    <meta property="article:tag" content={data.post.tags} />
+  {/if}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={data.post?.title || data.slug} />
+  <meta name="twitter:description" content={data.post?.description || `Blog post: ${data.slug}`} />
+  <meta name="twitter:image" content={data.post?.image || '/favicon.jpeg'} />
   <style>
     /* Blog post content styles */
     .blog-content {
