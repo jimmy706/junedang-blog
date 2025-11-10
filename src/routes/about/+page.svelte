@@ -1,8 +1,5 @@
 <script lang="ts">
   import Container from "$lib/Container.svelte";
-  import BriefCase from "../../components/icons/BriefCase.svelte";
-  import CodeBracketSquare from "../../components/icons/CodeBracketSquare.svelte";
-  import MapPin from "../../components/icons/MapPin.svelte";
   import SocialLinks from "../../lib/SocialLinks.svelte";
 </script>
 
@@ -10,8 +7,17 @@
   <title>Junedang | About</title>
   <meta
     name="description"
-    content="Learn more about June Dang, a Vietnamese software engineer passionate about cloud computing, finance technology, video games, movies, travel, and coding."
+    content="June Dang | About"
   />
+  <meta property="og:title" content="June Dang | About" />
+  <meta property="og:description" content="June Dang | About | Software Engineer" />
+  <meta property="og:image" content="/favicon.jpeg" />
+  <meta property="og:url" content="https://junedang.com/about" />
+  <meta property="og:type" content="profile" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="June Dang | About" />
+  <meta name="twitter:description" content="June Dang | About | Software Engineer" />
+  <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>
   <div class="max-w-4xl mx-auto font-mono">
@@ -126,7 +132,6 @@ $ cat skills.txt
         </div>
       </div>
     </div>
-    <!-- Contact Terminal -->
     <div class="border-2 border-black bg-white mt-8">
       <div class="border-b-2 border-black px-4 py-2 bg-white">
         <span class="text-black">$ ./connect.sh</span>
