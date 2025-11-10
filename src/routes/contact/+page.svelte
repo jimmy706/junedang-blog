@@ -1,15 +1,8 @@
 <script lang="ts">
   import Container from "$lib/Container.svelte";
   import SocialLinks from "$lib/SocialLinks.svelte";
-  import BriefCase from "../../components/icons/BriefCase.svelte";
-  import Clock from "../../components/icons/Clock.svelte";
-  import DocumentText from "../../components/icons/DocumentText.svelte";
-  import Envelope from "../../components/icons/Envelope.svelte";
-  import Location from "../../components/icons/Location.svelte";
   const email = "jim.dangquoc706@gmail.com";
-  const cvLink =
-    "https://1drv.ms/b/c/c14ce25ddf8a1dde/EX9hNe_KOIlOvftJtqt-3SEBABynZsmaDVgkEBz3OJNtyA?e=iItgC0";
-  // No specific imports needed for this page
+  const cvLink = "https://1drv.ms/b/c/c14ce25ddf8a1dde/EX9hNe_KOIlOvftJtqt-3SEBABynZsmaDVgkEBz3OJNtyA?e=iItgC0";
 </script>
 
 <svelte:head>
@@ -46,8 +39,7 @@
 
         <div class="text-black">
           <p class="mb-2">USER: JUNE_DANG</p>
-          <p class="mb-2">CHANNEL: EMAIL</p>
-          <p class="mb-2">ADDRESS: {email}</p>
+          <p class="mb-2">ADDRESS: <a href={`mailto:${email}`}>{email}</a></p>
           <p class="mb-4">LOCATION: VIETNAM</p>
         </div>
 

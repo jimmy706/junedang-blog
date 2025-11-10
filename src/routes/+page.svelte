@@ -15,15 +15,15 @@
 
 <svelte:head>
   <title>Junedang | Home</title>
-  <meta name="description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
+  <meta name="description" content="June Dang | Latest tech articles and insights" />
   <meta property="og:title" content="Junedang | Home" />
-  <meta property="og:description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
+  <meta property="og:description" content="June Dang | Latest tech articles and insights" />
   <meta property="og:image" content="/favicon.jpeg" />
   <meta property="og:url" content="https://junedang.com" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Junedang | Home" />
-  <meta name="twitter:description" content="Blog about technology, programming, cloud computing, finance, gaming, and software engineering by June Dang." />
+  <meta name="twitter:description" content="June Dang | Latest tech articles and insights" />
   <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
 <Container>
@@ -55,11 +55,9 @@
           <span class="text-black">$ cat bio.txt</span>
         </div>
         <div class="p-4">
-          <pre class="text-black text-sm leading-relaxed whitespace-pre-wrap">Hello World! I'm a Vietnamese software engineer
-  working mainly in cloud and finance. Besides coding,
-  I enjoy playing video games and writing.
-
-  Welcome to my blog!</pre>
+          <pre class="text-black text-sm leading-relaxed whitespace-pre-wrap">Hello World! I'm a Vietnamese software engineer working mainly in cloud and finance. Besides coding, I enjoy playing video games and writing.
+            <br/>
+Welcome to my blog!</pre>
           <div class="mt-4 pt-4 border-t-2 border-black">
             <p class="text-black mb-2">CONNECT:</p>
             <SocialLinks
