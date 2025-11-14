@@ -1,4 +1,4 @@
-# GitHub Copilot Assistant Instructions for Junedang Blog
+# AI Coding Agent Instructions - Junedang Blog
 
 ## Project Overview
 This is a personal blog application built with SvelteKit, TypeScript, and TailwindCSS. The blog belongs to a Vietnamese software engineer who writes about technology, programming, and life experiences.
