@@ -112,8 +112,8 @@
     // Add copy buttons to code blocks
     const codeBlocks = contentElement.querySelectorAll("pre");
     codeBlocks.forEach((pre) => {
-      // Skip if already has a copy button or if it's a triple pre tag
-      if (pre.querySelector(".copy-code-button") || pre.parentElement?.tagName === "PRE") {
+      // Skip if already has a copy button, if it's a triple pre tag, or if it's a mermaid diagram
+      if (pre.querySelector(".copy-code-button") || pre.parentElement?.tagName === "PRE" || pre.classList.contains("mermaid")) {
         return;
       }
 
@@ -135,7 +135,8 @@
       `;
       copyButton.setAttribute("aria-label", "Copy code");
       
-      // Get code content
+      // Get code content - use textContent which is already safe from XSS
+      // textContent automatically handles escaping and returns plain text
       const codeElement = pre.querySelector("code");
       const codeText = codeElement?.textContent || pre.textContent || "";
       
@@ -221,143 +222,143 @@
   <meta name="twitter:title" content={data.post?.title || data.slug} />
   <meta name="twitter:description" content={data.post?.description || `Blog post: ${data.slug}`} />
   <meta name="twitter:image" content={data.post?.image || '/favicon.jpeg'} />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-  <style>
-    /* Blog post content styles */
-    .blog-content {
-      line-height: 1.7;
-      color: #111;
-    }
-
-    .blog-content h1,
-    .blog-content h2,
-    .blog-content h3,
-    .blog-content h4,
-    .blog-content h5,
-    .blog-content h6 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-
-    .blog-content h1 {
-      font-size: 2.25rem;
-    }
-    .blog-content h2 {
-      font-size: 1.875rem;
-    }
-    .blog-content h3 {
-      font-size: 1.5rem;
-    }
-    .blog-content h4 {
-      font-size: 1.25rem;
-    }
-
-    .blog-content p {
-      margin-bottom: 1rem;
-    }
-
-    .blog-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      margin: 1rem 0;
-    }
-
-    .blog-content pre {
-      background-color: #f8fafc;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-
-    .blog-content code {
-      background-color: #f8fafc;
-      padding: 0.125rem 0.25rem;
-      border-radius: 0.25rem;
-      font-family: "Courier New", monospace;
-    }
-
-    .blog-content pre code {
-      background-color: transparent;
-      padding: 0;
-    }
-
-    .blog-content blockquote {
-      border-left: 4px solid #e2e8f0;
-      padding-left: 1rem;
-      margin: 1rem 0;
-      font-style: italic;
-      color: #64748b;
-    }
-
-    .blog-content a {
-      color: #111;
-      text-decoration: underline;
-    }
-
-    .blog-content ul,
-    .blog-content ol {
-      margin: 1rem 0;
-      padding-left: 1.5rem;
-    }
-
-    .blog-content li {
-      margin-bottom: 0.5rem;
-    }
-
-    .blog-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-    }
-
-    .blog-content th,
-    .blog-content td {
-      border: 1px solid #e2e8f0;
-      padding: 0.5rem;
-      text-align: left;
-    }
-
-    .blog-content th {
-      background-color: #f8fafc;
-      font-weight: 600;
-    }
-
-    /* Copy code button styles */
-    :global(.copy-code-button) {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background-color: #fff;
-      border: 2px solid #000;
-      border-radius: 0.25rem;
-      padding: 0.5rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    :global(.copy-code-button:hover) {
-      background-color: #000;
-      color: #fff;
-    }
-
-    :global(.copy-code-button svg) {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-
-    :global(.copy-code-button:hover svg) {
-      stroke: #fff;
-    }
-  </style>
 </svelte:head>
+
+<style>
+  /* Blog post content styles */
+  :global(.blog-content) {
+    line-height: 1.7;
+    color: #111;
+  }
+
+  :global(.blog-content h1),
+  :global(.blog-content h2),
+  :global(.blog-content h3),
+  :global(.blog-content h4),
+  :global(.blog-content h5),
+  :global(.blog-content h6) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  :global(.blog-content h1) {
+    font-size: 2.25rem;
+  }
+  :global(.blog-content h2) {
+    font-size: 1.875rem;
+  }
+  :global(.blog-content h3) {
+    font-size: 1.5rem;
+  }
+  :global(.blog-content h4) {
+    font-size: 1.25rem;
+  }
+
+  :global(.blog-content p) {
+    margin-bottom: 1rem;
+  }
+
+  :global(.blog-content img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content pre) {
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content code) {
+    background-color: #f8fafc;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: "Courier New", monospace;
+  }
+
+  :global(.blog-content pre code) {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  :global(.blog-content blockquote) {
+    border-left: 4px solid #e2e8f0;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #64748b;
+  }
+
+  :global(.blog-content a) {
+    color: #111;
+    text-decoration: underline;
+  }
+
+  :global(.blog-content ul),
+  :global(.blog-content ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  :global(.blog-content li) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.blog-content table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content th),
+  :global(.blog-content td) {
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  :global(.blog-content th) {
+    background-color: #f8fafc;
+    font-weight: 600;
+  }
+
+  /* Copy code button styles */
+  :global(.copy-code-button) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  :global(.copy-code-button:hover) {
+    background-color: #000;
+    color: #fff;
+  }
+
+  :global(.copy-code-button svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  :global(.copy-code-button:hover svg) {
+    stroke: #fff;
+  }
+</style>
 
 <!-- Blog post content container -->
 <Container>
