@@ -7,7 +7,7 @@
   import Dropdown from "$lib/Dropdown.svelte";
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
 
-  // Load mermaid only in the browser to avoid SSR "document is not defined"
+  // Load mermaid and highlight.js only in the browser to avoid SSR "document is not defined"
   onMount(async () => {
     try {
       const { default: mermaid } = await import("mermaid");
@@ -19,6 +19,27 @@
     } catch (e) {
       // Fail silently in case mermaid fails to load on client
       console.warn("Mermaid failed to initialize", e);
+    }
+
+    // Initialize syntax highlighting and enhance content
+    try {
+      const hljs = await import("highlight.js");
+      // Apply syntax highlighting to all code blocks
+      if (contentElement) {
+        const codeBlocks = contentElement.querySelectorAll("pre code");
+        codeBlocks.forEach((block) => {
+          hljs.default.highlightElement(block as HTMLElement);
+        });
+        
+        // Enhance content after highlighting
+        enhanceContent();
+      }
+    } catch (e) {
+      console.warn("Highlight.js failed to initialize", e);
+      // Still enhance content even if highlighting fails
+      if (contentElement) {
+        enhanceContent();
+      }
     }
   });
 
@@ -50,6 +71,17 @@
   // We can set loading based on whether we have data or not
   $: loading = !data;
 
+  // Function to copy code from code block
+  const copyCode = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      showCopyStatus("Code copied!");
+    } catch (error) {
+      console.error("Failed to copy code:", error);
+      showCopyStatus("Failed to copy code");
+    }
+  };
+
   // Function to enhance content after it's rendered
   const enhanceContent = () => {
     if (!contentElement) return;
@@ -76,12 +108,45 @@
         link.setAttribute("rel", "noopener noreferrer");
       }
     });
-  };
 
-  // Enhance content when the contentElement is available
-  $: if (contentElement && data?.success && data?.htmlContent) {
-    enhanceContent();
-  }
+    // Add copy buttons to code blocks
+    const codeBlocks = contentElement.querySelectorAll("pre");
+    codeBlocks.forEach((pre) => {
+      // Skip if already has a copy button, if it's a triple pre tag, or if it's a mermaid diagram
+      if (pre.querySelector(".copy-code-button") || pre.parentElement?.tagName === "PRE" || pre.classList.contains("mermaid")) {
+        return;
+      }
+
+      // Create wrapper for positioning
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+      
+      // Wrap the pre element
+      pre.parentNode?.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      // Create copy button
+      const copyButton = document.createElement("button");
+      copyButton.className = "copy-code-button";
+      copyButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+        </svg>
+      `;
+      copyButton.setAttribute("aria-label", "Copy code");
+      
+      // Get code content - use textContent which is already safe from XSS
+      // textContent automatically handles escaping and returns plain text
+      const codeElement = pre.querySelector("code");
+      const codeText = codeElement?.textContent || pre.textContent || "";
+      
+      copyButton.addEventListener("click", () => {
+        copyCode(codeText);
+      });
+
+      wrapper.appendChild(copyButton);
+    });
+  };
 
   // Copy functionality state
   let copyStatus: string = "";
@@ -157,111 +222,143 @@
   <meta name="twitter:title" content={data.post?.title || data.slug} />
   <meta name="twitter:description" content={data.post?.description || `Blog post: ${data.slug}`} />
   <meta name="twitter:image" content={data.post?.image || '/favicon.jpeg'} />
-  <style>
-    /* Blog post content styles */
-    .blog-content {
-      line-height: 1.7;
-      color: #111;
-    }
-
-    .blog-content h1,
-    .blog-content h2,
-    .blog-content h3,
-    .blog-content h4,
-    .blog-content h5,
-    .blog-content h6 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-
-    .blog-content h1 {
-      font-size: 2.25rem;
-    }
-    .blog-content h2 {
-      font-size: 1.875rem;
-    }
-    .blog-content h3 {
-      font-size: 1.5rem;
-    }
-    .blog-content h4 {
-      font-size: 1.25rem;
-    }
-
-    .blog-content p {
-      margin-bottom: 1rem;
-    }
-
-    .blog-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      margin: 1rem 0;
-    }
-
-    .blog-content pre {
-      background-color: #f8fafc;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-
-    .blog-content code {
-      background-color: #f8fafc;
-      padding: 0.125rem 0.25rem;
-      border-radius: 0.25rem;
-      font-family: "Courier New", monospace;
-    }
-
-    .blog-content pre code {
-      background-color: transparent;
-      padding: 0;
-    }
-
-    .blog-content blockquote {
-      border-left: 4px solid #e2e8f0;
-      padding-left: 1rem;
-      margin: 1rem 0;
-      font-style: italic;
-      color: #64748b;
-    }
-
-    .blog-content a {
-      color: #111;
-      text-decoration: underline;
-    }
-
-    .blog-content ul,
-    .blog-content ol {
-      margin: 1rem 0;
-      padding-left: 1.5rem;
-    }
-
-    .blog-content li {
-      margin-bottom: 0.5rem;
-    }
-
-    .blog-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-    }
-
-    .blog-content th,
-    .blog-content td {
-      border: 1px solid #e2e8f0;
-      padding: 0.5rem;
-      text-align: left;
-    }
-
-    .blog-content th {
-      background-color: #f8fafc;
-      font-weight: 600;
-    }
-  </style>
 </svelte:head>
+
+<style>
+  /* Blog post content styles */
+  :global(.blog-content) {
+    line-height: 1.7;
+    color: #111;
+  }
+
+  :global(.blog-content h1),
+  :global(.blog-content h2),
+  :global(.blog-content h3),
+  :global(.blog-content h4),
+  :global(.blog-content h5),
+  :global(.blog-content h6) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  :global(.blog-content h1) {
+    font-size: 2.25rem;
+  }
+  :global(.blog-content h2) {
+    font-size: 1.875rem;
+  }
+  :global(.blog-content h3) {
+    font-size: 1.5rem;
+  }
+  :global(.blog-content h4) {
+    font-size: 1.25rem;
+  }
+
+  :global(.blog-content p) {
+    margin-bottom: 1rem;
+  }
+
+  :global(.blog-content img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content pre) {
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content code) {
+    background-color: #f8fafc;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: "Courier New", monospace;
+  }
+
+  :global(.blog-content pre code) {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  :global(.blog-content blockquote) {
+    border-left: 4px solid #e2e8f0;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #64748b;
+  }
+
+  :global(.blog-content a) {
+    color: #111;
+    text-decoration: underline;
+  }
+
+  :global(.blog-content ul),
+  :global(.blog-content ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  :global(.blog-content li) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.blog-content table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  :global(.blog-content th),
+  :global(.blog-content td) {
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+    text-align: left;
+  }
+
+  :global(.blog-content th) {
+    background-color: #f8fafc;
+    font-weight: 600;
+  }
+
+  /* Copy code button styles */
+  :global(.copy-code-button) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  :global(.copy-code-button:hover) {
+    background-color: #000;
+    color: #fff;
+  }
+
+  :global(.copy-code-button svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  :global(.copy-code-button:hover svg) {
+    stroke: #fff;
+  }
+</style>
 
 <!-- Blog post content container -->
 <Container>
