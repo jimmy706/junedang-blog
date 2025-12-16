@@ -3,7 +3,7 @@ export type Post = {
   url?: string;
   date?: string;
   categories?: string;
-  tags?: string;
+  tags?: string[];
   layout?: string;
   description?: string;
   image?: string;

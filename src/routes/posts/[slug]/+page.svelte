@@ -6,6 +6,8 @@
   import ShareButtons from "$lib/post/ShareButtons.svelte";
   import Dropdown from "$lib/Dropdown.svelte";
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
+  import Tags from "$lib/post/Tags.svelte";
+  import ArrowUturnLeft from "../../../components/icons/ArrowUturnLeft.svelte";
 
   // Load mermaid and highlight.js only in the browser to avoid SSR "document is not defined"
   onMount(async () => {
@@ -387,8 +389,8 @@
           <div class="mt-4">
             <a
               href="/posts"
-              class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
-              >> BACK TO POSTS</a
+              class="inline-flex items-center gap-1 text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+              ><ArrowUturnLeft /> BACK TO POSTS</a
             >
           </div>
         </div>
@@ -451,6 +453,12 @@
           <article class="blog-content max-w-none" bind:this={contentElement}>
             {@html DOMPurify.sanitize(data.htmlContent)}
           </article>
+          {#if data.post?.tags && data.post.tags.length > 0}
+            <div class="mt-6 pt-6 border-t-2 border-black">
+              <h4 class="text-sm font-semibold mb-3 text-black">TAGS:</h4>
+              <Tags tags={data.post.tags.split(',').map(tag => tag.trim())} />
+            </div>
+          {/if}
           <ShareButtons title={data.slug} className="mt-6" />
         </div>
       </div>
@@ -466,7 +474,7 @@
             <a
               href="/posts"
               class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
-              >> BACK TO POSTS</a
+              ><ArrowUturnLeft class="size-4" /> BACK TO POSTS</a
             >
           </div>
         </div>

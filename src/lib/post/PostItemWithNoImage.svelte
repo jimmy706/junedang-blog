@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { Post } from "../../types/posts";
   import { constructArticleSlug } from "../../utils/string-helper";
+  import Tags from "./Tags.svelte";
   export let post: Post;
 </script>
 
 <a
-  class="block border-2 border-black bg-white overflow-hidden mb-5 relative p-4 hover:bg-black hover:text-white transition-colors"
+  class="group block border-2 border-black bg-white overflow-hidden mb-5 relative p-4 hover:bg-black hover:text-white transition-colors"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >
@@ -32,6 +33,11 @@
       </p>
     </h3>
   </div>
+  {#if post.tags && post.tags.length > 0}
+    <div class="mt-4">
+      <Tags tags={post.tags} limit={3} />
+    </div>
+  {/if}
   <div class="mt-5">
     <span
       class="inline-flex items-center border-2 border-black px-3 py-1 font-semibold"
