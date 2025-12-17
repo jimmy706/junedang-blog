@@ -23,7 +23,10 @@ describe('posts page server load', () => {
 
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
-    const result = await load();
+    const mockUrl = {
+      searchParams: new URLSearchParams()
+    };
+    const result = await load({ url: mockUrl } as any);
 
     expect(getPosts).toHaveBeenCalledOnce();
     expect(result.posts).toEqual([
@@ -45,7 +48,10 @@ describe('posts page server load', () => {
 
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
-    const result = await load();
+    const mockUrl = {
+      searchParams: new URLSearchParams()
+    };
+    const result = await load({ url: mockUrl } as any);
 
     // Posts without dates should be sorted to the end (treated as 0)
     expect(result.posts).toEqual([
@@ -61,7 +67,10 @@ describe('posts page server load', () => {
 
     vi.mocked(getPosts).mockResolvedValue([]);
 
-    const result = await load();
+    const mockUrl = {
+      searchParams: new URLSearchParams()
+    };
+    const result = await load({ url: mockUrl } as any);
 
     expect(result.posts).toEqual([]);
   });
@@ -73,7 +82,10 @@ describe('posts page server load', () => {
     const error = new Error('API Error');
     vi.mocked(getPosts).mockRejectedValue(error);
 
-    await expect(load()).rejects.toThrow('API Error');
+    const mockUrl = {
+      searchParams: new URLSearchParams()
+    };
+    await expect(load({ url: mockUrl } as any)).rejects.toThrow('API Error');
   });
 
   it('should handle posts with invalid date strings', async () => {
@@ -88,7 +100,10 @@ describe('posts page server load', () => {
 
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
-    const result = await load();
+    const mockUrl = {
+      searchParams: new URLSearchParams()
+    };
+    const result = await load({ url: mockUrl } as any);
 
     // Invalid dates result in NaN which has unpredictable sort behavior
     // Just verify we get all posts back
