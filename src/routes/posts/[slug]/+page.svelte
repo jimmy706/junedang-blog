@@ -453,11 +453,18 @@
           <article class="blog-content max-w-none" bind:this={contentElement}>
             {@html DOMPurify.sanitize(data.htmlContent)}
           </article>
-          {#if data.post?.tags && data.post.tags.length > 0}
-            <div class="mt-6 pt-6 border-t-2 border-black">
-              <h4 class="text-sm font-semibold mb-3 text-black">TAGS:</h4>
-              <Tags tags={data.post.tags.split(',').map(tag => tag.trim())} />
-            </div>
+          {#if data.post?.tags}
+            {@const tagsArray = typeof data.post.tags === 'string' 
+              ? data.post.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+              : Array.isArray(data.post.tags) 
+                ? data.post.tags 
+                : []}
+            {#if tagsArray.length > 0}
+              <div class="mt-6 pt-6 border-t-2 border-black">
+                <h4 class="text-sm font-semibold mb-3 text-black">TAGS:</h4>
+                <Tags tags={tagsArray} />
+              </div>
+            {/if}
           {/if}
           <ShareButtons title={data.slug} className="mt-6" />
         </div>
