@@ -9,3 +9,8 @@ binding = "ASSETS"
 
 [vars]
 PUBLIC_MAINTENANCE_MODE = "false"
+
+[observability]
+[observability.logs]
+enabled = true
+invocation_logs = true
