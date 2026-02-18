@@ -4,7 +4,7 @@
       <img
         class="max-w-xs"
         src="/image/maintenance.webp"
-        alt="Maintenance Image"
+        alt="Maintenance illustration"
       />
     </div>
     <h1 class="text-4xl font-bold text-red-600 mb-4">Oops! We Broke the Internet 🥹</h1>
