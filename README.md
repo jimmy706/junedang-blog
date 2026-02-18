@@ -54,3 +54,44 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Deploy to Cloudflare Pages
+
+This project is configured for Cloudflare Pages using `@sveltejs/adapter-cloudflare` and `wrangler`.
+
+### 1) Build locally
+
+```bash
+npm install
+npm run build
+```
+
+### 2) Cloudflare Pages project settings
+
+- **Framework preset**: `None`
+- **Build command**: `npm run build`
+- **Build output directory**: `.svelte-kit/cloudflare`
+
+### 3) Required environment variables (Preview + Production)
+
+- `GITHUB_PAGE_URL`
+- `GITHUB_BLOG_APP`
+- `API_CACHE_TTL`
+- `API_URL`
+- `PUBLIC_MAINTENANCE_MODE`
+
+### 4) Wrangler local development and deploy
+
+```bash
+# copy local env template
+cp .dev.vars.example .dev.vars
+
+# build app
+npm run build
+
+# preview with Cloudflare runtime
+npm run cf:dev
+
+# deploy from CLI (requires `wrangler login`)
+npm run cf:deploy
+```
