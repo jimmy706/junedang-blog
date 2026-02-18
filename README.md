@@ -93,5 +93,13 @@ npm run build
 npm run cf:dev
 
 # deploy from CLI (requires `wrangler login`)
+# optionally set explicit Pages project name (recommended for CI)
+export CF_PAGES_PROJECT_NAME=junedang-blog
 npm run cf:deploy
+```
+
+If you see `Project not found [code: 8000007]`, create the Pages project first (one-time):
+
+```bash
+npx wrangler pages project create "$CF_PAGES_PROJECT_NAME"
 ```
