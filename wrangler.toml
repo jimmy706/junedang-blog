@@ -9,7 +9,8 @@ binding = "ASSETS"
 
 [vars]
 PUBLIC_MAINTENANCE_MODE = "false"
-
+GITHUB_PAGE_URL="https://jimmy706.github.io"
+GITHUB_BLOG_APP="junedang-blog-pages"
 [observability]
 [observability.logs]
 enabled = true
