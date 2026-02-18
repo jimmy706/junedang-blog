@@ -89,7 +89,7 @@ cp .dev.vars.example .dev.vars
 # build app
 npm run build
 
-# preview with Cloudflare runtime
+# preview locally with Cloudflare runtime (local only, long-running)
 npm run cf:dev
 
 # deploy from CLI (requires `wrangler login`)
@@ -97,6 +97,18 @@ npm run cf:dev
 export CF_PAGES_PROJECT_NAME=junedang-blog
 npm run cf:deploy
 ```
+
+### Important: Cloudflare Pages dashboard commands
+
+If you connect this repository to **Cloudflare Pages (Git integration)**:
+
+- Build command: `npm run build`
+- Build output directory: `.svelte-kit/cloudflare`
+- Deploy command: *(leave empty)*
+
+Do **not** set deploy command to `npm run cf:dev`. That command starts a local dev server and does not exit, which causes deployment to stay in "queued/deploying" state.
+
+Use `npm run cf:deploy` only for CLI/CI-driven deployments, not as a Pages dashboard deploy command.
 
 If you see `Project not found [code: 8000007]`, create the Pages project first (one-time):
 
