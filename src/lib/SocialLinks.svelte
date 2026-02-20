@@ -4,11 +4,11 @@
   import LeetCode from "../components/icons/LeetCode.svelte";
   export let showTitle: boolean = true;
   export let title: string = "Connect With Me";
-  export let containerClass: string = "p-6 bg-gray-50 shadow-sm rounded-sm";
-  export let titleClass: string = "text-3xl font-bold text-black mb-6 text-center";
-  export let linksContainerClass: string = "flex justify-center socials text-black px-2 py-4 gap-x-1";
+  export let containerClass: string = "p-6 bg-bg dark:bg-bg-dark shadow-sm rounded-sm";
+  export let titleClass: string = "text-3xl font-bold text-ink dark:text-ink-inverse mb-6 text-center";
+  export let linksContainerClass: string = "flex justify-center socials text-ink dark:text-ink-inverse px-2 py-4 gap-x-1";
   // Ensure icon color switches to white on hover; use currentColor in SVGs below
-  export let linkClass: string = "block p-4 rounded-full transition-colors text-black hover:text-white hover:bg-gray-200";
+  export let linkClass: string = "block p-4 rounded-full transition-colors text-ink dark:text-ink-inverse hover:text-ink-inverse hover:bg-ink dark:hover:bg-accent-terminal dark:hover:text-ink";
 </script>
 
 <div class={containerClass}>

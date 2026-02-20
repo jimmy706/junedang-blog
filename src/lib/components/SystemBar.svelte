@@ -23,16 +23,15 @@
   <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 font-mono">
     <div class="flex flex-wrap items-center gap-4">
       <span>STATUS: <strong class="text-accent-terminal">ONLINE</strong></span>
-      <span>NODE: VN-SG-01</span>
       <span>UPTIME: {uptime}</span>
-      <!-- <span>THEME: {$theme.toUpperCase()}</span> -->
+      <span>THEME: {$theme.toUpperCase()}</span>
     </div>
-    <!-- <button
+    <button
       type="button"
       on:click={toggleTheme}
       class="focus-terminal border-2 border-ink px-3 py-1 text-xs terminal-hover dark:border-accent-terminal"
     >
       &gt; theme {$theme === "dark" ? "light" : "dark"}
-    </button> -->
+    </button>
   </div>
 </div>

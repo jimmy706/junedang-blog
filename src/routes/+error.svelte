@@ -15,7 +15,7 @@
 </svelte:head>
 
 <div class="flex items-center justify-center min-h-screen">
-  <div class="text-center p-6 bg-white rounded-lg shadow-md">
+  <div class="text-center p-6 bg-bg dark:bg-bg-dark rounded-lg shadow-md text-ink dark:text-ink-inverse">
     <div class="flex justify-center mb-4">
       <img
         class="max-w-xs"
@@ -30,12 +30,12 @@
       <p class="text-lg mb-2">
         It seems like this page packed its bags and left without telling us! 
       </p>
-      <p class="text-md text-gray-600 mb-4">
+      <p class="text-md text-ink-soft dark:text-ink-inverse/70 mb-4">
         Maybe it's chilling on a beach somewhere, or perhaps it never existed in the first place... 🤔
       </p>
-      <small class="text-gray-500">
+      <small class="text-ink-soft dark:text-ink-inverse/60">
         Don't worry though, the other pages are still here and working hard! 
-        Try going back to the <a href="/" class="text-blue-600 hover:text-blue-800 underline">homepage</a> 🏠
+        Try going back to the <a href="/" class="text-accent-terminal hover:underline">homepage</a> 🏠
       </small>
     {:else if isApiError}
       <!-- API Error -->
@@ -43,10 +43,10 @@
       <p class="text-lg mb-2">
         Our servers are having a bit of a moment right now...
       </p>
-      <p class="text-md text-gray-600 mb-4">
+      <p class="text-md text-ink-soft dark:text-ink-inverse/70 mb-4">
         They're probably just taking a coffee break or debugging some cosmic code! ☕
       </p>
-      <small class="text-gray-500">
+      <small class="text-ink-soft dark:text-ink-inverse/60">
         We'll be back up and running in just a few minutes. Thanks for your patience! 🛠️
       </small>
     {:else}
@@ -55,16 +55,16 @@
       <p class="text-lg mb-2">
         Well, this is awkward... Something went wrong, but we're not quite sure what!
       </p>
-      <p class="text-md text-gray-600 mb-4">
+      <p class="text-md text-ink-soft dark:text-ink-inverse/70 mb-4">
         Our digital hamsters are working overtime to figure this out! 🐹
       </p>
-      <small class="text-gray-500">
-        Try refreshing the page or head back to the <a href="/" class="text-blue-600 hover:text-blue-800 underline">homepage</a>
+      <small class="text-ink-soft dark:text-ink-inverse/60">
+        Try refreshing the page or head back to the <a href="/" class="text-accent-terminal hover:underline">homepage</a>
       </small>
     {/if}
     
     {#if error?.message}
-      <div class="mt-6 p-3 bg-gray-100 rounded text-sm text-gray-600">
+      <div class="mt-6 p-3 bg-ink/5 dark:bg-ink-inverse/5 rounded text-sm text-ink-soft dark:text-ink-inverse/70">
         <details>
           <summary class="cursor-pointer font-medium">Technical Details</summary>
           <p class="mt-2 text-left">{error.message}</p>

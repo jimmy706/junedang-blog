@@ -5,7 +5,7 @@
 </script>
 
 <a
-  class="group block border-2 border-black bg-white overflow-hidden mb-5 relative p-4 hover:bg-black hover:text-white transition-colors"
+  class="group block border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark overflow-hidden mb-5 relative p-4 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >

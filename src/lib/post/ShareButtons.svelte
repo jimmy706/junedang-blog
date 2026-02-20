@@ -67,15 +67,15 @@
 </script>
 
 <div class={className}>
-  <div class="border-2 border-black bg-white">
-    <div class="border-b-2 border-black px-4 py-2 bg-white">
-      <span class="text-black">$ share this post</span>
+  <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+    <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+      <span class="text-ink dark:text-ink-inverse">$ share this post</span>
     </div>
     <div class="p-4">
       <div class="flex flex-wrap items-center gap-3">
         {#if canNativeShare}
           <button
-            class="cursor-pointer inline-flex items-center gap-2 text-black border-2 border-black px-3 py-2 hover:bg-black hover:text-white"
+            class="cursor-pointer inline-flex items-center gap-2 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink"
             on:click={nativeShare}
             type="button"
           >
@@ -84,7 +84,7 @@
           </button>
         {/if}
         <button
-          class="cursor-pointer inline-flex items-center gap-2 text-black border-2 border-black px-3 py-2 hover:bg-black hover:text-white"
+          class="cursor-pointer inline-flex items-center gap-2 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink"
           on:click={copyToClipboard}
           type="button"
           aria-live="polite"

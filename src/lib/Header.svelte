@@ -8,9 +8,9 @@
     smMenuOpen = false;
   }
   const mdMenuClass =
-    "text-sm leading-6 text-black border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition-colors mdMenuItem";
+    "text-sm leading-6 text-ink border-2 border-ink px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:border-accent-terminal dark:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors mdMenuItem";
   const smMenuClass =
-    "-mx-3 block px-3 py-2 text-base leading-7 text-black border-2 border-black hover:bg-black hover:text-white transition-colors smMenuItem";
+    "-mx-3 block px-3 py-2 text-base leading-7 text-ink border-2 border-ink hover:bg-ink hover:text-ink-inverse dark:border-accent-terminal dark:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors smMenuItem";
 
   const menuItems = [
     {
@@ -44,7 +44,7 @@
   ];
 </script>
 
-<header class="bg-white font-mono border-2 border-black">
+<header class="bg-bg font-mono border-2 border-ink dark:bg-bg-dark dark:border-accent-terminal">
   <nav
     class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
     aria-label="Global"
@@ -58,7 +58,7 @@
     <div class="flex lg:hidden">
       <button
         type="button"
-        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-ink dark:text-ink-inverse"
         title="Open main menu"
         on:click={() => (smMenuOpen = true)}
       >
@@ -355,7 +355,7 @@
   <!-- Mobile menu, show/hide based on menu open state. -->
   <div class="lg:hidden" role="dialog" aria-modal="true">
     <div
-      class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm border-l-2 border-black ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+      class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-bg dark:bg-bg-dark px-6 py-6 sm:max-w-sm border-l-2 border-ink dark:border-accent-terminal ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
         <a href="/" class="-m-1.5 p-1.5" on:click={() => (smMenuOpen = false)}>
@@ -366,7 +366,7 @@
           on:click={() => (smMenuOpen = false)}
           title="Close menu"
           type="button"
-          class="-m-2.5 rounded-md p-2.5 text-gray-700"
+          class="-m-2.5 rounded-md p-2.5 text-ink dark:text-ink-inverse"
         >
           <span class="sr-only">Close menu</span>
           <svg
@@ -454,20 +454,38 @@
 
 <style>
   .mdMenuItem.active {
-    background-color: #000;
-    color: #fff;
+    background-color: #171717;
+    color: #f7f3e8;
   }
 
   .mdMenuItem.active:hover {
-    background-color: #000;
+    background-color: #171717;
+  }
+
+  :global(.dark) .mdMenuItem.active {
+    background-color: #00b56a;
+    color: #171717;
+  }
+
+  :global(.dark) .mdMenuItem.active:hover {
+    background-color: #00b56a;
   }
 
   .smMenuItem.active {
-    background-color: #000;
-    color: #fff;
+    background-color: #171717;
+    color: #f7f3e8;
   }
 
   .smMenuItem.active:hover {
-    background-color: #000;
+    background-color: #171717;
+  }
+
+  :global(.dark) .smMenuItem.active {
+    background-color: #00b56a;
+    color: #171717;
+  }
+
+  :global(.dark) .smMenuItem.active:hover {
+    background-color: #00b56a;
   }
 </style>

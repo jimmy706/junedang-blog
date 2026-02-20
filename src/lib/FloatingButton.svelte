@@ -46,7 +46,7 @@
 
 <button
   on:click={smoothScrollToTop}
-  class="cursor-pointer fixed bottom-6 right-6 z-40 font-mono text-sm tracking-tight leading-none px-3 py-2 border-2 border-black bg-white text-black shadow-[4px_4px_0_0_#000] transition-all duration-150 ease-out hover:bg-black hover:text-white hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#000] active:translate-x-0 active:translate-y-0 active:shadow-[2px_2px_0_0_#000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+  class="cursor-pointer fixed bottom-6 right-6 z-40 font-mono text-sm tracking-tight leading-none px-3 py-2 border-2 border-ink bg-bg text-ink shadow-pixel transition-all duration-150 ease-out hover:bg-ink hover:text-ink-inverse hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#171717] active:translate-x-0 active:translate-y-0 active:shadow-[2px_2px_0_0_#171717] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg dark:border-accent-terminal dark:bg-bg-dark dark:text-ink-inverse dark:shadow-pixel-dark dark:hover:bg-accent-terminal dark:hover:text-ink dark:hover:shadow-[6px_6px_0_0_#00b56a] dark:active:shadow-[2px_2px_0_0_#00b56a] dark:focus-visible:ring-accent-terminal dark:focus-visible:ring-offset-bg-dark"
   class:opacity-0={!isVisible}
   class:opacity-100={isVisible}
   class:pointer-events-none={!isVisible}

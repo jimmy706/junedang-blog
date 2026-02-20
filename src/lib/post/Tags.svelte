@@ -12,12 +12,12 @@
       {#if clickable}
         <a
           href="/posts?tag={encodeURIComponent(tag)}"
-          class="inline-block border-2 border-black px-2 py-1 text-xs font-mono bg-white group-hover:bg-black group-hover:text-white hover:bg-black hover:text-white transition-colors cursor-pointer"
+          class="inline-block border-2 border-ink dark:border-accent-terminal px-2 py-1 text-xs font-mono bg-bg dark:bg-bg-dark group-hover:bg-ink group-hover:text-ink-inverse dark:group-hover:bg-accent-terminal dark:group-hover:text-ink hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
         >
           #{tag}
         </a>
       {:else}
-        <span class="inline-block border-2 border-black px-2 py-1 text-xs font-mono bg-white group-hover:bg-black group-hover:text-white transition-colors">
+        <span class="inline-block border-2 border-ink dark:border-accent-terminal px-2 py-1 text-xs font-mono bg-bg dark:bg-bg-dark group-hover:bg-ink group-hover:text-ink-inverse dark:group-hover:bg-accent-terminal dark:group-hover:text-ink transition-colors">
           #{tag}
         </span>
       {/if}

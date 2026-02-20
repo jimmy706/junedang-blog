@@ -3,7 +3,7 @@
 
   export let align: "left" | "right" = "right";
   export let containerClass: string = "relative inline-block text-left";
-  export let panelClass: string = "absolute z-20 mt-2 min-w-40 border-2 border-black bg-white shadow-sm";
+  export let panelClass: string = "absolute z-20 mt-2 min-w-40 border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark shadow-sm";
   export let triggerClass: string = ""; // allow parent to style trigger wrapper
 
   let open = false;

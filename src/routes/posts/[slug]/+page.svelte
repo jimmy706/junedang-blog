@@ -246,7 +246,11 @@
   /* Blog post content styles */
   :global(.blog-content) {
     line-height: 1.7;
-    color: #111;
+    color: #171717;
+  }
+
+  :global(.dark .blog-content) {
+    color: #f7f3e8;
   }
 
   :global(.blog-content h1),
@@ -294,11 +298,19 @@
     max-width: 100%;
   }
 
+  :global(.dark .blog-content pre) {
+    background-color: #1e2424;
+  }
+
   :global(.blog-content code) {
     background-color: #f8fafc;
     padding: 0.125rem 0.25rem;
     border-radius: 0.25rem;
     font-family: "Courier New", monospace;
+  }
+
+  :global(.dark .blog-content code) {
+    background-color: #1e2424;
   }
 
   :global(.blog-content pre code) {
@@ -314,9 +326,18 @@
     color: #64748b;
   }
 
+  :global(.dark .blog-content blockquote) {
+    border-left-color: #00b56a;
+    color: #94a3b8;
+  }
+
   :global(.blog-content a) {
-    color: #111;
+    color: #171717;
     text-decoration: underline;
+  }
+
+  :global(.dark .blog-content a) {
+    color: #00b56a;
   }
 
   :global(.blog-content ul),
@@ -348,9 +369,18 @@
     text-align: left;
   }
 
+  :global(.dark .blog-content th),
+  :global(.dark .blog-content td) {
+    border-color: #334155;
+  }
+
   :global(.blog-content th) {
     background-color: #f8fafc;
     font-weight: 600;
+  }
+
+  :global(.dark .blog-content th) {
+    background-color: #1e2424;
   }
 
   /* Copy code button styles */
@@ -358,8 +388,8 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    background-color: #fff;
-    border: 2px solid #000;
+    background-color: #f7f3e8;
+    border: 2px solid #171717;
     border-radius: 0.25rem;
     padding: 0.5rem;
     cursor: pointer;
@@ -370,9 +400,20 @@
     z-index: 10;
   }
 
+  :global(.dark .copy-code-button) {
+    background-color: #121515;
+    border-color: #00b56a;
+    color: #f7f3e8;
+  }
+
   :global(.copy-code-button:hover) {
-    background-color: #000;
-    color: #fff;
+    background-color: #171717;
+    color: #f7f3e8;
+  }
+
+  :global(.dark .copy-code-button:hover) {
+    background-color: #00b56a;
+    color: #171717;
   }
 
   :global(.copy-code-button svg) {
@@ -381,18 +422,22 @@
   }
 
   :global(.copy-code-button:hover svg) {
-    stroke: #fff;
+    stroke: #f7f3e8;
+  }
+
+  :global(.dark .copy-code-button:hover svg) {
+    stroke: #171717;
   }
 </style>
 
 <!-- Blog post content container -->
 <Container>
   <div class="max-w-4xl mx-auto font-mono">
-    <div class="border-2 border-black bg-white mb-8">
-      <div class="border-b-2 border-black px-4 py-2 bg-white">
-        <span class="text-black">SYSTEM: POST.EXE</span>
+    <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8">
+      <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <span class="text-ink dark:text-ink-inverse">SYSTEM: POST.EXE</span>
       </div>
-      <div class="px-4 py-2 text-black">
+      <div class="px-4 py-2 text-ink dark:text-ink-inverse">
         <span>$ cat /posts/{data.slug}.md</span>
       </div>
     </div>
@@ -400,38 +445,38 @@
     {#if loading}
       <PageLoading {loading} />
     {:else if !data.success}
-      <div class="border-2 border-black bg-white">
-        <div class="border-b-2 border-black px-4 py-2 bg-white">
-          <span class="text-black">$ echo \"content not found\"</span>
+      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+          <span class="text-ink dark:text-ink-inverse">$ echo \"content not found\"</span>
         </div>
         <div class="p-4">
-          <pre class="text-black text-sm leading-relaxed">{data.error ||
+          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">{data.error ||
               "Unable to load blog post content"}
 
 > RETURN TO /posts</pre>
           <div class="mt-4">
             <a
               href="/posts"
-              class="inline-flex items-center gap-1 text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+              class="inline-flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
               ><ArrowUturnLeft /> BACK TO POSTS</a
             >
           </div>
         </div>
       </div>
     {:else if data.htmlContent}
-      <div class="border-2 border-black bg-white">
+      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
         <div
-          class="border-b-2 border-black px-4 py-2 bg-white flex items-center justify-between gap-2"
+          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark flex items-center justify-between gap-2"
         >
-          <span class="text-black">$ render {data.slug}</span>
+          <span class="text-ink dark:text-ink-inverse">$ render {data.slug}</span>
           <div class="flex items-center gap-2">
             {#if copyStatus}
-              <span class="text-sm text-black">{copyStatus}</span>
+              <span class="text-sm text-ink dark:text-ink-inverse">{copyStatus}</span>
             {/if}
             <Dropdown align="right" containerClass="relative inline-block">
               <div
                 slot="trigger"
-                class="flex items-center gap-1 text-black border-2 border-black px-3 py-1 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
               >
                 <span class="text-sm">Copy Page</span>
                 <ChervonDown class="size-4 stroke-current" />
@@ -442,7 +487,7 @@
                     copyAsHtml();
                     close();
                   }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors"
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
                 >
                   Copy as HTML
                 </button>
@@ -452,7 +497,7 @@
                     close();
                   }}
                   disabled={!data.markdownContent}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black transition-colors border-t-2 border-black {data.markdownContent ? 'hover:bg-black hover:text-white' : 'opacity-50 cursor-not-allowed'}"
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse transition-colors border-t-2 border-ink dark:border-accent-terminal {data.markdownContent ? 'hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink' : 'opacity-50 cursor-not-allowed'}"
                 >
                   Copy as Markdown
                   {#if !data.markdownContent}
@@ -464,7 +509,7 @@
                     copyDomainUrl();
                     close();
                   }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-black hover:bg-black hover:text-white transition-colors border-t-2 border-black"
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors border-t-2 border-ink dark:border-accent-terminal"
                 >
                   Copy URL
                 </button>
@@ -483,8 +528,8 @@
                 ? data.post.tags 
                 : []}
             {#if tagsArray.length > 0}
-              <div class="mt-6 pt-6 border-t-2 border-black">
-                <h4 class="text-sm font-semibold mb-3 text-black">TAGS:</h4>
+              <div class="mt-6 pt-6 border-t-2 border-ink dark:border-accent-terminal">
+                <h4 class="text-sm font-semibold mb-3 text-ink dark:text-ink-inverse">TAGS:</h4>
                 <Tags tags={tagsArray} />
               </div>
             {/if}
@@ -493,17 +538,17 @@
         </div>
       </div>
     {:else}
-      <div class="border-2 border-black bg-white">
-        <div class="border-b-2 border-black px-4 py-2 bg-white">
-          <span class="text-black">$ echo \"no content available\"</span>
+      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+          <span class="text-ink dark:text-ink-inverse">$ echo \"no content available\"</span>
         </div>
         <div class="p-4">
           <pre
-            class="text-black text-sm leading-relaxed">The blog post content is currently unavailable.</pre>
+            class="text-ink dark:text-ink-inverse text-sm leading-relaxed">The blog post content is currently unavailable.</pre>
           <div class="mt-4">
             <a
               href="/posts"
-              class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+              class="inline-block text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
               ><ArrowUturnLeft class="size-4" /> BACK TO POSTS</a
             >
           </div>

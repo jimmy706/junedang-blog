@@ -22,14 +22,14 @@
 <Container>
   <div class="max-w-4xl mx-auto font-mono">
     <!-- Terminal Header -->
-    <div class="border-2 border-black bg-white mb-8">
-      <div class="border-b-2 border-black px-4 py-2 bg-white">
-        <span class="text-black">SYSTEM: ABOUT.EXE</span>
+    <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8">
+      <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <span class="text-ink dark:text-ink-inverse">SYSTEM: ABOUT.EXE</span>
       </div>
 
       <div class="p-6">
         <!-- ASCII Art Header -->
-        <pre class="text-black text-sm mb-6 leading-tight">
+        <pre class="text-ink dark:text-ink-inverse text-sm mb-6 leading-tight">
  ╭─────────────────────────────────────────╮
  │  ██╗██╗   ██╗███╗   ██╗███████╗        │
  │  ██║██║   ██║████╗  ██║██╔════╝        │
@@ -47,19 +47,19 @@
  ╰─────────────────────────────────────────╯
         </pre>
 
-        <div class="text-black">
+        <div class="text-ink dark:text-ink-inverse">
           <p class="mb-2">USER: JUNE_DANG</p>
           <p class="mb-2">ROLE: SOFTWARE_ENGINEER</p>
           <p class="mb-4">LOCATION: VIETNAM</p>
         </div>
 
         <!-- Terminal Social Links -->
-        <div class="border-t-2 border-black pt-4">
-          <p class="text-black mb-2">CONNECT:</p>
+        <div class="border-t-2 border-ink dark:border-accent-terminal pt-4">
+          <p class="text-ink dark:text-ink-inverse mb-2">CONNECT:</p>
           <SocialLinks
             showTitle={false}
-            containerClass="flex flex-wrap gap-4 socials text-black"
-            linkClass="block text-black hover:bg-black hover:text-white px-2 py-1 border border-black transition-colors"
+            containerClass="flex flex-wrap gap-4 socials text-ink dark:text-ink-inverse"
+            linkClass="block text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink px-2 py-1 border border-ink dark:border-accent-terminal transition-colors"
           />
         </div>
       </div>
@@ -68,13 +68,13 @@
     <!-- Terminal Sections -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- About Terminal -->
-      <div class="border-2 border-black bg-white">
-        <div class="border-b-2 border-black px-4 py-2 bg-white">
-          <span class="text-black">$ cat about.txt</span>
+      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+          <span class="text-ink dark:text-ink-inverse">$ cat about.txt</span>
         </div>
         <div class="p-4">
           <pre
-            class="text-black text-sm leading-relaxed whitespace-pre-wrap">Hello World!
+            class="text-ink dark:text-ink-inverse text-sm leading-relaxed whitespace-pre-wrap">Hello World!
 
 I'm June Dang, a passionate Vietnamese 
 software engineer with a love for building 
@@ -104,12 +104,12 @@ EOF</pre>
       </div>
 
       <!-- Professional Terminal -->
-      <div class="border-2 border-black bg-white">
-        <div class="border-b-2 border-black px-4 py-2 bg-white">
-          <span class="text-black">$ ls -la /professional/</span>
+      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+          <span class="text-ink dark:text-ink-inverse">$ ls -la /professional/</span>
         </div>
         <div class="p-4">
-          <pre class="text-black text-sm leading-relaxed">total 4
+          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">total 4
 drwxr-xr-x  2 june staff  128 Oct  4 2025 .
 drwxr-xr-x  5 june staff  160 Oct  4 2025 ..
 -rw-r--r--  1 june staff   64 Oct  4 2025 role.txt
@@ -132,12 +132,12 @@ $ cat skills.txt
         </div>
       </div>
     </div>
-    <div class="border-2 border-black bg-white mt-8">
-      <div class="border-b-2 border-black px-4 py-2 bg-white">
-        <span class="text-black">$ ./connect.sh</span>
+    <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mt-8">
+      <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+        <span class="text-ink dark:text-ink-inverse">$ ./connect.sh</span>
       </div>
       <div class="p-4">
-        <pre class="text-black text-sm leading-relaxed">#!/bin/bash
+        <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">#!/bin/bash
 # Connection Script v1.0
 # Author: June Dang
 
@@ -155,10 +155,10 @@ echo "Ready to connect..."
 
 # Execute contact module</pre>
 
-        <div class="mt-4 pt-4 border-t-2 border-black">
+        <div class="mt-4 pt-4 border-t-2 border-ink dark:border-accent-terminal">
           <a
             href="/contact"
-            class="inline-block text-black border-2 border-black px-4 py-2 hover:bg-black hover:text-white transition-colors"
+            class="inline-block text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
           >
             > EXECUTE CONTACT.EXE
           </a>

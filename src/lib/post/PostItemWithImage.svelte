@@ -6,11 +6,11 @@
 </script>
 
 <a
-  class="group block border-2 border-black bg-white overflow-hidden mb-5 hover:bg-black hover:text-white transition-colors"
+  class="group block border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark overflow-hidden mb-5 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
   href={constructArticleSlug(post.url)}
   title={post.description}
 >
-  <div class="w-full max-h-52 overflow-hidden border-b-2 border-black">
+  <div class="w-full max-h-52 overflow-hidden border-b-2 border-ink dark:border-accent-terminal">
     <img src={post.image} alt={post.title} class="w-full h-52 object-cover" />
   </div>
   <div class="p-4 flex-1">
