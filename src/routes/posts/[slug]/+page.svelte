@@ -308,6 +308,12 @@
     padding-left: 1.5rem;
   }
 
+  :global(.blog-content ul) {
+    list-style-type: disc;
+  }
+  :global(.blog-content ol) {
+    list-style-type: decimal;
+  }
   :global(.blog-content li) {
     margin-bottom: 0.5rem;
   }

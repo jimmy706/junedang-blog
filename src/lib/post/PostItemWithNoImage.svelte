@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Post } from "../../types/posts";
   import { constructArticleSlug } from "../../utils/string-helper";
-  import Tags from "./Tags.svelte";
   export let post: Post;
 </script>
 
@@ -26,36 +25,32 @@
       />
     </svg>
   </span>
-  <div class="flex-1 mt-8 text-ellipsis md:line-clamp-2 h-auto md:h-20 overflow-hidden">
-    <h3>
-      <p class="block text-3xl font-semibold">
-        {post.title}
-      </p>
+  <div class="mt-8 mb-4 pr-12">
+    <h3 class="text-3xl font-semibold line-clamp-3">
+      {post.title}
     </h3>
+    {#if post.description}
+      <p class="mt-4 text-base opacity-90 line-clamp-3">
+        {post.description}
+      </p>
+    {/if}
   </div>
-  {#if post.tags && post.tags.length > 0}
-    <div class="mt-4">
-      <Tags tags={post.tags} limit={3} />
-    </div>
-  {/if}
-  <div class="mt-5">
-    <span
-      class="inline-flex items-center border-2 border-black px-3 py-1 font-semibold"
-    >
-      > READ <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-4 ml-2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
-        />
-      </svg>
+  <div class="mt-4 flex items-center justify-between">
+    {#if post.tags && post.tags.length > 0}
+      <div class="flex flex-wrap gap-2">
+        {#each post.tags.slice(0, 3) as tag}
+          <span class="text-xs font-mono px-2 py-1 border-2 border-current">
+            #{tag}
+          </span>
+        {/each}
+      </div>
+    {/if}
+    <span class="text-xs font-mono border-2 border-current px-2 py-1 ml-auto">
+      {#if post.date}
+        {new Date(post.date).toLocaleDateString()}
+      {:else}
+        {new Date().toLocaleDateString()}
+      {/if}
     </span>
   </div>
 </a>
