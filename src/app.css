@@ -12,12 +12,79 @@
 }
 
 @layer base {
-    body {
-        font-family: "Departure Mono", "Courier New", monospace;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 1.5;
-        color: var(--color-black);
-        background-color: var(--color-slate-50);
-    }
+  html,
+  body {
+    background-color: #f7f3e8;
+    color: #171717;
+    font-family: "Departure Mono", "Courier New", monospace;
   }
+
+  .dark body {
+    background-color: #121515;
+    color: #f7f3e8;
+  }
+
+  a,
+  button {
+    outline: none;
+  }
+}
+
+@layer utilities {
+  .focus-terminal:focus-visible {
+    outline: 2px solid #00b56a;
+    outline-offset: 2px;
+  }
+
+  .terminal-hover {
+    transition: color 0.1s ease, background-color 0.1s ease;
+  }
+
+  .terminal-hover:hover {
+    background-color: #171717;
+    color: #f7f3e8;
+  }
+
+  .dark .terminal-hover:hover {
+    background-color: #00b56a;
+    color: #171717;
+  }
+
+  .cursor-block::after {
+    content: "";
+    display: inline-block;
+    width: 0.7em;
+    height: 1em;
+    margin-left: 0.2rem;
+    background: currentColor;
+    animation: blink 1s steps(1, end) infinite;
+    vertical-align: text-bottom;
+  }
+
+  .typewriter-once {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0.15em solid currentColor;
+    animation: typewriter 1.2s steps(22, end) 1;
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% { opacity: 1; }
+  50%,
+  100% { opacity: 0; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-block::after,
+  .typewriter-once {
+    animation: none !important;
+    border-right: 0;
+  }
+}

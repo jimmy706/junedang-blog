@@ -111,6 +111,22 @@
       }
     });
 
+    // Wrap tables for horizontal scrolling
+    const tables = contentElement.querySelectorAll("table");
+    tables.forEach((table) => {
+      // Create wrapper if not already wrapped
+      if (table.parentElement?.classList.contains("table-wrapper")) return;
+      
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrapper";
+      wrapper.style.overflowX = "auto";
+      wrapper.style.maxWidth = "100%";
+      wrapper.style.marginBottom = "1rem";
+      
+      table.parentNode?.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+
     // Add copy buttons to code blocks
     const codeBlocks = contentElement.querySelectorAll("pre");
     codeBlocks.forEach((pre) => {
@@ -275,6 +291,7 @@
     padding: 1rem;
     overflow-x: auto;
     margin: 1rem 0;
+    max-width: 100%;
   }
 
   :global(.blog-content code) {

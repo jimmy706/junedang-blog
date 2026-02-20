@@ -1,74 +1,60 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Container from "$lib/Container.svelte";
-  import Trash from "../../components/icons/Trash.svelte";
-  import PostItem from "../../lib/post/PostItem.svelte";
+  import TerminalPanel from "$lib/components/TerminalPanel.svelte";
+  import PostListRow from "$lib/components/PostListRow.svelte";
+  import PostWindowCard from "$lib/components/PostWindowCard.svelte";
+  import { initViewMode, setViewMode, viewMode, type ViewMode } from "$lib/stores/viewMode";
+
   export let data;
-  
-  // Make these reactive to data changes during client-side navigation
+
   $: posts = data.posts;
   $: currentTag = data.currentTag;
+
+  onMount(() => {
+    initViewMode();
+  });
 </script>
 
 <svelte:head>
   <title>Junedang | Articles</title>
-  <meta name="description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
-  <meta property="og:title" content="Articles | Junedang Blog" />
-  <meta property="og:description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
-  <meta property="og:image" content="/favicon.jpeg" />
-  <meta property="og:url" content="https://junedang.com/posts" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Articles | Junedang Blog" />
-  <meta name="twitter:description" content="Articles about technology, programming, cloud computing, and finance by June Dang." />
-  <meta name="twitter:image" content="/favicon.jpeg" />
 </svelte:head>
+
 <Container>
-  <div class="max-w-4xl mx-auto font-mono">
-    <!-- Terminal Header -->
-    <div class="border-2 border-black bg-white mb-8">
-      <div class="border-b-2 border-black px-4 py-2 bg-white">
-        <span class="text-black">SYSTEM: POSTS.EXE</span>
-      </div>
-      <div class="p-4">
-        <pre class="text-black text-sm leading-relaxed">$ ls -la /posts{currentTag ? ` --filter-tag="${currentTag}"` : ''}
-total {posts?.length || 0}
-drwxr-xr-x	.
-drwxr-xr-x	..
-rw-r--r--	index.txt
-</pre>
+  <div class="mx-auto max-w-6xl space-y-6">
+    <TerminalPanel title="$ ls -la /posts">
+      <p class="text-sm">total: {posts?.length || 0} {currentTag ? `(tag #${currentTag})` : ""}</p>
+      <div class="mt-4 flex flex-wrap gap-2 text-xs">
+        <select
+          class="focus-terminal border-2 border-ink bg-transparent px-3 py-1 text-xs terminal-hover dark:border-accent-terminal dark:text-accent-terminal"
+          value={$viewMode}
+          on:change={(e) => setViewMode(e.currentTarget.value as ViewMode)}
+        >
+          <option value="list">&gt; view list</option>
+          <option value="windows">&gt; view windows</option>
+        </select>
         {#if currentTag}
-          <div class="mt-4">
-            <div class="flex items-center gap-2">
-              <span class="text-black text-sm">Filtering by tag:</span>
-              <span class="inline-block border-2 border-black px-2 py-1 text-xs font-mono bg-white">
-                #{currentTag}
-              </span>
-              <a
-                href="/posts"
-                class="inline-flex items-center gap-1 text-black border-2 border-black px-3 py-1 text-xs hover:bg-black hover:text-white transition-colors"
-              >
-                <Trash class="size-4" /> Clear filter
-              </a>
-            </div>
-          </div>
+          <a href="/posts" class="focus-terminal border-2 border-ink px-3 py-1 terminal-hover dark:border-accent-terminal">&gt; clear tag</a>
         {/if}
       </div>
-    </div>
+    </TerminalPanel>
 
-    <!-- Posts Listing Terminal -->
-    <div class="border-2 border-black bg-white">
-      <div class="border-b-2 border-black px-4 py-2 bg-white">
-        <span class="text-black">$ cat index.txt</span>
-      </div>
-      <div class="p-4">
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+    {#if $viewMode === "list"}
+      <TerminalPanel title="$ cat files.list">
+        <div class="border-2 border-ink dark:border-accent-terminal">
           {#each posts as post}
-            <div>
-              <PostItem {post} />
-            </div>
+            <PostListRow {post} />
           {/each}
         </div>
-      </div>
-    </div>
+      </TerminalPanel>
+    {:else}
+      <TerminalPanel title="$ open windows.mode" controls={true}>
+        <div class="grid gap-5 md:grid-cols-2">
+          {#each posts as post}
+            <PostWindowCard {post} />
+          {/each}
+        </div>
+      </TerminalPanel>
+    {/if}
   </div>
 </Container>
