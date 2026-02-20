@@ -43,13 +43,9 @@
           <p>$ location</p>
           <p class="mt-1 pl-4">Vietnam</p>
         </div>
-        <div>
-          <p>$ stack</p>
-          <p class="mt-1 pl-4 cursor-block">Quarkus • Svelte • Deno • PostgreSQL • Cloudflare • K8s</p>
-        </div>
       </div>
       <div class="mt-6 border-t-2 border-ink pt-4 dark:border-accent-terminal">
-        <p class="mb-2 text-xs">$ links</p>
+        <p class="mb-2 cursor-block">$ links ps</p>
         <SocialLinks
           showTitle={false}
           containerClass="flex flex-wrap gap-2"
