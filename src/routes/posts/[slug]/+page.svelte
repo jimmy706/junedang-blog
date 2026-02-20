@@ -291,31 +291,42 @@
 
   :global(.blog-content pre) {
     background-color: #f8fafc;
-    border-radius: 0.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.25rem;
     padding: 1rem;
     overflow-x: auto;
     margin: 1rem 0;
     max-width: 100%;
+    color: #171717;
   }
 
   :global(.dark .blog-content pre) {
     background-color: #1e2424;
+    border-color: #334155;
+    color: #f7f3e8;
   }
 
   :global(.blog-content code) {
     background-color: #f8fafc;
-    padding: 0.125rem 0.25rem;
+    border: 1px solid #e2e8f0;
+    padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     font-family: "Courier New", monospace;
+    color: #171717;
+    font-size: 0.9em;
   }
 
   :global(.dark .blog-content code) {
     background-color: #1e2424;
+    border-color: #334155;
+    color: #00b56a;
   }
 
   :global(.blog-content pre code) {
     background-color: transparent;
+    border: none;
     padding: 0;
+    color: inherit;
   }
 
   :global(.blog-content blockquote) {
@@ -381,6 +392,39 @@
 
   :global(.dark .blog-content th) {
     background-color: #1e2424;
+  }
+
+  /* Dark mode syntax highlighting adjustments */
+  :global(.dark .blog-content pre code .hljs-comment),
+  :global(.dark .blog-content pre code .hljs-quote) {
+    color: #94a3b8;
+  }
+
+  :global(.dark .blog-content pre code .hljs-keyword),
+  :global(.dark .blog-content pre code .hljs-selector-tag),
+  :global(.dark .blog-content pre code .hljs-type) {
+    color: #ef5da8;
+  }
+
+  :global(.dark .blog-content pre code .hljs-string),
+  :global(.dark .blog-content pre code .hljs-attr),
+  :global(.dark .blog-content pre code .hljs-addition) {
+    color: #00b56a;
+  }
+
+  :global(.dark .blog-content pre code .hljs-number),
+  :global(.dark .blog-content pre code .hljs-literal) {
+    color: #fbbf24;
+  }
+
+  :global(.dark .blog-content pre code .hljs-title),
+  :global(.dark .blog-content pre code .hljs-function) {
+    color: #60a5fa;
+  }
+
+  :global(.dark .blog-content pre code .hljs-variable),
+  :global(.dark .blog-content pre code .hljs-name) {
+    color: #f7f3e8;
   }
 
   /* Copy code button styles */
