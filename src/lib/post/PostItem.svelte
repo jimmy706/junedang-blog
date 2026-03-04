@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { Post } from "../../types/posts";
   import PostItemWithImage from "./PostItemWithImage.svelte";
-  import PostItemWithNoImage from "./PostItemWithNoImage.svelte";
   export let post: Post;
-  const havingImage = !!post.image;
+  
+  // Use placeholder image if post doesn't have an image
+  const postWithImage = {
+    ...post,
+    image: post.image || '/image/placeholder.png'
+  };
 </script>
 
-{#if havingImage}
-  <PostItemWithImage {post} />
-{:else}
-  <PostItemWithNoImage {post} />
-{/if}
+<PostItemWithImage post={postWithImage} />

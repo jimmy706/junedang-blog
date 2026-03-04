@@ -17,18 +17,18 @@
     <span class="font-pixel">{post.title ?? "untitled"}</span>
     <span aria-hidden="true">[ _ ] [ □ ] [ X ]</span>
   </div>
-  <div class="grid gap-3 p-3 md:grid-cols-[120px_1fr]">
+  <div class="grid gap-4 p-3 md:grid-cols-[200px_1fr]">
     <img
       src={post.image ?? "/image/placeholder.png"}
       alt={post.title}
-      class="h-24 w-full border-2 border-current object-cover"
+      class="aspect-square w-full border-2 border-current object-cover md:w-[200px]"
     />
-    <div>
+    <div class="flex flex-col">
       <p class="text-sm font-semibold">{post.title}</p>
       {#if post.description}
-        <p class="mt-2 line-clamp-2 text-xs">{post.description}</p>
+        <p class="mt-2 line-clamp-3 text-xs">{post.description}</p>
       {/if}
-      <div class="mt-3 flex flex-wrap gap-2 text-[11px]">
+      <div class="mt-auto flex flex-wrap gap-2 pt-3 text-[11px]">
         {#each tags as tag}
           <span class="border border-current px-1 py-0.5">#{tag}</span>
         {/each}
