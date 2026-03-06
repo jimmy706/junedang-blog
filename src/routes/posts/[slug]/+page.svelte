@@ -17,6 +17,17 @@
         startOnLoad: true,
         theme: "default",
       });
+
+      if (contentElement) {
+        const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
+        mermaidDiagrams.forEach((diagram) => {
+          const element = diagram as HTMLElement;
+          if (!element.dataset.mermaidCode) {
+            element.dataset.mermaidCode = element.textContent?.trim() || "";
+          }
+        });
+      }
+
       mermaid.run();
     } catch (e) {
       // Fail silently in case mermaid fails to load on client
@@ -68,6 +79,7 @@
 
   export let data: PageData;
   let contentElement: HTMLElement;
+  let expandedMermaidSvg = "";
 
   // Since we're using server-side rendering, data is available immediately
   // We can set loading based on whether we have data or not
@@ -164,6 +176,57 @@
 
       wrapper.appendChild(copyButton);
     });
+
+    // Add actions for Mermaid diagrams
+    const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
+    mermaidDiagrams.forEach((mermaidDiagram) => {
+      // Prevent duplicate wrappers/buttons when content enhancement reruns
+      if (mermaidDiagram.parentElement?.classList.contains("mermaid-diagram-container")) {
+        return;
+      }
+
+      const diagramElement = mermaidDiagram as HTMLElement;
+      const mermaidSourceCode = diagramElement.dataset.mermaidCode || "";
+
+      // Create wrapper around Mermaid diagram for controls
+      const wrapper = document.createElement("div");
+      wrapper.className = "mermaid-diagram-container";
+
+      diagramElement.parentNode?.insertBefore(wrapper, diagramElement);
+      wrapper.appendChild(diagramElement);
+
+      const controls = document.createElement("div");
+      controls.className = "mermaid-controls";
+
+      const copyMermaidButton = document.createElement("button");
+      copyMermaidButton.className = "copy-code-button";
+      copyMermaidButton.textContent = "Copy Mermaid";
+      copyMermaidButton.setAttribute("aria-label", "Copy Mermaid diagram source");
+      copyMermaidButton.disabled = !mermaidSourceCode;
+
+      copyMermaidButton.addEventListener("click", () => {
+        copyCode(mermaidSourceCode);
+      });
+
+      const expandMermaidButton = document.createElement("button");
+      expandMermaidButton.className = "copy-code-button mermaid-expand-button";
+      expandMermaidButton.textContent = "Expand";
+      expandMermaidButton.setAttribute("aria-label", "View Mermaid diagram in larger size");
+
+      expandMermaidButton.addEventListener("click", () => {
+        const svg = diagramElement.querySelector("svg");
+        if (!svg) {
+          showCopyStatus("Unable to expand Mermaid diagram");
+          return;
+        }
+
+        expandedMermaidSvg = svg.outerHTML;
+      });
+
+      controls.appendChild(copyMermaidButton);
+      controls.appendChild(expandMermaidButton);
+      wrapper.appendChild(controls);
+    });
   };
 
   // Copy functionality state
@@ -218,6 +281,10 @@
     copyTimeout = setTimeout(() => {
       copyStatus = "";
     }, 3000);
+  };
+
+  const closeExpandedMermaid = () => {
+    expandedMermaidSvg = "";
   };
 
 </script>
@@ -472,6 +539,79 @@
   :global(.dark .copy-code-button:hover svg) {
     stroke: #171717;
   }
+
+  :global(.mermaid-diagram-container) {
+    position: relative;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 3.5rem 1rem 1rem;
+    margin: 1rem 0;
+    overflow: auto;
+    background: #ffffff;
+  }
+
+  :global(.dark .mermaid-diagram-container) {
+    border-color: #334155;
+    background: #121515;
+  }
+
+  :global(.mermaid-controls) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.mermaid-controls .copy-code-button) {
+    position: static;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  :global(.mermaid-controls .copy-code-button:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .mermaid-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+  }
+
+  .mermaid-modal-content {
+    width: min(95vw, 1200px);
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    border: 2px solid #171717;
+    overflow: auto;
+    padding: 1rem;
+  }
+
+  :global(.dark) .mermaid-modal-content {
+    background: #121515;
+    border-color: #00b56a;
+  }
+
+  .mermaid-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .mermaid-modal-diagram {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: max-content;
+  }
 </style>
 
 <!-- Blog post content container -->
@@ -601,3 +741,23 @@
     {/if}
   </div>
 </Container>
+
+{#if expandedMermaidSvg}
+  <div class="mermaid-modal-overlay" role="dialog" aria-modal="true" aria-label="Expanded Mermaid diagram">
+    <div class="mermaid-modal-content">
+      <div class="mermaid-modal-actions">
+        <button
+          class="copy-code-button"
+          type="button"
+          on:click={closeExpandedMermaid}
+          aria-label="Close expanded Mermaid diagram"
+        >
+          Close
+        </button>
+      </div>
+      <div class="mermaid-modal-diagram">
+        {@html DOMPurify.sanitize(expandedMermaidSvg)}
+      </div>
+    </div>
+  </div>
+{/if}
