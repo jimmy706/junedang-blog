@@ -8,6 +8,7 @@
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
   import Tags from "$lib/post/Tags.svelte";
   import ArrowUturnLeft from "../../../components/icons/ArrowUturnLeft.svelte";
+  import Modal from "$lib/Modal.svelte";
 
   // Load mermaid and highlight.js only in the browser to avoid SSR "document is not defined"
   onMount(async () => {
@@ -160,7 +161,7 @@
       copyButton.className = "copy-code-button";
       copyButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
         </svg>
       `;
       copyButton.setAttribute("aria-label", "Copy code");
@@ -200,7 +201,11 @@
 
       const copyMermaidButton = document.createElement("button");
       copyMermaidButton.className = "copy-code-button";
-      copyMermaidButton.textContent = "Copy Mermaid";
+      copyMermaidButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+        </svg>
+      `;
       copyMermaidButton.setAttribute("aria-label", "Copy Mermaid diagram source");
       copyMermaidButton.disabled = !mermaidSourceCode;
 
@@ -210,7 +215,11 @@
 
       const expandMermaidButton = document.createElement("button");
       expandMermaidButton.className = "copy-code-button mermaid-expand-button";
-      expandMermaidButton.textContent = "Expand";
+      expandMermaidButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+        </svg>
+      `;
       expandMermaidButton.setAttribute("aria-label", "View Mermaid diagram in larger size");
 
       expandMermaidButton.addEventListener("click", () => {
@@ -574,38 +583,6 @@
     cursor: not-allowed;
   }
 
-  .mermaid-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 1rem;
-  }
-
-  .mermaid-modal-content {
-    width: min(95vw, 1200px);
-    max-height: 90vh;
-    background: #ffffff;
-    border-radius: 0.5rem;
-    border: 2px solid #171717;
-    overflow: auto;
-    padding: 1rem;
-  }
-
-  :global(.dark) .mermaid-modal-content {
-    background: #121515;
-    border-color: #00b56a;
-  }
-
-  .mermaid-modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-  }
-
   .mermaid-modal-diagram {
     display: flex;
     justify-content: center;
@@ -742,22 +719,19 @@
   </div>
 </Container>
 
-{#if expandedMermaidSvg}
-  <div class="mermaid-modal-overlay" role="dialog" aria-modal="true" aria-label="Expanded Mermaid diagram">
-    <div class="mermaid-modal-content">
-      <div class="mermaid-modal-actions">
-        <button
-          class="copy-code-button"
-          type="button"
-          on:click={closeExpandedMermaid}
-          aria-label="Close expanded Mermaid diagram"
-        >
-          Close
-        </button>
-      </div>
-      <div class="mermaid-modal-diagram">
-        {@html DOMPurify.sanitize(expandedMermaidSvg)}
-      </div>
-    </div>
+<Modal
+  open={!!expandedMermaidSvg}
+  ariaLabel="Expanded Mermaid diagram"
+  on:close={closeExpandedMermaid}
+>
+  <svelte:fragment slot="header">
+    <span class="text-sm font-mono text-ink dark:text-ink-inverse">DIAGRAM.SVG</span>
+  </svelte:fragment>
+  <div class="mermaid-modal-diagram">
+    {@html DOMPurify.sanitize(expandedMermaidSvg, {
+      USE_PROFILES: { svg: true, svgFilters: true },
+      ADD_TAGS: ['foreignObject'],
+      ADD_ATTR: ['dominant-baseline', 'text-anchor', 'requiredFeatures'],
+    })}
   </div>
-{/if}
+</Modal>
