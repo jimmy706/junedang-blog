@@ -8,6 +8,7 @@
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
   import Tags from "$lib/post/Tags.svelte";
   import ArrowUturnLeft from "../../../components/icons/ArrowUturnLeft.svelte";
+  import Modal from "$lib/Modal.svelte";
 
   // Load mermaid and highlight.js only in the browser to avoid SSR "document is not defined"
   onMount(async () => {
@@ -17,6 +18,17 @@
         startOnLoad: true,
         theme: "default",
       });
+
+      if (contentElement) {
+        const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
+        mermaidDiagrams.forEach((diagram) => {
+          const element = diagram as HTMLElement;
+          if (!element.dataset.mermaidCode) {
+            element.dataset.mermaidCode = element.textContent?.trim() || "";
+          }
+        });
+      }
+
       mermaid.run();
     } catch (e) {
       // Fail silently in case mermaid fails to load on client
@@ -68,6 +80,7 @@
 
   export let data: PageData;
   let contentElement: HTMLElement;
+  let expandedMermaidSvg = "";
 
   // Since we're using server-side rendering, data is available immediately
   // We can set loading based on whether we have data or not
@@ -148,7 +161,7 @@
       copyButton.className = "copy-code-button";
       copyButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
         </svg>
       `;
       copyButton.setAttribute("aria-label", "Copy code");
@@ -163,6 +176,65 @@
       });
 
       wrapper.appendChild(copyButton);
+    });
+
+    // Add actions for Mermaid diagrams
+    const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
+    mermaidDiagrams.forEach((mermaidDiagram) => {
+      // Prevent duplicate wrappers/buttons when content enhancement reruns
+      if (mermaidDiagram.parentElement?.classList.contains("mermaid-diagram-container")) {
+        return;
+      }
+
+      const diagramElement = mermaidDiagram as HTMLElement;
+      const mermaidSourceCode = diagramElement.dataset.mermaidCode || "";
+
+      // Create wrapper around Mermaid diagram for controls
+      const wrapper = document.createElement("div");
+      wrapper.className = "mermaid-diagram-container";
+
+      diagramElement.parentNode?.insertBefore(wrapper, diagramElement);
+      wrapper.appendChild(diagramElement);
+
+      const controls = document.createElement("div");
+      controls.className = "mermaid-controls";
+
+      const copyMermaidButton = document.createElement("button");
+      copyMermaidButton.className = "copy-code-button";
+      copyMermaidButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+        </svg>
+      `;
+      copyMermaidButton.setAttribute("aria-label", "Copy Mermaid diagram source");
+      copyMermaidButton.disabled = !mermaidSourceCode;
+
+      copyMermaidButton.addEventListener("click", () => {
+        copyCode(mermaidSourceCode);
+      });
+
+      const expandMermaidButton = document.createElement("button");
+      expandMermaidButton.className = "copy-code-button mermaid-expand-button";
+      expandMermaidButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+        </svg>
+      `;
+      expandMermaidButton.setAttribute("aria-label", "View Mermaid diagram in larger size");
+
+      expandMermaidButton.addEventListener("click", () => {
+        const svg = diagramElement.querySelector("svg");
+        if (!svg) {
+          showCopyStatus("Unable to expand Mermaid diagram");
+          return;
+        }
+
+        expandedMermaidSvg = svg.outerHTML;
+      });
+
+      controls.appendChild(copyMermaidButton);
+      controls.appendChild(expandMermaidButton);
+      wrapper.appendChild(controls);
     });
   };
 
@@ -218,6 +290,10 @@
     copyTimeout = setTimeout(() => {
       copyStatus = "";
     }, 3000);
+  };
+
+  const closeExpandedMermaid = () => {
+    expandedMermaidSvg = "";
   };
 
 </script>
@@ -472,6 +548,47 @@
   :global(.dark .copy-code-button:hover svg) {
     stroke: #171717;
   }
+
+  :global(.mermaid-diagram-container) {
+    position: relative;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 3.5rem 1rem 1rem;
+    margin: 1rem 0;
+    overflow: auto;
+    background: #ffffff;
+  }
+
+  :global(.dark .mermaid-diagram-container) {
+    border-color: #334155;
+    background: #121515;
+  }
+
+  :global(.mermaid-controls) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.mermaid-controls .copy-code-button) {
+    position: static;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  :global(.mermaid-controls .copy-code-button:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .mermaid-modal-diagram {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: max-content;
+  }
 </style>
 
 <!-- Blog post content container -->
@@ -601,3 +718,20 @@
     {/if}
   </div>
 </Container>
+
+<Modal
+  open={!!expandedMermaidSvg}
+  ariaLabel="Expanded Mermaid diagram"
+  on:close={closeExpandedMermaid}
+>
+  <svelte:fragment slot="header">
+    <span class="text-sm font-mono text-ink dark:text-ink-inverse">DIAGRAM.SVG</span>
+  </svelte:fragment>
+  <div class="mermaid-modal-diagram">
+    {@html DOMPurify.sanitize(expandedMermaidSvg, {
+      USE_PROFILES: { svg: true, svgFilters: true },
+      ADD_TAGS: ['foreignObject'],
+      ADD_ATTR: ['dominant-baseline', 'text-anchor', 'requiredFeatures'],
+    })}
+  </div>
+</Modal>
