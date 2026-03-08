@@ -27,13 +27,13 @@
 		"@vitest/ui": "^3.2.4",
 		"autoprefixer": "^10.4.27",
 		"jsdom": "^27.4.0",
-		"svelte": "^5.53.6",
-		"svelte-check": "^4.4.4",
+		"svelte": "^5.53.7",
+		"svelte-check": "^4.4.5",
 		"tailwindcss": "^4.2.1",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.1",
 		"vitest": "^3.2.4",
-		"wrangler": "^4.69.0"
+		"wrangler": "^4.71.0"
 	},
 	"type": "module",
 	"dependencies": {
