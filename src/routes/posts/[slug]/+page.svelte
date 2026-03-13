@@ -40,6 +40,8 @@
       const hljs = await import("highlight.js");
       // Apply syntax highlighting to all code blocks
       if (contentElement) {
+        normalizeCodeBlocksForHighlighting();
+
         const codeBlocks = contentElement.querySelectorAll("pre code");
         codeBlocks.forEach((block) => {
           hljs.default.highlightElement(block as HTMLElement);
@@ -235,6 +237,17 @@
       controls.appendChild(copyMermaidButton);
       controls.appendChild(expandMermaidButton);
       wrapper.appendChild(controls);
+    });
+  };
+
+  const normalizeCodeBlocksForHighlighting = () => {
+    if (!contentElement) return;
+
+    const codeBlocks = contentElement.querySelectorAll("pre code");
+    codeBlocks.forEach((block) => {
+      // Normalize third-party code blocks to plain text before highlight.js runs.
+      // This avoids unescaped HTML warnings and prevents raw HTML from being rendered in code blocks.
+      block.textContent = block.textContent || "";
     });
   };
 
