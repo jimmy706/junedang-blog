@@ -2,7 +2,7 @@
   import PageLoading from "$lib/PageLoading.svelte";
   import { onMount } from "svelte";
   import Container from "$lib/Container.svelte";
-  import DOMPurify from "isomorphic-dompurify";
+  import { sanitize } from "isomorphic-dompurify";
   import ShareButtons from "$lib/post/ShareButtons.svelte";
   import Dropdown from "$lib/Dropdown.svelte";
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
@@ -693,7 +693,7 @@
         </div>
         <div class="p-4">
           <article class="blog-content max-w-none" bind:this={contentElement}>
-            {@html DOMPurify.sanitize(data.htmlContent)}
+            {@html sanitize(data.htmlContent)}
           </article>
           {#if data.post?.tags}
             {@const tagsArray = typeof data.post.tags === 'string' 
@@ -741,7 +741,7 @@
     <span class="text-sm font-mono text-ink dark:text-ink-inverse">DIAGRAM.SVG</span>
   </svelte:fragment>
   <div class="mermaid-modal-diagram">
-    {@html DOMPurify.sanitize(expandedMermaidSvg, {
+    {@html sanitize(expandedMermaidSvg, {
       USE_PROFILES: { svg: true, svgFilters: true },
       ADD_TAGS: ['foreignObject'],
       ADD_ATTR: ['dominant-baseline', 'text-anchor', 'requiredFeatures'],
