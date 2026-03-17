@@ -43,7 +43,7 @@ describe('posts/[slug] page server load', () => {
         description: 'A test post',
         image: 'https://example.com/test-image.jpg',
         date: '2024-01-01',
-        tags: 'test'
+        tags: ['test']
       }
     ];
     

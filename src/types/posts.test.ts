@@ -8,7 +8,7 @@ describe('Post type definition', () => {
       url: 'test-post.html',
       date: '2023-12-01',
       categories: 'tech',
-      tags: 'svelte, testing',
+      tags: ['svelte', 'testing'],
       layout: 'post',
       description: 'A test post',
       image: '/images/test.jpg'
@@ -18,7 +18,7 @@ describe('Post type definition', () => {
     expect(post.url).toBe('test-post.html');
     expect(post.date).toBe('2023-12-01');
     expect(post.categories).toBe('tech');
-    expect(post.tags).toBe('svelte, testing');
+    expect(post.tags).toEqual(['svelte', 'testing']);
     expect(post.layout).toBe('post');
     expect(post.description).toBe('A test post');
     expect(post.image).toBe('/images/test.jpg');
