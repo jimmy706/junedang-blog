@@ -40,7 +40,6 @@
 		"axios": "^1.13.6",
 		"dotenv": "^17.3.1",
 		"highlight.js": "^11.11.1",
-		"isomorphic-dompurify": "^3.4.0",
 		"mermaid": "^11.13.0",
 		"node-cache": "^5.1.2",
 		"npm-check-updates": "^19.6.5"
