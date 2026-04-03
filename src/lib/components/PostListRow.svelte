@@ -4,12 +4,37 @@
 
   export let post: Post;
 
-  const toDate = (value?: string): string => {
+  const formatYyyyMmDd = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const parsePostDate = (value?: string): Date | null => {
     if (!value) {
-      return new Date().toISOString().slice(0, 10);
+      return null;
     }
 
-    return new Date(value).toISOString().slice(0, 10);
+    const candidates = [
+      value,
+      value.replace(" ", "T"),
+      value.replace(/\s\+0000$/, "Z").replace(" ", "T")
+    ];
+
+    for (const candidate of candidates) {
+      const parsed = new Date(candidate);
+      if (!Number.isNaN(parsed.getTime())) {
+        return parsed;
+      }
+    }
+
+    return null;
+  };
+
+  const toDate = (value?: string): string => {
+    const parsed = parsePostDate(value);
+    return formatYyyyMmDd(parsed ?? new Date());
   };
 
   const kbSize = (text: string): string => {

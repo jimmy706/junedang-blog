@@ -4,7 +4,7 @@ import { writable } from "svelte/store";
 export type ViewMode = "list" | "windows";
 const STORAGE_KEY = "junedang-post-view";
 
-export const viewMode = writable<ViewMode>("list");
+export const viewMode = writable<ViewMode>("windows");
 
 export function initViewMode(): void {
   if (!browser) {

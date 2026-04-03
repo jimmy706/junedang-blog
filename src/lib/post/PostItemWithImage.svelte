@@ -26,7 +26,7 @@
 
     {#if post.tags && post.tags.length > 0}
       <div class="mt-4">
-        <Tags tags={post.tags} limit={3} />
+        <Tags tags={post.tags} limit={3} clickable={false} />
       </div>
     {/if}
 
