@@ -62,6 +62,7 @@
   // Add proper type definition for data prop
   interface PageData {
     blogPostUrl: string;
+    blogUrlPrefix?: string;
     slug: string;
     htmlContent: string | null;
     markdownContent: string | null;
@@ -83,6 +84,19 @@
   export let data: PageData;
   let contentElement: HTMLElement;
   let expandedMermaidSvg = "";
+  let thumbnailImageUrl = "";
+
+  const resolveImageUrl = (imageUrl?: string | null) => {
+    if (!imageUrl) return "";
+
+    try {
+      return new URL(imageUrl, data.blogUrlPrefix || undefined).toString();
+    } catch {
+      return imageUrl;
+    }
+  };
+
+  $: thumbnailImageUrl = resolveImageUrl(data.post?.image);
 
   // Since we're using server-side rendering, data is available immediately
   // We can set loading based on whether we have data or not
@@ -316,7 +330,7 @@
   <meta name="description" content={data.post?.description || `Blog post: ${data.slug}`} />
   <meta property="og:title" content={data.post?.title || data.slug} />
   <meta property="og:description" content={data.post?.description || `Blog post: ${data.slug}`} />
-  <meta property="og:image" content={data.post?.image || '/favicon.jpeg'} />
+  <meta property="og:image" content={thumbnailImageUrl || '/favicon.jpeg'} />
   <meta property="og:url" content={`https://junedang.com/posts/${data.slug}`} />
   <meta property="og:type" content="article" />
   {#if data.post?.date}
@@ -328,7 +342,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={data.post?.title || data.slug} />
   <meta name="twitter:description" content={data.post?.description || `Blog post: ${data.slug}`} />
-  <meta name="twitter:image" content={data.post?.image || '/favicon.jpeg'} />
+  <meta name="twitter:image" content={thumbnailImageUrl || '/favicon.jpeg'} />
 </svelte:head>
 
 <style>
@@ -692,6 +706,22 @@
           </div>
         </div>
         <div class="p-4">
+          {#if thumbnailImageUrl}
+            <div
+              class="mb-6 rounded-lg transition-colors">
+              <div
+                class="flex rounded-lg aspect-[16/9] overflow-hidden w-full h-full items-center justify-center rounded-md transition-colors bg-transparent"
+              >
+                <img
+                  src={thumbnailImageUrl}
+                  alt={data.post?.title ? `${data.post.title} thumbnail` : `${data.slug} thumbnail`}
+                  class="h-full w-full object-contain"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          {/if}
+
           <article class="blog-content max-w-none" bind:this={contentElement}>
             {@html sanitizeHtml(data.htmlContent)}
           </article>
