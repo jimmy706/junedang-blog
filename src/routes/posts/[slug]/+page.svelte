@@ -19,6 +19,14 @@
         theme: "default",
       });
 
+      mermaid.registerIconPacks([
+        {
+          name: "logos",
+          loader: () =>
+            import("@iconify-json/streamline-freehand-color").then((module) => module.icons),
+        },
+      ]);
+
       if (contentElement) {
         const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
         mermaidDiagrams.forEach((diagram) => {
@@ -46,7 +54,7 @@
         codeBlocks.forEach((block) => {
           hljs.default.highlightElement(block as HTMLElement);
         });
-        
+
         // Enhance content after highlighting
         enhanceContent();
       }
@@ -145,13 +153,13 @@
     tables.forEach((table) => {
       // Create wrapper if not already wrapped
       if (table.parentElement?.classList.contains("table-wrapper")) return;
-      
+
       const wrapper = document.createElement("div");
       wrapper.className = "table-wrapper";
       wrapper.style.overflowX = "auto";
       wrapper.style.maxWidth = "100%";
       wrapper.style.marginBottom = "1rem";
-      
+
       table.parentNode?.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     });
@@ -160,14 +168,18 @@
     const codeBlocks = contentElement.querySelectorAll("pre");
     codeBlocks.forEach((pre) => {
       // Skip if already has a copy button, if it's a triple pre tag, or if it's a mermaid diagram
-      if (pre.querySelector(".copy-code-button") || pre.parentElement?.tagName === "PRE" || pre.classList.contains("mermaid")) {
+      if (
+        pre.querySelector(".copy-code-button") ||
+        pre.parentElement?.tagName === "PRE" ||
+        pre.classList.contains("mermaid")
+      ) {
         return;
       }
 
       // Create wrapper for positioning
       const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
-      
+
       // Wrap the pre element
       pre.parentNode?.insertBefore(wrapper, pre);
       wrapper.appendChild(pre);
@@ -181,12 +193,12 @@
         </svg>
       `;
       copyButton.setAttribute("aria-label", "Copy code");
-      
+
       // Get code content - use textContent which is already safe from XSS
       // textContent automatically handles escaping and returns plain text
       const codeElement = pre.querySelector("code");
       const codeText = codeElement?.textContent || pre.textContent || "";
-      
+
       copyButton.addEventListener("click", () => {
         copyCode(codeText);
       });
@@ -198,7 +210,11 @@
     const mermaidDiagrams = contentElement.querySelectorAll(".mermaid");
     mermaidDiagrams.forEach((mermaidDiagram) => {
       // Prevent duplicate wrappers/buttons when content enhancement reruns
-      if (mermaidDiagram.parentElement?.classList.contains("mermaid-diagram-container")) {
+      if (
+        mermaidDiagram.parentElement?.classList.contains(
+          "mermaid-diagram-container",
+        )
+      ) {
         return;
       }
 
@@ -222,7 +238,10 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
         </svg>
       `;
-      copyMermaidButton.setAttribute("aria-label", "Copy Mermaid diagram source");
+      copyMermaidButton.setAttribute(
+        "aria-label",
+        "Copy Mermaid diagram source",
+      );
       copyMermaidButton.disabled = !mermaidSourceCode;
 
       copyMermaidButton.addEventListener("click", () => {
@@ -236,7 +255,10 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
         </svg>
       `;
-      expandMermaidButton.setAttribute("aria-label", "View Mermaid diagram in larger size");
+      expandMermaidButton.setAttribute(
+        "aria-label",
+        "View Mermaid diagram in larger size",
+      );
 
       expandMermaidButton.addEventListener("click", () => {
         const svg = diagramElement.querySelector("svg");
@@ -272,7 +294,7 @@
   // Function to copy HTML content
   const copyAsHtml = async () => {
     if (!data.htmlContent) return;
-    
+
     try {
       await navigator.clipboard.writeText(data.htmlContent);
       showCopyStatus("HTML copied to clipboard!");
@@ -322,15 +344,20 @@
   const closeExpandedMermaid = () => {
     expandedMermaidSvg = "";
   };
-
 </script>
 
 <svelte:head>
   <title>Junedang | {data.post?.title || data.slug}</title>
-  <meta name="description" content={data.post?.description || `Blog post: ${data.slug}`} />
+  <meta
+    name="description"
+    content={data.post?.description || `Blog post: ${data.slug}`}
+  />
   <meta property="og:title" content={data.post?.title || data.slug} />
-  <meta property="og:description" content={data.post?.description || `Blog post: ${data.slug}`} />
-  <meta property="og:image" content={thumbnailImageUrl || '/favicon.jpeg'} />
+  <meta
+    property="og:description"
+    content={data.post?.description || `Blog post: ${data.slug}`}
+  />
+  <meta property="og:image" content={thumbnailImageUrl || "/favicon.jpeg"} />
   <meta property="og:url" content={`https://junedang.com/posts/${data.slug}`} />
   <meta property="og:type" content="article" />
   {#if data.post?.date}
@@ -341,9 +368,207 @@
   {/if}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={data.post?.title || data.slug} />
-  <meta name="twitter:description" content={data.post?.description || `Blog post: ${data.slug}`} />
-  <meta name="twitter:image" content={thumbnailImageUrl || '/favicon.jpeg'} />
+  <meta
+    name="twitter:description"
+    content={data.post?.description || `Blog post: ${data.slug}`}
+  />
+  <meta name="twitter:image" content={thumbnailImageUrl || "/favicon.jpeg"} />
 </svelte:head>
+
+<!-- Blog post content container -->
+<Container>
+  <div class="max-w-4xl mx-auto font-mono">
+    <div
+      class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8"
+    >
+      <div
+        class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+      >
+        <span class="text-ink dark:text-ink-inverse">SYSTEM: POST.EXE</span>
+      </div>
+      <div class="px-4 py-2 text-ink dark:text-ink-inverse">
+        <span>$ cat /posts/{data.slug}.md</span>
+      </div>
+    </div>
+
+    {#if loading}
+      <PageLoading {loading} />
+    {:else if !data.success}
+      <div
+        class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+      >
+        <div
+          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+        >
+          <span class="text-ink dark:text-ink-inverse"
+            >$ echo \"content not found\"</span
+          >
+        </div>
+        <div class="p-4">
+          <pre
+            class="text-ink dark:text-ink-inverse text-sm leading-relaxed">{data.error ||
+              "Unable to load blog post content"}
+
+> RETURN TO /posts</pre>
+          <div class="mt-4">
+            <a
+              href="/posts"
+              class="inline-flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
+              ><ArrowUturnLeft /> BACK TO POSTS</a
+            >
+          </div>
+        </div>
+      </div>
+    {:else if data.htmlContent}
+      <div
+        class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+      >
+        <div
+          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark flex items-center justify-between gap-2"
+        >
+          <span class="text-ink dark:text-ink-inverse"
+            >$ render {data.slug}</span
+          >
+          <div class="flex items-center gap-2">
+            {#if copyStatus}
+              <span class="text-sm text-ink dark:text-ink-inverse"
+                >{copyStatus}</span
+              >
+            {/if}
+            <Dropdown align="right" containerClass="relative inline-block">
+              <div
+                slot="trigger"
+                class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
+              >
+                <span class="text-sm">Copy Page</span>
+                <ChervonDown class="size-4 stroke-current" />
+              </div>
+              <div slot="default" let:close>
+                <button
+                  on:click={() => {
+                    copyAsHtml();
+                    close();
+                  }}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
+                >
+                  Copy as HTML
+                </button>
+                <button
+                  on:click={() => {
+                    copyAsMarkdown();
+                    close();
+                  }}
+                  disabled={!data.markdownContent}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse transition-colors border-t-2 border-ink dark:border-accent-terminal {data.markdownContent
+                    ? 'hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink'
+                    : 'opacity-50 cursor-not-allowed'}"
+                >
+                  Copy as Markdown
+                  {#if !data.markdownContent}
+                    <span class="text-xs">(unavailable)</span>
+                  {/if}
+                </button>
+                <button
+                  on:click={() => {
+                    copyDomainUrl();
+                    close();
+                  }}
+                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors border-t-2 border-ink dark:border-accent-terminal"
+                >
+                  Copy URL
+                </button>
+              </div>
+            </Dropdown>
+          </div>
+        </div>
+        <div class="p-4">
+          {#if thumbnailImageUrl}
+            <div class="mb-6 rounded-lg transition-colors">
+              <div
+                class="flex rounded-lg aspect-[16/9] overflow-hidden w-full h-full items-center justify-center rounded-md transition-colors bg-transparent"
+              >
+                <img
+                  src={thumbnailImageUrl}
+                  alt={data.post?.title
+                    ? `${data.post.title} thumbnail`
+                    : `${data.slug} thumbnail`}
+                  class="h-full w-full object-contain"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          {/if}
+
+          <article class="blog-content max-w-none" bind:this={contentElement}>
+            {@html sanitizeHtml(data.htmlContent)}
+          </article>
+          {#if data.post?.tags}
+            {@const tagsArray =
+              typeof data.post.tags === "string"
+                ? data.post.tags
+                    .split(",")
+                    .map((tag) => tag.trim())
+                    .filter((tag) => tag.length > 0)
+                : Array.isArray(data.post.tags)
+                  ? data.post.tags
+                  : []}
+            {#if tagsArray.length > 0}
+              <div
+                class="mt-6 pt-6 border-t-2 border-ink dark:border-accent-terminal"
+              >
+                <h4
+                  class="text-sm font-semibold mb-3 text-ink dark:text-ink-inverse"
+                >
+                  TAGS:
+                </h4>
+                <Tags tags={tagsArray} />
+              </div>
+            {/if}
+          {/if}
+          <ShareButtons title={data.slug} className="mt-6" />
+        </div>
+      </div>
+    {:else}
+      <div
+        class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+      >
+        <div
+          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark"
+        >
+          <span class="text-ink dark:text-ink-inverse"
+            >$ echo \"no content available\"</span
+          >
+        </div>
+        <div class="p-4">
+          <pre
+            class="text-ink dark:text-ink-inverse text-sm leading-relaxed">The blog post content is currently unavailable.</pre>
+          <div class="mt-4">
+            <a
+              href="/posts"
+              class="inline-block text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
+              ><ArrowUturnLeft class="size-4" /> BACK TO POSTS</a
+            >
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
+</Container>
+
+<Modal
+  open={!!expandedMermaidSvg}
+  ariaLabel="Expanded Mermaid diagram"
+  on:close={closeExpandedMermaid}
+>
+  <svelte:fragment slot="header">
+    <span class="text-sm font-mono text-ink dark:text-ink-inverse"
+      >DIAGRAM.SVG</span
+    >
+  </svelte:fragment>
+  <div class="mermaid-modal-diagram">
+    {@html sanitizeHtml(expandedMermaidSvg, { allowSvg: true })}
+  </div>
+</Modal>
 
 <style>
   /* Blog post content styles */
@@ -617,160 +842,3 @@
     min-width: max-content;
   }
 </style>
-
-<!-- Blog post content container -->
-<Container>
-  <div class="max-w-4xl mx-auto font-mono">
-    <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8">
-      <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-        <span class="text-ink dark:text-ink-inverse">SYSTEM: POST.EXE</span>
-      </div>
-      <div class="px-4 py-2 text-ink dark:text-ink-inverse">
-        <span>$ cat /posts/{data.slug}.md</span>
-      </div>
-    </div>
-
-    {#if loading}
-      <PageLoading {loading} />
-    {:else if !data.success}
-      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-          <span class="text-ink dark:text-ink-inverse">$ echo \"content not found\"</span>
-        </div>
-        <div class="p-4">
-          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">{data.error ||
-              "Unable to load blog post content"}
-
-> RETURN TO /posts</pre>
-          <div class="mt-4">
-            <a
-              href="/posts"
-              class="inline-flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
-              ><ArrowUturnLeft /> BACK TO POSTS</a
-            >
-          </div>
-        </div>
-      </div>
-    {:else if data.htmlContent}
-      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-        <div
-          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark flex items-center justify-between gap-2"
-        >
-          <span class="text-ink dark:text-ink-inverse">$ render {data.slug}</span>
-          <div class="flex items-center gap-2">
-            {#if copyStatus}
-              <span class="text-sm text-ink dark:text-ink-inverse">{copyStatus}</span>
-            {/if}
-            <Dropdown align="right" containerClass="relative inline-block">
-              <div
-                slot="trigger"
-                class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
-              >
-                <span class="text-sm">Copy Page</span>
-                <ChervonDown class="size-4 stroke-current" />
-              </div>
-              <div slot="default" let:close>
-                <button
-                  on:click={() => {
-                    copyAsHtml();
-                    close();
-                  }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
-                >
-                  Copy as HTML
-                </button>
-                <button
-                  on:click={() => {
-                    copyAsMarkdown();
-                    close();
-                  }}
-                  disabled={!data.markdownContent}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse transition-colors border-t-2 border-ink dark:border-accent-terminal {data.markdownContent ? 'hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink' : 'opacity-50 cursor-not-allowed'}"
-                >
-                  Copy as Markdown
-                  {#if !data.markdownContent}
-                    <span class="text-xs">(unavailable)</span>
-                  {/if}
-                </button>
-                <button
-                  on:click={() => {
-                    copyDomainUrl();
-                    close();
-                  }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors border-t-2 border-ink dark:border-accent-terminal"
-                >
-                  Copy URL
-                </button>
-              </div>
-            </Dropdown>
-          </div>
-        </div>
-        <div class="p-4">
-          {#if thumbnailImageUrl}
-            <div
-              class="mb-6 rounded-lg transition-colors">
-              <div
-                class="flex rounded-lg aspect-[16/9] overflow-hidden w-full h-full items-center justify-center rounded-md transition-colors bg-transparent"
-              >
-                <img
-                  src={thumbnailImageUrl}
-                  alt={data.post?.title ? `${data.post.title} thumbnail` : `${data.slug} thumbnail`}
-                  class="h-full w-full object-contain"
-                  loading="eager"
-                />
-              </div>
-            </div>
-          {/if}
-
-          <article class="blog-content max-w-none" bind:this={contentElement}>
-            {@html sanitizeHtml(data.htmlContent)}
-          </article>
-          {#if data.post?.tags}
-            {@const tagsArray = typeof data.post.tags === 'string' 
-              ? data.post.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
-              : Array.isArray(data.post.tags) 
-                ? data.post.tags 
-                : []}
-            {#if tagsArray.length > 0}
-              <div class="mt-6 pt-6 border-t-2 border-ink dark:border-accent-terminal">
-                <h4 class="text-sm font-semibold mb-3 text-ink dark:text-ink-inverse">TAGS:</h4>
-                <Tags tags={tagsArray} />
-              </div>
-            {/if}
-          {/if}
-          <ShareButtons title={data.slug} className="mt-6" />
-        </div>
-      </div>
-    {:else}
-      <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-        <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
-          <span class="text-ink dark:text-ink-inverse">$ echo \"no content available\"</span>
-        </div>
-        <div class="p-4">
-          <pre
-            class="text-ink dark:text-ink-inverse text-sm leading-relaxed">The blog post content is currently unavailable.</pre>
-          <div class="mt-4">
-            <a
-              href="/posts"
-              class="inline-block text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-4 py-2 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
-              ><ArrowUturnLeft class="size-4" /> BACK TO POSTS</a
-            >
-          </div>
-        </div>
-      </div>
-    {/if}
-  </div>
-</Container>
-
-<Modal
-  open={!!expandedMermaidSvg}
-  ariaLabel="Expanded Mermaid diagram"
-  on:close={closeExpandedMermaid}
->
-  <svelte:fragment slot="header">
-    <span class="text-sm font-mono text-ink dark:text-ink-inverse">DIAGRAM.SVG</span>
-  </svelte:fragment>
-  <div class="mermaid-modal-diagram">
-    {@html sanitizeHtml(expandedMermaidSvg, { allowSvg: true })}
-  </div>
-</Modal>
