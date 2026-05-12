@@ -23,8 +23,7 @@ export function initTheme(): void {
   }
 
   const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const nextTheme = storedTheme ?? (prefersDark ? "dark" : "light");
+  const nextTheme = storedTheme ?? "light";
   applyTheme(nextTheme);
 }
 
