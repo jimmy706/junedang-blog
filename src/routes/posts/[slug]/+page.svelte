@@ -86,6 +86,16 @@
       description?: string;
       image?: string;
     } | null;
+    prevPost?: {
+      title: string;
+      url: string;
+      slug: string;
+    } | null;
+    nextPost?: {
+      title: string;
+      url: string;
+      slug: string;
+    } | null;
     [key: string]: any; // Allow for additional properties
   }
 
@@ -526,6 +536,39 @@
             {/if}
           {/if}
           <ShareButtons title={data.slug} className="mt-6" />
+
+          <!-- Prev/Next Navigation -->
+          {#if data.prevPost || data.nextPost}
+            <div class="mt-6">
+              <div class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+                <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
+                  <span class="text-ink dark:text-ink-inverse font-mono">$ ls ../</span>
+                </div>
+                <div class="p-4 flex justify-between items-center gap-4">
+                  {#if data.prevPost}
+                    <a
+                      href="/posts/{data.prevPost.slug}"
+                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors max-w-xs"
+                    >
+                      <span>←</span>
+                      <span class="truncate">{data.prevPost.title}</span>
+                    </a>
+                  {:else}
+                    <div></div>
+                  {/if}
+                  {#if data.nextPost}
+                    <a
+                      href="/posts/{data.nextPost.slug}"
+                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors max-w-xs text-right ml-auto"
+                    >
+                      <span class="truncate">{data.nextPost.title}</span>
+                      <span>→</span>
+                    </a>
+                  {/if}
+                </div>
+              </div>
+            </div>
+          {/if}
         </div>
       </div>
     {:else}

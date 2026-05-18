@@ -46,7 +46,7 @@ describe('posts/[slug] page server load', () => {
         tags: ['test']
       }
     ];
-    
+
     vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
@@ -64,7 +64,9 @@ describe('posts/[slug] page server load', () => {
       markdownContent: mockMarkdownContent,
       blogUrlPrefix: 'https://test.github.io',
       success: true,
-      post: mockPosts[0]
+      post: mockPosts[0],
+      prevPost: null,
+      nextPost: null
     });
   });
 
@@ -88,7 +90,9 @@ describe('posts/[slug] page server load', () => {
       blogUrlPrefix: 'https://test.github.io',
       success: false,
       error: 'Failed to load blog content',
-      post: null
+      post: null,
+      prevPost: null,
+      nextPost: null
     });
   });
 
@@ -106,7 +110,7 @@ describe('posts/[slug] page server load', () => {
         description: 'Another test post'
       }
     ];
-    
+
     vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
@@ -122,5 +126,127 @@ describe('posts/[slug] page server load', () => {
     expect(result.markdownContent).toBe(mockMarkdownContent);
     expect(result.success).toBe(true);
     expect(result.post).toEqual(mockPosts[0]);
+    expect(result.prevPost).toBeNull();
+    expect(result.nextPost).toBeNull();
+  });
+
+  it('should compute prevPost and nextPost correctly for middle post', async () => {
+    const axios = (await import('axios')).default;
+    const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
+    const { load } = await import('./+page.server');
+
+    const mockHtmlContent = '<article>Middle Post</article>';
+    const mockMarkdownContent = '# Middle Post\n\nContent';
+    const mockPosts = [
+      {
+        title: 'Newest Post',
+        url: 'https://test.github.io/test-blog/newest-post.html',
+        date: '2024-03-01'
+      },
+      {
+        title: 'Middle Post',
+        url: 'https://test.github.io/test-blog/middle-post.html',
+        date: '2024-02-01'
+      },
+      {
+        title: 'Oldest Post',
+        url: 'https://test.github.io/test-blog/oldest-post.html',
+        date: '2024-01-01'
+      }
+    ];
+
+    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
+    vi.mocked(getPosts).mockResolvedValue(mockPosts);
+
+    const params = { slug: 'middle-post' };
+    const result = await load({ params } as any);
+
+    expect(result.success).toBe(true);
+    expect(result.post?.title).toBe('Middle Post');
+    // nextPost should be newer (newer date = lower index)
+    expect(result.nextPost).toEqual({
+      title: 'Newest Post',
+      url: 'https://test.github.io/test-blog/newest-post.html',
+      slug: 'newest-post'
+    });
+    // prevPost should be older (older date = higher index)
+    expect(result.prevPost).toEqual({
+      title: 'Oldest Post',
+      url: 'https://test.github.io/test-blog/oldest-post.html',
+      slug: 'oldest-post'
+    });
+  });
+
+  it('should have no nextPost for newest post', async () => {
+    const axios = (await import('axios')).default;
+    const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
+    const { load } = await import('./+page.server');
+
+    const mockHtmlContent = '<article>Newest Post</article>';
+    const mockMarkdownContent = '# Newest Post\n\nContent';
+    const mockPosts = [
+      {
+        title: 'Newest Post',
+        url: 'https://test.github.io/test-blog/newest-post.html',
+        date: '2024-03-01'
+      },
+      {
+        title: 'Older Post',
+        url: 'https://test.github.io/test-blog/older-post.html',
+        date: '2024-02-01'
+      }
+    ];
+
+    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
+    vi.mocked(getPosts).mockResolvedValue(mockPosts);
+
+    const params = { slug: 'newest-post' };
+    const result = await load({ params } as any);
+
+    expect(result.success).toBe(true);
+    expect(result.nextPost).toBeNull();
+    expect(result.prevPost).toEqual({
+      title: 'Older Post',
+      url: 'https://test.github.io/test-blog/older-post.html',
+      slug: 'older-post'
+    });
+  });
+
+  it('should have no prevPost for oldest post', async () => {
+    const axios = (await import('axios')).default;
+    const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
+    const { load } = await import('./+page.server');
+
+    const mockHtmlContent = '<article>Oldest Post</article>';
+    const mockMarkdownContent = '# Oldest Post\n\nContent';
+    const mockPosts = [
+      {
+        title: 'Newer Post',
+        url: 'https://test.github.io/test-blog/newer-post.html',
+        date: '2024-03-01'
+      },
+      {
+        title: 'Oldest Post',
+        url: 'https://test.github.io/test-blog/oldest-post.html',
+        date: '2024-02-01'
+      }
+    ];
+
+    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
+    vi.mocked(getPosts).mockResolvedValue(mockPosts);
+
+    const params = { slug: 'oldest-post' };
+    const result = await load({ params } as any);
+
+    expect(result.success).toBe(true);
+    expect(result.prevPost).toBeNull();
+    expect(result.nextPost).toEqual({
+      title: 'Newer Post',
+      url: 'https://test.github.io/test-blog/newer-post.html',
+      slug: 'newer-post'
+    });
   });
 });
