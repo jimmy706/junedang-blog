@@ -3,7 +3,7 @@
   import Container from "$lib/Container.svelte";
   import TerminalPanel from "$lib/components/TerminalPanel.svelte";
   import PostListRow from "$lib/components/PostListRow.svelte";
-  import PostWindowCard from "$lib/components/PostWindowCard.svelte";
+  import PostItem from "$lib/post/PostItem.svelte";
   import { initViewMode, setViewMode, viewMode, type ViewMode } from "$lib/stores/viewMode";
 
   export let data;
@@ -49,9 +49,9 @@
       </TerminalPanel>
     {:else}
       <TerminalPanel title="$ open windows.mode" controls={true}>
-        <div class="grid gap-5 md:grid-cols-2">
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {#each posts as post}
-            <PostWindowCard {post} />
+            <PostItem {post} />
           {/each}
         </div>
       </TerminalPanel>
