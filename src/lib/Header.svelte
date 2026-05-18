@@ -341,10 +341,8 @@
       {#each menuItems as item}
         <a
           href={item.href}
-          class={mdMenuClass}
-          class:active={item.href === "/"
-            ? $page.url.pathname === item.href
-            : $page.url.pathname.startsWith(item.href)}>{item.name}</a
+          class="{mdMenuClass} {(item.href === '/' ? $page.url.pathname === item.href : $page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
+          >{item.name}</a
         >
       {/each}
     </div>
@@ -438,10 +436,7 @@
             {#each menuItems as item}
               <a
                 href={item.href}
-                class={smMenuClass}
-                class:active={item.href === "/"
-                  ? $page.url.pathname === item.href
-                  : $page.url.pathname.startsWith(item.href)}
+                class="{smMenuClass} {(item.href === '/' ? $page.url.pathname === item.href : $page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
                 on:click={() => (smMenuOpen = false)}>{item.name}</a
               >
             {/each}
@@ -451,41 +446,3 @@
     </div>
   </div>
 </header>
-
-<style>
-  .mdMenuItem.active {
-    background-color: #171717;
-    color: #f7f3e8;
-  }
-
-  .mdMenuItem.active:hover {
-    background-color: #171717;
-  }
-
-  :global(.dark) .mdMenuItem.active {
-    background-color: #00b56a;
-    color: #171717;
-  }
-
-  :global(.dark) .mdMenuItem.active:hover {
-    background-color: #00b56a;
-  }
-
-  .smMenuItem.active {
-    background-color: #171717;
-    color: #f7f3e8;
-  }
-
-  .smMenuItem.active:hover {
-    background-color: #171717;
-  }
-
-  :global(.dark) .smMenuItem.active {
-    background-color: #00b56a;
-    color: #171717;
-  }
-
-  :global(.dark) .smMenuItem.active:hover {
-    background-color: #00b56a;
-  }
-</style>
