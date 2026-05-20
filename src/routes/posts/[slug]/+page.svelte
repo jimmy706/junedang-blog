@@ -1,6 +1,6 @@
 <script lang="ts">
   import PageLoading from "$lib/PageLoading.svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import Container from "$lib/Container.svelte";
   import ShareButtons from "$lib/post/ShareButtons.svelte";
   import Dropdown from "$lib/Dropdown.svelte";
@@ -65,6 +65,11 @@
         enhanceContent();
       }
     }
+
+    // Build table of contents after content is rendered and enhanced
+    if (contentElement) {
+      buildToc();
+    }
   });
 
   // Add proper type definition for data prop
@@ -103,6 +108,9 @@
   let contentElement: HTMLElement;
   let expandedMermaidSvg = "";
   let thumbnailImageUrl = "";
+  let tocItems: { id: string; text: string; level: number }[] = [];
+  let activeId = "";
+  let scrollCleanup: (() => void) | null = null;
 
   const resolveImageUrl = (imageUrl?: string | null) => {
     if (!imageUrl) return "";
@@ -351,6 +359,59 @@
     }, 3000);
   };
 
+  const setupScrollSpy = () => {
+    if (scrollCleanup) {
+      scrollCleanup();
+      scrollCleanup = null;
+    }
+    const headingEls = Array.from(
+      contentElement.querySelectorAll("h2, h3")
+    ) as HTMLElement[];
+    if (headingEls.length === 0) return;
+
+    const onScroll = () => {
+      const scrollY = window.scrollY + 80;
+      let current = headingEls[0].id;
+      for (const el of headingEls) {
+        if (el.offsetTop <= scrollY) current = el.id;
+        else break;
+      }
+      activeId = current;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    scrollCleanup = () => window.removeEventListener("scroll", onScroll);
+  };
+
+  const slugify = (text: string): string =>
+    text
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+
+  const buildToc = () => {
+    if (!contentElement) return;
+    const headings = contentElement.querySelectorAll("h2, h3");
+    const items: { id: string; text: string; level: number }[] = [];
+    headings.forEach((heading) => {
+      const text = heading.textContent?.trim() || "";
+      const id = heading.id || slugify(text);
+      if (!heading.id) {
+        heading.id = id;
+      }
+      items.push({ id, text, level: heading.tagName === "H2" ? 2 : 3 });
+    });
+    tocItems = items;
+    if (items.length >= 3) {
+      setupScrollSpy();
+    }
+  };
+
+  onDestroy(() => {
+    if (scrollCleanup) scrollCleanup();
+  });
+
   const closeExpandedMermaid = () => {
     expandedMermaidSvg = "";
   };
@@ -387,7 +448,7 @@
 
 <!-- Blog post content container -->
 <Container>
-  <div class="max-w-4xl mx-auto font-mono">
+  <div class="max-w-5xl mx-auto font-mono">
     <div
       class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8"
     >
@@ -401,6 +462,8 @@
       </div>
     </div>
 
+    <div class="grid grid-cols-1 {tocItems.length >= 3 ? 'lg:grid-cols-[1fr_240px]' : ''} gap-4">
+      <div>
     {#if loading}
       <PageLoading {loading} />
     {:else if !data.success}
@@ -509,6 +572,27 @@
             </div>
           {/if}
 
+          {#if tocItems.length >= 3}
+            <details class="lg:hidden mb-4 border-2 border-ink dark:border-accent-terminal font-mono text-xs">
+              <summary class="px-4 py-2 border-b-2 border-ink dark:border-accent-terminal cursor-pointer text-ink dark:text-ink-inverse">
+                $ toc --generate
+              </summary>
+              <nav class="p-3">
+                <ul class="space-y-1">
+                  {#each tocItems as item}
+                    <li class={item.level === 3 ? "pl-4" : ""}>
+                      <a
+                        href="#{item.id}"
+                        class="block text-ink dark:text-ink-inverse hover:underline py-0.5 truncate transition-colors"
+                        class:font-bold={item.id === activeId}
+                      >{item.text}</a>
+                    </li>
+                  {/each}
+                </ul>
+              </nav>
+            </details>
+          {/if}
+
           <article class="blog-content max-w-none" bind:this={contentElement}>
             {@html sanitizeHtml(data.htmlContent)}
           </article>
@@ -595,6 +679,31 @@
         </div>
       </div>
     {/if}
+      </div>
+
+      {#if tocItems.length >= 3}
+        <aside class="hidden lg:block">
+          <div class="sticky top-4 border-2 border-ink dark:border-accent-terminal font-mono text-xs">
+            <div class="border-b-2 border-ink dark:border-accent-terminal px-4 py-2">
+              <span class="text-ink dark:text-ink-inverse">$ toc --generate</span>
+            </div>
+            <nav class="p-3 max-h-[calc(100vh-6rem)] overflow-y-auto">
+              <ul class="space-y-1">
+                {#each tocItems as item}
+                  <li class={item.level === 3 ? "pl-4" : ""}>
+                    <a
+                      href="#{item.id}"
+                      class="block text-ink dark:text-ink-inverse hover:underline py-0.5 truncate transition-colors"
+                      class:font-bold={item.id === activeId}
+                    >{item.text}</a>
+                  </li>
+                {/each}
+              </ul>
+            </nav>
+          </div>
+        </aside>
+      {/if}
+    </div>
   </div>
 </Container>
 
@@ -883,5 +992,9 @@
     justify-content: center;
     align-items: flex-start;
     min-width: max-content;
+  }
+
+  :global(html) {
+    scroll-behavior: smooth;
   }
 </style>
