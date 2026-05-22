@@ -112,6 +112,30 @@
   let activeId = "";
   let scrollCleanup: (() => void) | null = null;
 
+  // Format published date
+  const formatPublishedDate = (dateStr?: string): string => {
+    if (!dateStr) return "";
+    try {
+      return new Date(dateStr).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch {
+      return "";
+    }
+  };
+
+  // Calculate reading time from markdown content
+  const calculateReadingTime = (markdown?: string | null): number => {
+    if (!markdown) return 0;
+    const wordCount = markdown.split(/\s+/).length;
+    return Math.ceil(wordCount / 200);
+  };
+
+  $: formattedDate = formatPublishedDate(data.post?.date);
+  $: readingTime = calculateReadingTime(data.markdownContent);
+
   const resolveImageUrl = (imageUrl?: string | null) => {
     if (!imageUrl) return "";
 
@@ -449,6 +473,17 @@
 <!-- Blog post content container -->
 <Container>
   <div class="max-w-5xl mx-auto font-mono">
+    <!-- Breadcrumb navigation -->
+    <div class="mb-4">
+      <a
+        href="/posts"
+        class="inline-flex items-center gap-2 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1.5 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors text-sm"
+      >
+        <ArrowUturnLeft class="size-4" />
+        <span>← back to posts</span>
+      </a>
+    </div>
+
     <div
       class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8"
     >
@@ -513,7 +548,7 @@
                 slot="trigger"
                 class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
               >
-                <span class="text-sm">Copy Page</span>
+                <span class="text-sm">Share / Copy</span>
                 <ChervonDown class="size-4 stroke-current" />
               </div>
               <div slot="default" let:close>
@@ -569,6 +604,21 @@
                   loading="eager"
                 />
               </div>
+            </div>
+          {/if}
+
+          <!-- Post metadata: date and reading time -->
+          {#if formattedDate || readingTime}
+            <div class="mb-4 text-sm text-ink dark:text-ink-inverse font-mono">
+              {#if formattedDate}
+                <span>date: {formattedDate}</span>
+              {/if}
+              {#if formattedDate && readingTime}
+                <span class="mx-2">|</span>
+              {/if}
+              {#if readingTime}
+                <span>read: ~{readingTime} min</span>
+              {/if}
             </div>
           {/if}
 
