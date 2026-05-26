@@ -1,6 +1,7 @@
 <script lang="ts">
   import PageLoading from "$lib/PageLoading.svelte";
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, tick } from "svelte";
+  import { afterNavigate } from "$app/navigation";
   import Container from "$lib/Container.svelte";
   import ShareButtons from "$lib/post/ShareButtons.svelte";
   import Dropdown from "$lib/Dropdown.svelte";
@@ -412,6 +413,23 @@
     if (scrollCleanup) scrollCleanup();
   });
 
+  afterNavigate(async () => {
+    // Reset TOC state when navigating between posts (component is reused in SPA mode)
+    tocItems = [];
+    activeId = "";
+    if (scrollCleanup) {
+      scrollCleanup();
+      scrollCleanup = null;
+    }
+
+    // Wait for Svelte to update the DOM with new post content
+    await tick();
+
+    if (contentElement) {
+      buildToc();
+    }
+  });
+
   const closeExpandedMermaid = () => {
     expandedMermaidSvg = "";
   };
@@ -628,25 +646,25 @@
                 <div class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark">
                   <span class="text-ink dark:text-ink-inverse font-mono">$ ls ../</span>
                 </div>
-                <div class="p-4 flex justify-between items-center gap-4">
+                <div class="p-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
                   {#if data.prevPost}
                     <a
                       href="/posts/{data.prevPost.slug}"
-                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors max-w-xs"
+                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors sm:max-w-xs min-w-0"
                     >
-                      <span>←</span>
+                      <span class="shrink-0">←</span>
                       <span class="truncate">{data.prevPost.title}</span>
                     </a>
                   {:else}
-                    <div></div>
+                    <div class="hidden sm:block"></div>
                   {/if}
                   {#if data.nextPost}
                     <a
                       href="/posts/{data.nextPost.slug}"
-                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors max-w-xs text-right ml-auto"
+                      class="inline-flex items-center gap-2 border-2 border-ink dark:border-accent-terminal terminal-hover font-mono text-xs px-3 py-2 text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors sm:max-w-xs sm:ml-auto min-w-0 justify-end"
                     >
                       <span class="truncate">{data.nextPost.title}</span>
-                      <span>→</span>
+                      <span class="shrink-0">→</span>
                     </a>
                   {/if}
                 </div>
