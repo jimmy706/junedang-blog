@@ -1,5 +1,4 @@
 import { env } from "$env/dynamic/private";
-import axios from "axios";
 import { getMarkdownContent, getPosts } from "../../../api/posts.api";
 
 export const load = async ({ params }) => {
@@ -39,8 +38,11 @@ export const load = async ({ params }) => {
       : null;
 
     // Fetch the actual HTML content
-    const response = await axios.get(blogPostUrl);
-    const htmlContent = response.data;
+    const response = await fetch(blogPostUrl);
+    if (!response.ok) {
+      throw new Error(`Blog post request failed with status ${response.status}`);
+    }
+    const htmlContent = await response.text();
 
     // Fetch the markdown content using the API function
     const markdownContent = await getMarkdownContent(slug);

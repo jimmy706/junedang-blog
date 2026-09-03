@@ -1,5 +1,4 @@
 import { env } from "$env/dynamic/private";
-import axios from "axios";
 import NodeCache from "node-cache";
 
 const { API_URL, API_CACHE_TTL } = env;
@@ -7,10 +6,6 @@ const { API_URL, API_CACHE_TTL } = env;
 const cacheTime = API_CACHE_TTL ? Number.parseInt(API_CACHE_TTL) : 3600;
 
 export class Api {
-  private webclient = axios.create({
-    baseURL: API_URL,
-  });
-
   private cache = new NodeCache();
 
   async performGet<T>(path: string, cachingKey: NodeCache.Key): Promise<T> {
@@ -22,13 +17,20 @@ export class Api {
     console.log(
       `Cache miss for key: ${cachingKey}. Making API call to: ${path}`
     );
-    const response = await this.webclient.get<T>(path);
-    console.log(`API response received for path: ${path}`, response.data);
-    this.cache.set(cachingKey, response.data, cacheTime);
+    const url = API_URL ? new URL(path, API_URL).toString() : path;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    const data = await response.json() as T;
+    console.log(`API response received for path: ${path}`, data);
+    this.cache.set(cachingKey, data, cacheTime);
     console.log(
       `Data cached for key: ${cachingKey} with TTL: ${cacheTime} seconds`
     );
-    return response.data;
+    return data;
   }
 }
 

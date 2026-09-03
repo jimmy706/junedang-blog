@@ -1,14 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock axios
-vi.mock('axios', () => ({
-  default: {
-    get: vi.fn(),
-    create: vi.fn(() => ({
-      get: vi.fn()
-    }))
-  }
-}));
+const mockFetch = vi.fn();
+vi.stubGlobal('fetch', mockFetch);
 
 // Mock environment variables
 vi.mock('$env/dynamic/private', () => ({
@@ -27,10 +20,10 @@ vi.mock('../../../api/posts.api', () => ({
 describe('posts/[slug] page server load', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFetch.mockReset();
   });
 
   it('should load post content successfully', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
@@ -47,14 +40,14 @@ describe('posts/[slug] page server load', () => {
       }
     ];
 
-    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    mockFetch.mockResolvedValue({ ok: true, text: async () => mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
     const params = { slug: 'test-post' };
     const result = await load({ params } as any);
 
-    expect(axios.get).toHaveBeenCalledWith('https://test.github.io/test-blog/test-post.html');
+    expect(mockFetch).toHaveBeenCalledWith('https://test.github.io/test-blog/test-post.html');
     expect(getMarkdownContent).toHaveBeenCalledWith('test-post');
     expect(getPosts).toHaveBeenCalled();
     expect(result).toEqual({
@@ -71,11 +64,10 @@ describe('posts/[slug] page server load', () => {
   });
 
   it('should handle fetch errors gracefully', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
-    vi.mocked(axios.get).mockRejectedValue(new Error('Network error'));
+    mockFetch.mockRejectedValue(new Error('Network error'));
     vi.mocked(getMarkdownContent).mockResolvedValue(null);
     vi.mocked(getPosts).mockResolvedValue([]);
 
@@ -97,7 +89,6 @@ describe('posts/[slug] page server load', () => {
   });
 
   it('should handle different slugs correctly', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
@@ -111,14 +102,14 @@ describe('posts/[slug] page server load', () => {
       }
     ];
 
-    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    mockFetch.mockResolvedValue({ ok: true, text: async () => mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
     const params = { slug: 'another-post' };
     const result = await load({ params } as any);
 
-    expect(axios.get).toHaveBeenCalledWith('https://test.github.io/test-blog/another-post.html');
+    expect(mockFetch).toHaveBeenCalledWith('https://test.github.io/test-blog/another-post.html');
     expect(getMarkdownContent).toHaveBeenCalledWith('another-post');
     expect(getPosts).toHaveBeenCalled();
     expect(result.slug).toBe('another-post');
@@ -131,7 +122,6 @@ describe('posts/[slug] page server load', () => {
   });
 
   it('should compute prevPost and nextPost correctly for middle post', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
@@ -155,7 +145,7 @@ describe('posts/[slug] page server load', () => {
       }
     ];
 
-    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    mockFetch.mockResolvedValue({ ok: true, text: async () => mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
@@ -179,7 +169,6 @@ describe('posts/[slug] page server load', () => {
   });
 
   it('should have no nextPost for newest post', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
@@ -198,7 +187,7 @@ describe('posts/[slug] page server load', () => {
       }
     ];
 
-    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    mockFetch.mockResolvedValue({ ok: true, text: async () => mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 
@@ -215,7 +204,6 @@ describe('posts/[slug] page server load', () => {
   });
 
   it('should have no prevPost for oldest post', async () => {
-    const axios = (await import('axios')).default;
     const { getMarkdownContent, getPosts } = await import('../../../api/posts.api');
     const { load } = await import('./+page.server');
 
@@ -234,7 +222,7 @@ describe('posts/[slug] page server load', () => {
       }
     ];
 
-    vi.mocked(axios.get).mockResolvedValue({ data: mockHtmlContent });
+    mockFetch.mockResolvedValue({ ok: true, text: async () => mockHtmlContent });
     vi.mocked(getMarkdownContent).mockResolvedValue(mockMarkdownContent);
     vi.mocked(getPosts).mockResolvedValue(mockPosts);
 

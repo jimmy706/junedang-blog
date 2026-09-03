@@ -10,14 +10,6 @@ vi.mock('$env/dynamic/private', () => ({
   }
 }));
 
-vi.mock('axios', () => ({
-  default: {
-    create: vi.fn(() => ({
-      get: vi.fn()
-    }))
-  }
-}));
-
 vi.mock('node-cache', () => ({
   default: class MockNodeCache {
     private cache = new Map();
@@ -42,13 +34,12 @@ vi.mock('node-cache', () => ({
 
 describe('Api class', () => {
   let api: Api;
-  let mockAxiosGet: any;
+  let mockFetch: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     api = new Api();
-    // Access the private webclient through type assertion for testing
-    mockAxiosGet = vi.fn();
-    (api as any).webclient = { get: mockAxiosGet };
+    mockFetch = vi.fn();
+    vi.stubGlobal('fetch', mockFetch);
     (api as any).cache.clear();
   });
 
@@ -57,11 +48,11 @@ describe('Api class', () => {
       const mockData: Post[] = [
         { title: 'Test Post', url: 'test.html', date: '2023-12-01' }
       ];
-      mockAxiosGet.mockResolvedValue({ data: mockData });
+      mockFetch.mockResolvedValue({ ok: true, json: async () => mockData });
 
       const result = await api.performGet<Post[]>('/test', 'test-key');
 
-      expect(mockAxiosGet).toHaveBeenCalledWith('/test');
+      expect(mockFetch).toHaveBeenCalledWith('https://test-api.com/test');
       expect(result).toEqual(mockData);
     });
 
@@ -71,26 +62,26 @@ describe('Api class', () => {
       ];
       
       // First call to populate cache
-      mockAxiosGet.mockResolvedValue({ data: mockData });
+      mockFetch.mockResolvedValue({ ok: true, json: async () => mockData });
       await api.performGet<Post[]>('/test', 'test-key');
 
       // Second call should use cache
       const result = await api.performGet<Post[]>('/test', 'test-key');
 
-      expect(mockAxiosGet).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockData);
     });
 
     it('should handle API errors gracefully', async () => {
       const error = new Error('API Error');
-      mockAxiosGet.mockRejectedValue(error);
+      mockFetch.mockRejectedValue(error);
 
       await expect(api.performGet<Post[]>('/test', 'test-key')).rejects.toThrow('API Error');
     });
 
     it('should cache data with correct TTL', async () => {
       const mockData = { test: 'data' };
-      mockAxiosGet.mockResolvedValue({ data: mockData });
+      mockFetch.mockResolvedValue({ ok: true, json: async () => mockData });
 
       const cacheSpy = vi.spyOn((api as any).cache, 'set');
 

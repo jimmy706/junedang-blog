@@ -9,7 +9,6 @@ This is a personal blog application built with SvelteKit, TypeScript, and Tailwi
 - **Framework**: SvelteKit (with TypeScript)
 - **Styling**: TailwindCSS with custom styles
 - **Build Tool**: Vite
-- **HTTP Client**: Axios for API calls
 - **Caching**: Node.js cache for API responses
 - **Analytics**: Google Analytics (gtag)
 
