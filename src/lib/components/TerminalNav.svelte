@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
+
+  const pathname = $derived(page.url.pathname);
 
   const links = [
     { href: "/", label: "home" },
@@ -19,7 +21,7 @@
     {#each links as link}
       <a
         href={link.href}
-        class={`focus-terminal border-2 px-2 py-1 ${isActive(link.href, $page.url.pathname)
+        class={`focus-terminal border-2 px-2 py-1 ${isActive(link.href, pathname)
           ? "border-ink bg-ink text-ink-inverse dark:border-accent-terminal dark:bg-accent-terminal dark:text-ink"
           : "border-transparent terminal-hover"}`}
       >

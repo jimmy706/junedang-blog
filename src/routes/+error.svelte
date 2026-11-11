@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   
-  $: error = $page.error;
-  $: status = $page.status;
+  const error = $derived(page.error);
+  const status = $derived(page.status);
   
   // Check if it's a 404 error or API error
-  $: is404 = status === 404;
-  $: isApiError = status >= 500 || (error?.message && error.message.includes('API'));
+  const is404 = $derived(status === 404);
+  const isApiError = $derived(status >= 500 || (error?.message && error.message.includes('API')));
 </script>
 
 <svelte:head>

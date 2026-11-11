@@ -1,12 +1,14 @@
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
 
-  let smMenuOpen = false;
+  let smMenuOpen = $state(false);
 
   // Reactive statement to close mobile menu when route changes
-  $: if ($page.url.pathname) {
-    smMenuOpen = false;
-  }
+  $effect(() => {
+    if (page.url.pathname) {
+      smMenuOpen = false;
+    }
+  });
   const mdMenuClass =
     "text-sm leading-6 text-ink border-2 border-ink px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:border-accent-terminal dark:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors mdMenuItem";
   const smMenuClass =
@@ -60,7 +62,7 @@
         type="button"
         class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-ink dark:text-ink-inverse"
         title="Open main menu"
-        on:click={() => (smMenuOpen = true)}
+        onclick={() => (smMenuOpen = true)}
       >
         <span class="sr-only">Open main menu</span>
         <svg
@@ -341,7 +343,7 @@
       {#each menuItems as item}
         <a
           href={item.href}
-          class="{mdMenuClass} {(item.href === '/' ? $page.url.pathname === item.href : $page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
+          class="{mdMenuClass} {(item.href === '/' ? page.url.pathname === item.href : page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
           >{item.name}</a
         >
       {/each}
@@ -356,12 +358,12 @@
       class={`fixed transition-transform inset-y-0 right-0 z-10 w-full overflow-y-auto bg-bg dark:bg-bg-dark px-6 py-6 sm:max-w-sm border-l-2 border-ink dark:border-accent-terminal ${smMenuOpen ? "translate-x-0" : "translate-x-full"}`}
     >
       <div class="flex items-center justify-between">
-        <a href="/" class="-m-1.5 p-1.5" on:click={() => (smMenuOpen = false)}>
+        <a href="/" class="-m-1.5 p-1.5" onclick={() => (smMenuOpen = false)}>
           <span class="sr-only">Junedang</span>
           <img class="h-10 w-auto md:h-8" src="/favicon.jpeg" alt="" />
         </a>
         <button
-          on:click={() => (smMenuOpen = false)}
+          onclick={() => (smMenuOpen = false)}
           title="Close menu"
           type="button"
           class="-m-2.5 rounded-md p-2.5 text-ink dark:text-ink-inverse"
@@ -436,8 +438,8 @@
             {#each menuItems as item}
               <a
                 href={item.href}
-                class="{smMenuClass} {(item.href === '/' ? $page.url.pathname === item.href : $page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
-                on:click={() => (smMenuOpen = false)}>{item.name}</a
+                class="{smMenuClass} {(item.href === '/' ? page.url.pathname === item.href : page.url.pathname.startsWith(item.href)) ? 'bg-ink text-ink-inverse dark:bg-accent-terminal dark:text-ink' : ''}"
+                onclick={() => (smMenuOpen = false)}>{item.name}</a
               >
             {/each}
           </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   import { env } from "$env/dynamic/public";
   import FloatingButton from "$lib/FloatingButton.svelte";
   import Maintance from "$lib/Maintance.svelte";
@@ -9,10 +9,9 @@
   import TerminalNav from "$lib/components/TerminalNav.svelte";
   import { initTheme } from "$lib/stores/theme";
 
+  let { children } = $props();
   const { PUBLIC_MAINTENANCE_MODE } = env;
-  let bootLine = "$ boot ui-shell --ok";
-
-  $: bootLine = `$ route ${$page.url.pathname} --ready`;
+  const bootLine = $derived(`$ route ${page.url.pathname} --ready`);
 
   onMount(() => {
     initTheme();
@@ -27,7 +26,7 @@
     <TerminalNav />
     <p class="mx-auto max-w-6xl px-4 py-3 text-xs" aria-live="polite">{bootLine}</p>
     <main class="pb-8">
-      <slot />
+      {@render children()}
     </main>
   </div>
   <FloatingButton />
