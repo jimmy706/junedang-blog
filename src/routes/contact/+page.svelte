@@ -2,7 +2,7 @@
   import Container from "$lib/Container.svelte";
   import SocialLinks from "$lib/SocialLinks.svelte";
   const email = "jim.dangquoc706@gmail.com";
-  const cvLink = "https://1drv.ms/b/c/c14ce25ddf8a1dde/EX9hNe_KOIlOvftJtqt-3SEBABynZsmaDVgkEBz3OJNtyA?e=iItgC0";
+  const cvLink = "/docs/DungDangQuoc_fullstack_CV.pdf";
 </script>
 
 <svelte:head>
