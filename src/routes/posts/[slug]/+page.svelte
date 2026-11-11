@@ -8,6 +8,7 @@
   import ChervonDown from "../../../components/icons/ChervonDown.svelte";
   import Tags from "$lib/post/Tags.svelte";
   import ArrowUturnLeft from "../../../components/icons/ArrowUturnLeft.svelte";
+  import { parsePostDate } from "$lib/utils/post-date";
   import Modal from "$lib/Modal.svelte";
   import { sanitizeHtml } from "../../../utils/sanitize-html";
 
@@ -79,6 +80,9 @@
     blogUrlPrefix?: string;
     slug: string;
     htmlContent: string | null;
+    articleBody?: string;
+    articleTitle?: string;
+    titleId?: string;
     markdownContent: string | null;
     success: boolean;
     error?: string;
@@ -115,16 +119,9 @@
 
   // Format published date
   const formatPublishedDate = (dateStr?: string): string => {
-    if (!dateStr) return "";
-    try {
-      return new Date(dateStr).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    } catch {
-      return "";
-    }
+    return parsePostDate(dateStr)?.toLocaleDateString("en-US", {
+      year: "numeric", month: "long", day: "numeric"
+    }) ?? "";
   };
 
   // Calculate reading time from markdown content
@@ -491,32 +488,8 @@
 <!-- Blog post content container -->
 <Container>
   <div class="max-w-5xl mx-auto font-mono">
-    <!-- Breadcrumb navigation -->
-    <div class="mb-4">
-      <a
-        href="/posts"
-        class="inline-flex items-center gap-2 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1.5 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors text-sm"
-      >
-        <ArrowUturnLeft class="size-4" />
-        <span>← back to posts</span>
-      </a>
-    </div>
-
-    <div
-      class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark mb-8"
-    >
-      <div
-        class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark"
-      >
-        <span class="text-ink dark:text-ink-inverse">SYSTEM: POST.EXE</span>
-      </div>
-      <div class="px-4 py-2 text-ink dark:text-ink-inverse">
-        <span>$ cat /posts/{data.slug}.md</span>
-      </div>
-    </div>
-
     <div class="grid grid-cols-1 {tocItems.length >= 3 ? 'lg:grid-cols-[1fr_240px]' : ''} gap-4">
-      <div>
+      <div class="min-w-0">
     {#if loading}
       <PageLoading {loading} />
     {:else if !data.success}
@@ -549,64 +522,80 @@
       <div
         class="border-2 border-ink bg-bg dark:border-accent-terminal dark:bg-bg-dark"
       >
-        <div
-          class="border-b-2 border-ink px-4 py-2 bg-bg dark:border-accent-terminal dark:bg-bg-dark flex items-center justify-between gap-2"
-        >
-          <span class="text-ink dark:text-ink-inverse"
-            >$ render {data.slug}</span
-          >
-          <div class="flex items-center gap-2">
-            {#if copyStatus}
-              <span class="text-sm text-ink dark:text-ink-inverse"
-                >{copyStatus}</span
-              >
-            {/if}
-            <Dropdown align="right" containerClass="relative inline-block">
-              <div
-                slot="trigger"
-                class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
-              >
-                <span class="text-sm">Share / Copy</span>
-                <ChervonDown class="size-4 stroke-current" />
-              </div>
-              <div slot="default" let:close>
-                <button
-                  on:click={() => {
-                    copyAsHtml();
-                    close();
-                  }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
+        <header class="border-b-2 border-ink p-4 dark:border-accent-terminal">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <a href="/posts" class="terminal-hover inline-flex items-center gap-2 border-2 px-3 py-1 text-sm">
+              <ArrowUturnLeft class="size-4" /> Back to posts
+            </a>
+            <div class="flex flex-wrap items-center gap-2">
+              {#if copyStatus}
+                <span role="status" class="text-sm text-ink dark:text-ink-inverse"
+                  >{copyStatus}</span
                 >
-                  Copy as HTML
-                </button>
-                <button
-                  on:click={() => {
-                    copyAsMarkdown();
-                    close();
-                  }}
-                  disabled={!data.markdownContent}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse transition-colors border-t-2 border-ink dark:border-accent-terminal {data.markdownContent
-                    ? 'hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink'
-                    : 'opacity-50 cursor-not-allowed'}"
+              {/if}
+              <Dropdown align="right" containerClass="relative inline-block">
+                <span
+                  slot="trigger"
+                  class="flex items-center gap-1 text-ink dark:text-ink-inverse border-2 border-ink dark:border-accent-terminal px-3 py-1 hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors cursor-pointer"
                 >
-                  Copy as Markdown
-                  {#if !data.markdownContent}
-                    <span class="text-xs">(unavailable)</span>
-                  {/if}
-                </button>
-                <button
-                  on:click={() => {
-                    copyDomainUrl();
-                    close();
-                  }}
-                  class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors border-t-2 border-ink dark:border-accent-terminal"
-                >
-                  Copy URL
-                </button>
-              </div>
-            </Dropdown>
+                  <span class="text-sm">Share / Copy</span>
+                  <ChervonDown class="size-4 stroke-current" />
+                </span>
+                <div slot="default" let:close>
+                  <button
+                    on:click={() => {
+                      copyAsHtml();
+                      close();
+                    }}
+                    class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors"
+                  >
+                    Copy as HTML
+                  </button>
+                  <button
+                    on:click={() => {
+                      copyAsMarkdown();
+                      close();
+                    }}
+                    disabled={!data.markdownContent}
+                    class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse transition-colors border-t-2 border-ink dark:border-accent-terminal {data.markdownContent
+                      ? 'hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink'
+                      : 'opacity-50 cursor-not-allowed'}"
+                  >
+                    Copy as Markdown
+                    {#if !data.markdownContent}
+                      <span class="text-xs">(unavailable)</span>
+                    {/if}
+                  </button>
+                  <button
+                    on:click={() => {
+                      copyDomainUrl();
+                      close();
+                    }}
+                    class="cursor-pointer block w-full text-left px-4 py-2 text-sm text-ink dark:text-ink-inverse hover:bg-ink hover:text-ink-inverse dark:hover:bg-accent-terminal dark:hover:text-ink transition-colors border-t-2 border-ink dark:border-accent-terminal"
+                  >
+                    Copy URL
+                  </button>
+                </div>
+              </Dropdown>
+            </div>
           </div>
-        </div>
+          <h1 id={data.titleId} class="mt-4 wrap-anywhere text-2xl font-semibold leading-tight sm:text-3xl">{data.articleTitle || data.post?.title || data.slug}</h1>
+          <!-- Post metadata: date and reading time -->
+          {#if formattedDate || readingTime}
+            <div class="mt-2 text-sm text-ink dark:text-ink-inverse font-mono">
+              {#if formattedDate}
+                <span>date: {formattedDate}</span>
+              {/if}
+              {#if formattedDate && readingTime}
+                <span class="mx-2">|</span>
+              {/if}
+              {#if readingTime}
+                <span>read: ~{readingTime} min</span>
+              {/if}
+            </div>
+          {/if}
+
+        </header>
         <div class="p-4">
           {#if thumbnailImageUrl}
             <div class="mb-6 rounded-lg transition-colors">
@@ -622,21 +611,6 @@
                   loading="eager"
                 />
               </div>
-            </div>
-          {/if}
-
-          <!-- Post metadata: date and reading time -->
-          {#if formattedDate || readingTime}
-            <div class="mb-4 text-sm text-ink dark:text-ink-inverse font-mono">
-              {#if formattedDate}
-                <span>date: {formattedDate}</span>
-              {/if}
-              {#if formattedDate && readingTime}
-                <span class="mx-2">|</span>
-              {/if}
-              {#if readingTime}
-                <span>read: ~{readingTime} min</span>
-              {/if}
             </div>
           {/if}
 
@@ -662,7 +636,7 @@
           {/if}
 
           <article class="blog-content max-w-none" bind:this={contentElement}>
-            {@html sanitizeHtml(data.htmlContent)}
+            {@html sanitizeHtml(data.articleBody ?? data.htmlContent)}
           </article>
           {#if data.post?.tags}
             {@const tagsArray =

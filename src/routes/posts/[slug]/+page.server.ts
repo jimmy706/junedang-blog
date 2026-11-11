@@ -1,3 +1,4 @@
+import { prepareArticleHeading } from "$lib/utils/article-heading.server";
 import { env } from "$env/dynamic/private";
 import { getMarkdownContent, getPosts } from "../../../api/posts.api";
 
@@ -51,6 +52,7 @@ export const load = async ({ params }) => {
       slug,
       blogPostUrl,
       htmlContent,
+      ...prepareArticleHeading(htmlContent, currentPost?.title),
       markdownContent,
       blogUrlPrefix: env.GITHUB_PAGE_URL || "",
       success: true,

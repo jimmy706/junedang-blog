@@ -24,7 +24,9 @@
   <div class="min-h-screen bg-bg text-ink dark:bg-bg-dark dark:text-ink-inverse">
     <SystemBar />
     <TerminalNav />
-    <p class="mx-auto max-w-6xl px-4 py-3 text-xs" aria-live="polite">{bootLine}</p>
+    {#if page.route.id !== "/posts/[slug]"}
+      <p class="mx-auto max-w-6xl px-4 py-3 text-xs" aria-live="polite">{bootLine}</p>
+    {/if}
     <main class="pb-8">
       {@render children()}
     </main>

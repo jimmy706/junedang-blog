@@ -1,7 +1,9 @@
 <script lang="ts">
   import type { Post } from "../../types/posts";
   import { constructArticleSlug } from "../../utils/string-helper";
+  import { parsePostDate } from "$lib/utils/post-date";
   export let post: Post;
+  $: date = parsePostDate(post.date);
 </script>
 
 <a
@@ -35,7 +37,7 @@
       </p>
     {/if}
   </div>
-  <div class="mt-4 flex items-center justify-between">
+  <div class="mt-4 flex flex-wrap items-center justify-between gap-2">
     {#if post.tags && post.tags.length > 0}
       <div class="flex flex-wrap gap-2">
         {#each post.tags.slice(0, 3) as tag}
@@ -45,12 +47,8 @@
         {/each}
       </div>
     {/if}
-    <span class="text-xs font-mono border-2 border-current px-2 py-1 ml-auto">
-      {#if post.date}
-        {new Date(post.date).toLocaleDateString()}
-      {:else}
-        {new Date().toLocaleDateString()}
-      {/if}
-    </span>
+    {#if date}
+      <time datetime={date.toISOString()} class="text-xs font-mono border-2 border-current px-2 py-1 ml-auto">{date.toLocaleDateString()}</time>
+    {/if}
   </div>
 </a>

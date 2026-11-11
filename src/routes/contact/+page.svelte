@@ -31,7 +31,8 @@
 
       <div class="p-6">
         <!-- ASCII-lite Header -->
-        <pre class="text-ink dark:text-ink-inverse text-sm mb-6 leading-tight">
+        <h1 class="mb-6 text-xl font-semibold sm:sr-only">Contact June Dang</h1>
+        <pre aria-hidden="true" class="text-ink dark:text-ink-inverse hidden sm:block text-sm mb-6 leading-tight">
  ╭─────────────────────────────────────────╮
  │           CONTACT INTERFACE             │
  ╰─────────────────────────────────────────╯
@@ -39,7 +40,7 @@
 
         <div class="text-ink dark:text-ink-inverse">
           <p class="mb-2">USER: JUNE_DANG</p>
-          <p class="mb-2">ADDRESS: <a href={`mailto:${email}`}>{email}</a></p>
+          <p class="mb-2">ADDRESS: <a class="wrap-anywhere" href={`mailto:${email}`}>{email}</a></p>
           <p class="mb-4">LOCATION: VIETNAM</p>
         </div>
 
@@ -63,7 +64,7 @@
           <span class="text-ink dark:text-ink-inverse">$ cat contact.txt</span>
         </div>
         <div class="p-4">
-          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed whitespace-pre-wrap">Email: {email}
+          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed whitespace-pre-wrap wrap-anywhere">Email: {email}
 Availability: Usually within 24-48 hours
 
 Feel free to reach out for:
@@ -81,7 +82,7 @@ EOF</pre>
           <span class="text-ink dark:text-ink-inverse">$ ls -la /professional/</span>
         </div>
         <div class="p-4">
-          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">total 3
+          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed overflow-x-auto">total 3
 -rw-r--r--  1 june staff   64  resume.pdf
 -rw-r--r--  1 june staff   24  role.txt
 -rw-r--r--  1 june staff   16  focus.txt
@@ -111,7 +112,7 @@ Cloud & Finance Technology</pre>
         <span class="text-ink dark:text-ink-inverse">$ ./mail.sh</span>
       </div>
       <div class="p-4">
-        <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">#!/bin/bash
+        <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed overflow-x-auto">#!/bin/bash
 # Mail Script v1.0
 # Author: June Dang
 

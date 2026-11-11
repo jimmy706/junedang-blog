@@ -2,7 +2,9 @@
   import type { Post } from "../../types/posts";
   import { constructArticleSlug } from "../../utils/string-helper";
   import Tags from "./Tags.svelte";
+  import { parsePostDate } from "$lib/utils/post-date";
   export let post: Post;
+  $: date = parsePostDate(post.date);
 </script>
 
 <a
@@ -30,12 +32,8 @@
       </div>
     {/if}
 
-    <small class="mt-2 text-sm opacity-70">
-      {#if post.date}
-        {new Date(post.date).toLocaleDateString()}
-      {:else}
-        {new Date().toLocaleDateString()}
-      {/if}
-    </small>
+    {#if date}
+      <time datetime={date.toISOString()} class="mt-2 text-sm opacity-70">{date.toLocaleDateString()}</time>
+    {/if}
   </div>
 </a>

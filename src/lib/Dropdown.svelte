@@ -7,6 +7,7 @@
   export let triggerClass: string = ""; // allow parent to style trigger wrapper
 
   let open = false;
+  let trigger: HTMLButtonElement;
   let rootEl: HTMLElement;
 
   const onDocClick = (e: MouseEvent) => {
@@ -16,7 +17,7 @@
   };
 
   const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Escape") open = false;
+    if (open && e.key === "Escape") close();
   };
 
   onMount(() => {
@@ -34,29 +35,25 @@
   });
 
   const toggle = () => (open = !open);
-  const close = () => (open = false);
+  const close = () => {
+    open = false;
+    trigger.focus();
+  };
 </script>
 
 <div bind:this={rootEl} class={containerClass} style={open ? "z-index: 90;" : undefined}>
-  <div
+  <button
+    type="button"
+    bind:this={trigger}
     class={triggerClass}
-    role="button"
-    tabindex="0"
-    aria-haspopup="menu"
     aria-expanded={open}
     on:click|stopPropagation={toggle}
-    on:keydown={(e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        toggle();
-      }
-    }}
   >
     <slot name="trigger" />
-  </div>
+  </button>
 
   {#if open}
-    <div class={`menu-panel ${panelClass} ${align === "right" ? "right-0" : "left-0"}`} style="opacity: 1;" role="menu" aria-orientation="vertical" tabindex="-1">
+    <div class={`menu-panel ${panelClass} ${align === "right" ? "right-0" : "left-0"}`} style="opacity: 1;">
       <slot {close} />
     </div>
   {/if}

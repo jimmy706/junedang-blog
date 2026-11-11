@@ -29,7 +29,8 @@
 
       <div class="p-6">
         <!-- ASCII Art Header -->
-        <pre class="text-ink dark:text-ink-inverse text-sm mb-6 leading-tight">
+        <h1 class="mb-6 text-xl font-semibold sm:sr-only">June Dang</h1>
+        <pre aria-hidden="true" class="text-ink dark:text-ink-inverse hidden sm:block text-sm mb-6 leading-tight">
  ╭─────────────────────────────────────────╮
  │  ██╗██╗   ██╗███╗   ██╗███████╗        │
  │  ██║██║   ██║████╗  ██║██╔════╝        │
@@ -73,33 +74,15 @@
           <span class="text-ink dark:text-ink-inverse">$ cat about.txt</span>
         </div>
         <div class="p-4">
-          <pre
-            class="text-ink dark:text-ink-inverse text-sm leading-relaxed whitespace-pre-wrap">Hello World!
-
-I'm June Dang, a passionate Vietnamese 
-software engineer with a love for building 
-innovative solutions in the cloud and 
-finance sectors.
-
-My journey in software development has led 
-me to work extensively with cloud 
-technologies, helping businesses scale 
-their operations and improve their digital 
-infrastructure.
-
-I find great satisfaction in solving 
-complex problems and creating elegant, 
-efficient solutions.
-
-When I'm not coding, I love exploring new 
-technologies, sharing knowledge through 
-writing, and staying up-to-date with the 
-latest trends in software engineering.
-
-Welcome to my blog, where I share my 
-experiences, insights, and learnings!
-
-EOF</pre>
+          <div class="space-y-4 text-sm leading-relaxed">
+            <p>Hello World!</p>
+            <p>I'm June Dang, a passionate Vietnamese software engineer with a love for building innovative solutions in the cloud and finance sectors.</p>
+            <p>My journey in software development has led me to work extensively with cloud technologies, helping businesses scale their operations and improve their digital infrastructure.</p>
+            <p>I find great satisfaction in solving complex problems and creating elegant, efficient solutions.</p>
+            <p>When I'm not coding, I love exploring new technologies, sharing knowledge through writing, and staying up-to-date with the latest trends in software engineering.</p>
+            <p>Welcome to my blog, where I share my experiences, insights, and learnings!</p>
+            <p>EOF</p>
+          </div>
         </div>
       </div>
 
@@ -109,7 +92,7 @@ EOF</pre>
           <span class="text-ink dark:text-ink-inverse">$ ls -la /professional/</span>
         </div>
         <div class="p-4">
-          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">total 4
+          <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed overflow-x-auto">total 4
 drwxr-xr-x  2 june staff  128 Oct  4 2025 .
 drwxr-xr-x  5 june staff  160 Oct  4 2025 ..
 -rw-r--r--  1 june staff   64 Oct  4 2025 role.txt
@@ -137,7 +120,7 @@ $ cat skills.txt
         <span class="text-ink dark:text-ink-inverse">$ ./connect.sh</span>
       </div>
       <div class="p-4">
-        <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed">#!/bin/bash
+        <pre class="text-ink dark:text-ink-inverse text-sm leading-relaxed overflow-x-auto">#!/bin/bash
 # Connection Script v1.0
 # Author: June Dang
 

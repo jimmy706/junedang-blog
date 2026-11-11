@@ -26,6 +26,7 @@
       <p class="text-sm">total: {posts?.length || 0} {currentTag ? `(tag #${currentTag})` : ""}</p>
       <div class="mt-4 flex flex-wrap gap-2 text-xs">
         <select
+          aria-label="Post view"
           class="focus-terminal border-2 border-ink bg-transparent px-3 py-1 text-xs terminal-hover dark:border-accent-terminal dark:text-accent-terminal"
           value={$viewMode}
           on:change={(e) => setViewMode(e.currentTarget.value as ViewMode)}

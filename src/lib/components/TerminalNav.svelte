@@ -21,6 +21,7 @@
     {#each links as link}
       <a
         href={link.href}
+        aria-current={isActive(link.href, pathname) ? (pathname === link.href ? "page" : "location") : undefined}
         class={`focus-terminal border-2 px-2 py-1 ${isActive(link.href, pathname)
           ? "border-ink bg-ink text-ink-inverse dark:border-accent-terminal dark:bg-accent-terminal dark:text-ink"
           : "border-transparent terminal-hover"}`}

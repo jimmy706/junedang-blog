@@ -12,25 +12,44 @@
     dispatch("close");
   };
 
-  const handleKeydown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") close();
-  };
+  function showDialog(dialog: HTMLDialogElement) {
+    const opener = document.activeElement;
+    dialog.showModal();
+    return {
+      destroy() {
+        dialog.close();
+        if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
+      }
+    };
+  }
+
+  function keepFocus(event: KeyboardEvent) {
+    if (event.key !== "Tab") return;
+    const dialog = event.currentTarget as HTMLDialogElement;
+    const controls = Array.from(dialog.querySelectorAll<HTMLElement>(
+      'button:enabled, a[href], input:enabled, select:enabled, textarea:enabled, [tabindex="0"]'
+    )).filter(element => element.getClientRects().length);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    const boundary = event.shiftKey ? first : last;
+    if (boundary && document.activeElement === boundary) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  }
 
   const handleOverlayClick = (e: MouseEvent) => {
     if (e.target === e.currentTarget) close();
   };
 </script>
 
-<svelte:window on:keydown={open ? handleKeydown : undefined} />
-
 {#if open}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-  <div
+  <dialog
+    use:showDialog
     class="modal-overlay"
-    role="dialog"
-    tabindex="-1"
-    aria-modal="true"
+    on:keydown={keepFocus}
+    on:cancel|preventDefault={close}
     aria-label={ariaLabel}
     on:click={handleOverlayClick}
   >
@@ -55,17 +74,24 @@
           </svg>
         </button>
       </div>
-      <div class="modal-body">
+      <!-- The diagram viewport accepts focus so arrow keys can scroll oversized diagrams. -->
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+      <div class="modal-body" role="region" aria-label={ariaLabel} tabindex="0">
         <slot />
       </div>
     </div>
-  </div>
+  </dialog>
 {/if}
 
 <style>
   .modal-overlay {
     position: fixed;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    color: inherit;
     background: rgba(0, 0, 0, 0.8);
     display: flex;
     align-items: center;

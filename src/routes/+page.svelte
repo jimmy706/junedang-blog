@@ -28,7 +28,7 @@
 </svelte:head>
 
 <Container>
-  <div class="mx-auto grid max-w-6xl gap-6 md:grid-cols-[1.1fr_1fr]">
+  <div class="mx-auto grid max-w-6xl items-start gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
     <TerminalPanel title="$ cat profile.sys">
       <div class="space-y-4 text-sm">
         <div>

@@ -24,18 +24,17 @@
     color: #f7f3e8;
   }
 
-  a,
-  button {
-    outline: none;
+  :focus-visible {
+    outline: 2px solid #00653c;
+    outline-offset: 2px;
+  }
+
+  .dark :focus-visible {
+    outline-color: #50e8a3;
   }
 }
 
 @layer utilities {
-  .focus-terminal:focus-visible {
-    outline: 2px solid #00b56a;
-    outline-offset: 2px;
-  }
-
   .terminal-hover {
     transition: color 0.1s ease, background-color 0.1s ease;
   }
